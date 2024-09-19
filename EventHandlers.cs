@@ -42,10 +42,12 @@ namespace BetterScp106
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
         {
-            if(plugin.Config.PocketexitRandomZonemode && ev.Player.Role.Type!=RoleTypeId.Scp106)
+            if(plugin.Config.PocketexitRandomZonemode)
             {
                 ev.IsAllowed = false;
                 EscapeFromDimension(ev.Player);
+                if (ev.Player.Role == RoleTypeId.Scp106)
+                    ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
                 Log.Debug("Random Zone exit mode is active player exiting with random zone");
             }
             if (ev.Player.Role == RoleTypeId.Scp106)
@@ -53,7 +55,7 @@ namespace BetterScp106
                 ev.IsAllowed = false;
                 EscapeFromDimension(ev.Player);
                 ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
-                Log.Debug("106 escape the pocket dimension finding the right exit");
+                Log.Debug("106 escape the pocket dimension finding the right exit(Random Zone mode is Deactive)");
             }
         }
         public static void EscapeFromDimension(Player player)

@@ -49,6 +49,7 @@ namespace BetterScp106
                 if (ev.Player.Role == RoleTypeId.Scp106)
                     ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
                 Log.Debug("Random Zone exit mode is active player exiting with random zone");
+                return;
             }
             if (ev.Player.Role == RoleTypeId.Scp106)
             {

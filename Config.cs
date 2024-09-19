@@ -8,7 +8,10 @@ namespace BetterScp106
         public bool IsEnabled { get ; set ; } = true;
         public bool Debug { get; set; } = false;
 
-        [Description("How much health does it cost to go to pocket dimension??")]
+        [Description("Should players exit a random zone when they exit the pocket dimension?")]
+        public bool PocketexitRandomZonemode { get; set; } = true;
+
+        [Description("How much health does it cost to go to pocket dimension?")]
         public int PocketdimensionCostHealt { get; set; } = 50;
 
         [Description("How much Vigor/106 energy does it cost to go to pocket dimension?")]

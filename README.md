@@ -1,7 +1,7 @@
 <h1 align="center">Better Scp-106</h1>
 <div align="center">
 <a href="https://github.com/MS-crew/BetterScp106"><img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" href="https://github.com/MS-crew/BetterScp106" alt="GitHub Source Code"></a>
-<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-1.0.0-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
+<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-1.1.1-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
 <a href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE"><img src="https://img.shields.io/badge/Licence-GNU_3.0-blue?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE" alt="General Public License v3.0"></a>
 <a href="https://github.com/ExMod-Team/EXILED"><img src="https://img.shields.io/badge/Exiled-8.11.0-red?style=for-the-badge&logo=gitbook" href="https://github.com/ExMod-Team/EXILED" alt="GitHub Exiled"></a>
 
@@ -16,6 +16,10 @@ This add-on for SCP: Secret Laboratory brings new features closer to the lore fo
 - **Stalk:** The most important feature is that if there is an injured victim, you can teleport to a place where he is with the stalk feature (the victim is warned 1 second in advance).
 - **Better106:** It tells you all the features of the 106 and how much they will cost.
 - **Flexible management:** With the config file, you can determine which feature will cost how much vigor or healt, how many meters away the victim can be teleported to the nearby victim with Stalk, or how long the cooldown time will be given to Scp-106 by which feature.
+
+## Experimental feature
+
+- **Pocket exit random zone mode:** When players successfully exit the pocket dimension, they exit from a random zone depending on chance instead of the same zone.
 
 ## Installation
 
@@ -36,7 +40,9 @@ Thank you for using our plugin and helping us improve it!
 ```yml
 Is_enabled: true
 debug: false
-# How much health does it cost to go to pocket dimension??
+# Should players exit a random zone when they exit the pocket dimension?
+pocketexit_random_zonemode: true
+# How much health does it cost to go to pocket dimension?
 pocketdimension_cost_healt: 50
 # How much Vigor/106 energy does it cost to go to pocket dimension?
 pocketdimension_cost_vigor: 100

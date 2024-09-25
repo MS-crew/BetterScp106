@@ -13,7 +13,7 @@ This add-on for SCP: Secret Laboratory brings new features closer to the lore fo
 
 - **Pocket:** With this command, 106 can return to her own pocket dimension (unless the warhead has exploded in order not to spoil the game experience).
 - **Pocket in:** With this command, 106 can pull a scp he goes near to his pocket dimension.
-- **Stalk:** The most important feature is that if there is an injured victim, you can teleport to a place where he is with the stalk feature (the victim is warned 1 second in advance).
+- **Stalk:** The most important feature is that if there is an injured victim, you can teleport to a place where he is with the stalk feature (the victim is warned 1 second in advance/and now you can do it with the [ALT] key).
 - **Better106:** It tells you all the features of the 106 and how much they will cost.
 - **Flexible management:** With the config file, you can determine which feature will cost how much vigor or healt, how many meters away the victim can be teleported to the nearby victim with Stalk, or how long the cooldown time will be given to Scp-106 by which feature.
 

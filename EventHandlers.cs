@@ -24,7 +24,7 @@ namespace BetterScp106
         {
             if (ev.Player.Role == RoleTypeId.Scp106)
             {
-                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 15, true));
+                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
             }
         }
         public void OnFailingEscape(FailingEscapePocketDimensionEventArgs ev)
@@ -37,7 +37,7 @@ namespace BetterScp106
             Log.Debug("Escape failed but player is Scp and successful escape will be made");
             ev.IsAllowed = false;
             EscapeFromDimension(ev.Player);
-            if (ev.Player.Role.Type == RoleTypeId.Scp106)
+            if (ev.Player.Role.Type == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
                 ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
@@ -46,7 +46,7 @@ namespace BetterScp106
             {
                 ev.IsAllowed = false;
                 EscapeFromDimension(ev.Player);
-                if (ev.Player.Role == RoleTypeId.Scp106)
+                if (ev.Player.Role == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
                     ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
                 Log.Debug("Random Zone exit mode is active player exiting with random zone");
                 return;
@@ -55,7 +55,8 @@ namespace BetterScp106
             {
                 ev.IsAllowed = false;
                 EscapeFromDimension(ev.Player);
-                ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
+                if (Plugin.Instance.Config.Reminders)
+                    ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 3);
                 Log.Debug("106 escape the pocket dimension finding the right exit(Random Zone mode is Deactive)");
             }
         }
@@ -106,6 +107,34 @@ namespace BetterScp106
                 return position;
             DoorVariant[] whitelistedDoorsForZone = Scp106PocketExitFinder.GetWhitelistedDoorsForZone(roomIdentifier.Zone);
             return whitelistedDoorsForZone.Length != 0 ? Scp106PocketExitFinder.GetSafePositionForDoor(Scp106PocketExitFinder.GetRandomDoor(whitelistedDoorsForZone), roomIdentifier.Zone == FacilityZone.Surface ? 45f : 11f, role.FpcModule.CharController) : position;
+        }
+        public void Alt(TogglingNoClipEventArgs ev)
+        {
+            if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
+                return;
+
+            if (ev.Player.Role.Type != RoleTypeId.Scp106)
+                return;
+
+            if (!Plugin.Instance.Config.AltwithStalk)
+            { 
+                return;
+            }
+            var config = Plugin.Instance.Config;
+            ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
+            if (scp106.Vigor < Mathf.Clamp01(config.StalkCostVigor / 100f) || ev.Player.Health <= config.StalkCostHealt || scp106.RemainingSinkholeCooldown > 0)
+            {
+                ev.Player.Broadcast(Plugin.Instance.Translation.StalkCant);
+                return;
+            }
+            Player target = Stalk.Findtarget(ev.Player);
+
+            if (target == null)
+            {
+                ev.Player.Broadcast(Plugin.Instance.Translation.StalkNoTarget);
+                return;
+            }
+            Stalk.stalk(ev.Player, target);
         }
     }
 }

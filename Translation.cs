@@ -23,6 +23,12 @@
         [Description("if the victim to be stalk died immediately")]
         public Broadcast StalkFailed { get; set; } = new Broadcast("<color=red>Your target is no longer alive</color>", 3);
 
+        [Description("If no suffering target was found in the stalk")]
+        public Broadcast StalkNoTarget { get; set; } = new Broadcast("<color=red>You cant find any victim.</color>", 3);
+
+        [Description("There is not enough health or vigor to stalk or there is a cooldown")]
+        public Broadcast StalkCant { get; set; } = new Broadcast("<color=red>You can't stalk right now, you don't have enough energy or health, or you try to do it too often.</color>", 3);
+
         [Description("The broadcast that appears when trying to go to the pocket dimension after the warhead explodes")]
         public Broadcast afternuke { get; set; } = new Broadcast("<color=red>The urge inside you pushes you out to hunt...</color>", 4);
 

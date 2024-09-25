@@ -19,23 +19,25 @@ namespace BetterScp106
 
         public override Version RequiredExiledVersion { get; } = new Version(8, 11, 0);
 
-        public override Version Version { get; } = new Version(1, 1, 1);
+        public override Version Version { get; } = new Version(1, 5, 0);
 
         public override void OnEnabled()
         {
             Instance = this;
             eventHandlers = new EventHandlers(this);
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
-            PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
+            PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.pd;
+            PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
             Log.Debug("BetterScp106 is Active");
             base.OnEnabled();
         }
         public override void OnDisabled()
         {
             PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
-            PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
+            PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.pd;
+            PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
             Log.Debug("BetterScp106 is Deactive");
             eventHandlers = null;
             Instance = null;

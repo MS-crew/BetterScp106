@@ -35,6 +35,9 @@ namespace BetterScp106
         [Description("How much cooldown should be after Pocketing a scp?")]
         public int AfterPocketingScpCooldown { get; set; } = 60;
 
+        [Description("How much cooldown should be after canceling Pocketing a scp?")]
+        public int CanceledPocketingScpCooldown { get; set; } = 15;
+
         [Description("How far can you go to victims with Stalk. If you want everywhere you can enter crazy numbers like 99999")]
         public int StalkDistance { get; set; } = 200;
 

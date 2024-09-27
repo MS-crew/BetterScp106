@@ -20,6 +20,10 @@ namespace BetterScp106
     {
         private readonly Plugin plugin;
         public EventHandlers(Plugin plugin) => this.plugin = plugin;
+
+        public static Player GetPocketScp;
+
+        public static bool GetScpPerm = false;
         public void OnSpawned(SpawnedEventArgs ev)
         {
             if (ev.Player.Role == RoleTypeId.Scp106)
@@ -38,7 +42,7 @@ namespace BetterScp106
             ev.IsAllowed = false;
             EscapeFromDimension(ev.Player);
             if (ev.Player.Role.Type == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
-                ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
+                ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 3);
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
         {
@@ -113,15 +117,22 @@ namespace BetterScp106
             if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
                 return;
 
+            if (ev.Player == GetPocketScp)
+            {
+                GetScpPerm = true;
+                return;
+            }
+
             if (ev.Player.Role.Type != RoleTypeId.Scp106)
                 return;
-
-            if (!Plugin.Instance.Config.AltwithStalk)
+            var config = Plugin.Instance.Config;
+            if (!config.AltwithStalk)
             { 
                 return;
             }
-            var config = Plugin.Instance.Config;
+   
             ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
+
             if (scp106.Vigor < Mathf.Clamp01(config.StalkCostVigor / 100f) || ev.Player.Health <= config.StalkCostHealt || scp106.RemainingSinkholeCooldown > 0)
             {
                 ev.Player.Broadcast(Plugin.Instance.Translation.StalkCant);

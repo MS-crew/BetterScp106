@@ -17,7 +17,6 @@ namespace BetterScp106.Commands
         public string[] Aliases { get;} = { "i" };
 
         public string Description { get;} = "Host your friends at your home";
-
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
@@ -73,20 +72,38 @@ namespace BetterScp106.Commands
 
                 response = "<color=red>You take "+ friend.Role.Type +" and go underground and come out in the pocket dimension...</color>";
                 scp106.StalkAbility.IsActive = true;
+                friend.Broadcast(Plugin.Instance.Translation.scp106ReqFriendinpocket, shouldClearPrevious: true);
                 friend.EnableEffect<Flashed>();
                 friend.EnableEffect<Ensnared>();
-
+                EventHandlers.GetPocketScp = friend;
                 Timing.CallDelayed(3f, () =>
                 {
+                    if (EventHandlers.GetScpPerm == true)
+                    {
+                        friend.DisableEffect<Flashed>();
+                        friend.DisableEffect<Ensnared>();
+                        scp106.StalkAbility.IsActive = false;
+                        player.Broadcast(Plugin.Instance.Translation.scp106friendrefusedlpocketin, true);
+                        scp106.Vigor -= Mathf.Clamp01(config.PocketinCostVigor / 200f);
+                        EventHandlers.GetScpPerm = false;
+                        EventHandlers.GetPocketScp = null;
+                    }
+                    else 
+                    { 
                     player.EnableEffect<PocketCorroding>();
                     scp106.StalkAbility.IsActive = false;
                     friend.EnableEffect<PocketCorroding>();
                     friend.DisableEffect<Flashed>();
                     friend.DisableEffect<Ensnared>();
                     player.DisableAllEffects();
+                    }
                 });
 
-
+                if (EventHandlers.GetScpPerm == true)
+                {   
+                    Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.CanceledPocketingScpCooldown);
+                    return false;
+                }
                 player.Health -= config.PocketinCostHealt;
                 scp106.Vigor -= Mathf.Clamp01(config.PocketinCostVigor / 100f);
                 player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);

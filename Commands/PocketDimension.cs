@@ -83,7 +83,7 @@ namespace BetterScp106
                 {
                     player.EnableEffect<PocketCorroding>();
                     scp106.StalkAbility.IsActive = false;
-                    player.DisableAllEffects();
+                    player.DisableEffect<Corroding>();
                 });
 
                 player.Health -= config.PocketdimensionCostHealt;

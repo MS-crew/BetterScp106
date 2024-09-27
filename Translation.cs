@@ -11,8 +11,14 @@
         [Description("The broadcast when Scp 106 goes to the pocket dimension")]
         public Broadcast scp106inpocket { get; set; } = new Broadcast("<color=red>Ahh ,Home sweet home...</color>", 4);
 
+        [Description("Message that will appear when scp 106 tries to take someone to pocket")]
+        public Broadcast scp106ReqFriendinpocket { get; set; } = new Broadcast("<color=red>Scp-106 trying to take you to Pocket, if you don't want it, JUMP! in 3 seconds</color>", 3);
+
         [Description("The broadcast when The Scp bow that Scp 106 carries goes to the pocket dimension")]
         public Broadcast scp106Friendinpocket { get; set; } = new Broadcast("<color=red>Welcome to my home friend...</color>", 4);
+
+        [Description("If the scp that scp106 is trying to throw into the pocket dimension refuses to enter the pocket dimension, the message that will appear to 106")]
+        public Broadcast scp106friendrefusedlpocketin { get; set; } = new Broadcast("<color=red>Your friend refused to go into your pocket!</color>", 3);
 
         [Description("Warning message to the victim of Scp106 (It warns the victim 1 second before, you can just leave it blank if you do not want it)")]
         public Broadcast StalkVictimWarn { get; set; } = new Broadcast("<color=red>A black liquid rises from the ground. Coming for you RUN!!!</color>", 4);

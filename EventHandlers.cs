@@ -1,4 +1,5 @@
 ﻿using CustomPlayerEffects;
+using CustomRendering;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
@@ -95,11 +96,10 @@ namespace BetterScp106
                 Room.Get(RoomType.Surface).Position
             };
 
-            if (!Map.IsLczDecontaminated)
-                randompos.Add(Room.Get(RoomType.Lcz914).Position);
-
             if (!Warhead.IsDetonated)
             {
+                if (!Map.IsLczDecontaminated)
+                    randompos.Add(Room.Get(RoomType.Lcz914).Position);
                 randompos.Add(Room.Get(RoomType.HczArmory).Position);
                 randompos.Add(Room.Get(RoomType.EzCafeteria).Position);
             }
@@ -111,6 +111,18 @@ namespace BetterScp106
                 return position;
             DoorVariant[] whitelistedDoorsForZone = Scp106PocketExitFinder.GetWhitelistedDoorsForZone(roomIdentifier.Zone);
             return whitelistedDoorsForZone.Length != 0 ? Scp106PocketExitFinder.GetSafePositionForDoor(Scp106PocketExitFinder.GetRandomDoor(whitelistedDoorsForZone), roomIdentifier.Zone == FacilityZone.Surface ? 45f : 11f, role.FpcModule.CharController) : position;
+        }
+        public void Warheadkillinhibitor(HurtingEventArgs ev)
+        {
+            if (ev.DamageHandler.Type != DamageType.Warhead)
+                return;
+            if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
+            {
+                ev.IsAllowed = false;
+                FogControl fogControl = ev.Player.ReferenceHub.playerEffectsController.GetEffect<FogControl>();
+                if (fogControl != null)
+                    fogControl.SetFogType(FogType.Outside);
+            }
         }
         public void Alt(TogglingNoClipEventArgs ev)
         {

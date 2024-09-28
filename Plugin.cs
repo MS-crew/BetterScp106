@@ -1,6 +1,7 @@
 ﻿
 namespace BetterScp106
 {
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Player;
     using System;
@@ -28,6 +29,7 @@ namespace BetterScp106
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.pd;
+            PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
             Log.Debug("BetterScp106 is Active");
             base.OnEnabled();
@@ -38,6 +40,7 @@ namespace BetterScp106
             PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
+            PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
             Log.Debug("BetterScp106 is Deactive");
             eventHandlers = null;
             Instance = null;

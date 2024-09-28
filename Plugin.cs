@@ -20,7 +20,7 @@ namespace BetterScp106
 
         public override Version RequiredExiledVersion { get; } = new Version(8, 11, 0);
 
-        public override Version Version { get; } = new Version(1, 5, 0);
+        public override Version Version { get; } = new Version(1, 5, 5);
 
         public override void OnEnabled()
         {
@@ -29,8 +29,8 @@ namespace BetterScp106
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.pd;
-            PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
+            if (Config.RealisticPocket)PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
             Log.Debug("BetterScp106 is Active");
             base.OnEnabled();
         }
@@ -40,7 +40,7 @@ namespace BetterScp106
             PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
-            PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
+            if (Config.RealisticPocket)PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
             Log.Debug("BetterScp106 is Deactive");
             eventHandlers = null;
             Instance = null;

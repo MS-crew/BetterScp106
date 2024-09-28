@@ -11,6 +11,9 @@ namespace BetterScp106
         [Description("Should players exit a random zone when they exit the pocket dimension?")]
         public bool PocketexitRandomZonemode { get; set; } = true;
 
+        [Description("Pocket dimension is not affected by warhead explosion and effect")]
+        public bool RealisticPocket { get; set; } = true;
+
         [Description("Should you be reminded of your 106 powers every time you leave your pocket?")]
         public bool Reminders { get; set; } = true;
 

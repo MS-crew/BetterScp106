@@ -22,7 +22,7 @@ namespace BetterScp106
         private readonly Plugin plugin;
         public EventHandlers(Plugin plugin) => this.plugin = plugin;
 
-        public static Player GetPocketScp;
+        public static int GetPocketScp;
 
         public static bool GetScpPerm = false;
         public void OnSpawned(SpawnedEventArgs ev)
@@ -129,7 +129,7 @@ namespace BetterScp106
             if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
                 return;
 
-            if (ev.Player == GetPocketScp)
+            if (ev.Player.Id == GetPocketScp)
             {
                 GetScpPerm = true;
                 return;

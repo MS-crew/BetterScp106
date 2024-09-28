@@ -75,7 +75,7 @@ namespace BetterScp106.Commands
                 friend.Broadcast(Plugin.Instance.Translation.scp106ReqFriendinpocket, shouldClearPrevious: true);
                 friend.EnableEffect<Flashed>();
                 friend.EnableEffect<Ensnared>();
-                EventHandlers.GetPocketScp = friend;
+                EventHandlers.GetPocketScp = friend.Id;
                 Timing.CallDelayed(3f, () =>
                 {
                     if (EventHandlers.GetScpPerm == true)
@@ -86,7 +86,7 @@ namespace BetterScp106.Commands
                         player.Broadcast(Plugin.Instance.Translation.scp106friendrefusedlpocketin, true);
                         scp106.Vigor -= Mathf.Clamp01(config.PocketinCostVigor / 200f);
                         EventHandlers.GetScpPerm = false;
-                        EventHandlers.GetPocketScp = null;
+                        EventHandlers.GetPocketScp = -1;
                     }
                     else 
                     { 

@@ -22,12 +22,12 @@ namespace BetterScp106
     {
         public override string Command => "pocket";
 
-        public override string[] Aliases { get; } = { "pd"};
+        public override string[] Aliases { get; } = { "pd" };
 
         public override string Description => "Sends Scp-106 to pocket dimension";
 
         public PocketDimension() => LoadGeneratedCommands();
-        protected override  bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
             if (player == null)
@@ -55,50 +55,47 @@ namespace BetterScp106
                 {
                     scp106.IsSubmerged = true;
                 }
-                response= "You can't go to your pocket dimension after Warhead explodes!";
+                response = "You can't go to your pocket dimension after Warhead explodes!";
                 player.Broadcast(Plugin.Instance.Translation.afternuke, shouldClearPrevious: true);
                 return false;
             }
 
 
-            if (scp106.RemainingSinkholeCooldown <= 0)
-            {
-                Room pocketRoom = Room.Get(RoomType.Pocket);
-
-                if (player.CurrentRoom.Type == RoomType.Pocket)
-                {
-                    response = "<color=red>You are already in pocket dimension?</color>";
-                    return false;
-                }
-                var config = Plugin.Instance.Config;
-                if (scp106.Vigor < Mathf.Clamp01(config.PocketdimensionCostVigor / 100f) || player.Health <= config.PocketdimensionCostHealt)
-                {
-                    response = "You don't have enough energy or health to return to your kingdom!";
-                    return false;
-                }
-                response = "<color=red>You go underground and come out in the pocket dimension...</color>";
-
-                scp106.StalkAbility.IsActive = true;
-                Timing.CallDelayed(3f, () =>
-                {
-                    player.EnableEffect<PocketCorroding>();
-                    scp106.StalkAbility.IsActive = false;
-                    player.DisableEffect<Corroding>();
-                });
-
-                player.Health -= config.PocketdimensionCostHealt;
-                scp106.Vigor -= Mathf.Clamp01(config.PocketdimensionCostVigor / 100f);
-                scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown;
-                player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);         
-                Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown);
-                return true;
-            }
-            else
+            if (scp106.RemainingSinkholeCooldown > 0)
             {
                 response = "You can't change dimension that often! Wait a cooldown before changing it again.";
                 player.Broadcast(Plugin.Instance.Translation.cooldown, shouldClearPrevious: true);
                 return false;
             }
+            Room pocketRoom = Room.Get(RoomType.Pocket);
+
+            if (player.CurrentRoom.Type == RoomType.Pocket)
+            {
+                response = "<color=red>You are already in pocket dimension?</color>";
+                return false;
+            }
+            var config = Plugin.Instance.Config;
+            if (scp106.Vigor < Mathf.Clamp01(config.PocketdimensionCostVigor / 100f) || player.Health <= config.PocketdimensionCostHealt)
+            {
+                response = "You don't have enough energy or health to return to your kingdom!";
+                return false;
+            }
+            response = "<color=red>You go underground and come out in the pocket dimension...</color>";
+
+            scp106.StalkAbility.IsActive = true;
+            Timing.CallDelayed(3f, () =>
+            {
+                player.EnableEffect<PocketCorroding>();
+                scp106.StalkAbility.IsActive = false;
+                player.DisableEffect<Corroding>();
+            });
+
+            player.Health -= config.PocketdimensionCostHealt;
+            scp106.Vigor -= Mathf.Clamp01(config.PocketdimensionCostVigor / 100f);
+            scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown;
+            player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);
+            Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown);
+            return true;
         }
         public override void LoadGeneratedCommands()
         {

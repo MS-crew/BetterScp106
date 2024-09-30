@@ -55,6 +55,7 @@ namespace BetterScp106.Commands
                 player.Broadcast(Plugin.Instance.Translation.cooldown, shouldClearPrevious: true);
                 return false;
             }
+
             Room pocketRoom = Room.Get(RoomType.Pocket);
 
             if (player.CurrentRoom.Type == RoomType.Pocket)
@@ -115,6 +116,7 @@ namespace BetterScp106.Commands
 
             Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.AfterPocketingScpCooldown);
             return true;
+
         }
     }
 }

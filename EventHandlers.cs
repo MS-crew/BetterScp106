@@ -140,11 +140,10 @@ namespace BetterScp106
 
             if (ev.Player.Role.Type != RoleTypeId.Scp106)
                 return;
+
             var config = Plugin.Instance.Config;
             if (!config.AltwithStalk)
-            { 
                 return;
-            }
    
             ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
 

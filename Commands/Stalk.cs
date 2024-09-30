@@ -35,12 +35,18 @@ namespace BetterScp106
 
             var config = Plugin.Instance.Config;
             player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
-            if (scp106.Vigor < Mathf.Clamp01(config.StalkCostVigor / 100f) || player.Health <= config.StalkCostHealt|| scp106.RemainingSinkholeCooldown > 0)
+            if (scp106.Vigor < Mathf.Clamp01(config.StalkCostVigor / 100f) || player.Health <= config.StalkCostHealt)
             {
                 response = "You don't have enough energy or health to stalk anybody!";
                 return false;
             }
-            
+
+            if (scp106.RemainingSinkholeCooldown > 0)
+            {
+                response = "You can't Stalk that often! Wait a cooldown before Stalk again.";
+                return false;
+            }
+
             Player target = Findtarget(player);
 
             if (target == null)

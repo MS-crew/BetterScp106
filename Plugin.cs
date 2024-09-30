@@ -20,7 +20,7 @@ namespace BetterScp106
 
         public override Version RequiredExiledVersion { get; } = new Version(8, 11, 0);
 
-        public override Version Version { get; } = new Version(1, 5, 5);
+        public override Version Version { get; } = new Version(1, 5, 6);
 
         public override void OnEnabled()
         {

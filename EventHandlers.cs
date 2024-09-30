@@ -87,10 +87,10 @@ namespace BetterScp106
         public static Vector3 GetBestExitPositionRandomZone(IFpcRole role)
         {
             if (!NetworkServer.active)
-                throw new InvalidOperationException("Scp106PocketExitFinder.GetBestExitPosition is a server-side only method!");
+              Log.Error("Scp106PocketExitFinder.GetBestExitPosition is a server-side only method!");
             ReferenceHub hub;
             if (!(role is PlayerRoleBase playerRoleBase) || !playerRoleBase.TryGetOwner(out hub))
-                throw new InvalidOperationException("Scp106PocketExitFinder.GetBestExitPosition provided with non-compatible role!");
+                Log.Error("Scp106PocketExitFinder.GetBestExitPosition provided with non-compatible role!");
             List<Vector3> randompos = new List<Vector3>
             {
                 Room.Get(RoomType.Surface).Position
@@ -107,8 +107,11 @@ namespace BetterScp106
             int Randomzone = new System.Random().Next(randompos.Count);
             Vector3 position = randompos[Randomzone];
             RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPositionRaycasts(position);
-            if ((UnityEngine.Object)roomIdentifier == (UnityEngine.Object)null)
+            if ((UnityEngine.Object)roomIdentifier == (UnityEngine.Object)null) 
+            { 
+                Log.Warn($"roomIdentifier was null, room is {Room.Get(position)}, roomIdentifier is {roomIdentifier}, position is {position}, seed is{Map.Seed}");
                 return position;
+            }
             DoorVariant[] whitelistedDoorsForZone = Scp106PocketExitFinder.GetWhitelistedDoorsForZone(roomIdentifier.Zone);
             return whitelistedDoorsForZone.Length != 0 ? Scp106PocketExitFinder.GetSafePositionForDoor(Scp106PocketExitFinder.GetRandomDoor(whitelistedDoorsForZone), roomIdentifier.Zone == FacilityZone.Surface ? 45f : 11f, role.FpcModule.CharController) : position;
         }

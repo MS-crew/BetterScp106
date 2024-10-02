@@ -99,7 +99,6 @@ namespace BetterScp106
             scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown;
             player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);
             Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown);
-            return;
         }
         public override void LoadGeneratedCommands()
         {

@@ -1,7 +1,7 @@
 <h1 align="center">Better Scp-106</h1>
 <div align="center">
 <a href="https://github.com/MS-crew/BetterScp106"><img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" href="https://github.com/MS-crew/BetterScp106" alt="GitHub Source Code"></a>
-<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-1.5.5-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
+<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-1.5.7-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
 <a href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE"><img src="https://img.shields.io/badge/Licence-GNU_3.0-blue?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE" alt="General Public License v3.0"></a>
 <a href="https://github.com/ExMod-Team/EXILED"><img src="https://img.shields.io/badge/Exiled-8.11.0-red?style=for-the-badge&logo=gitbook" href="https://github.com/ExMod-Team/EXILED" alt="GitHub Exiled"></a>
 
@@ -11,7 +11,7 @@ This add-on for SCP: Secret Laboratory brings new features closer to the lore fo
 
 ## Commands Features
 
-- **Pocket:** With this command, 106 can return to her own pocket dimension (unless the warhead has exploded in order not to spoil the game experience).
+- **Pocket:** With this command, 106 can return to her own pocket dimension (unless the warhead has exploded in order not to spoil the game experience/and now you can do it with the [C]/sneak walk key).
 - **Pocket in:** With this command, 106 can pull a scp he goes near to his pocket dimension (Scp trying to be taken to pocket can reject it by pressing the [ALT] key).
 - **Stalk:** The most important feature is that if there is an injured victim, you can teleport to a place where he is with the stalk feature (the victim is warned 1 second in advance/and now you can do it with the [ALT] key).
 - **Better106:** It tells you all the features of the 106 and how much they will cost.

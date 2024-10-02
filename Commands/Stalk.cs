@@ -5,7 +5,6 @@ using PlayerRoles;
 using UnityEngine;
 using System.Linq;
 using MEC;
-using static UnityEngine.GraphicsBuffer;
 
 namespace BetterScp106
 {

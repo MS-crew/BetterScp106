@@ -5,15 +5,10 @@ using PlayerRoles;
 using UnityEngine;
 using Exiled.API.Enums;
 using Player = Exiled.API.Features.Player;
-using Exiled.API.Features.Roles;
 using MEC;
 using CustomPlayerEffects;
 using BetterScp106.Commands;
-using PlayerRoles.PlayableScps.Scp106;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
-using Mirror;
-using DeathAnimations;
-using System.Collections.Generic;
 
 namespace BetterScp106
 {
@@ -71,23 +66,32 @@ namespace BetterScp106
 
             if (player.CurrentRoom.Type == RoomType.Pocket)
             {
+                player.Broadcast(Plugin.Instance.Translation.scp106alreadypocket);
                 response = "<color=red>You are already in pocket dimension?</color>";
                 return false;
             }
+
             var config = Plugin.Instance.Config;
             if (scp106.Vigor < Mathf.Clamp01(config.PocketdimensionCostVigor / 100f) || player.Health <= config.PocketdimensionCostHealt)
             {
+                player.Broadcast(Plugin.Instance.Translation.scp106cantpocket);
                 response = "You don't have enough energy or health to return to your kingdom!";
                 return false;
             }
             response = "<color=red>You go underground and come out in the pocket dimension...</color>";
-
+            GoPocket(player);
+            return true;
+        }
+        public static void GoPocket(Player player)
+        {
+            player.Role.Is(out Scp106Role scp106);
+            var config = Plugin.Instance.Config;
             scp106.StalkAbility.IsActive = true;
             Timing.CallDelayed(3f, () =>
             {
                 player.EnableEffect<PocketCorroding>();
                 scp106.StalkAbility.IsActive = false;
-                player.DisableEffect<Corroding>();
+                player.DisableAllEffects();
             });
 
             player.Health -= config.PocketdimensionCostHealt;
@@ -95,7 +99,7 @@ namespace BetterScp106
             scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown;
             player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);
             Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown);
-            return true;
+            return;
         }
         public override void LoadGeneratedCommands()
         {

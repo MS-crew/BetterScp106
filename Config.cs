@@ -20,6 +20,9 @@ namespace BetterScp106
         [Description("Is it possible to stalk with the Alt key?")]
         public bool AltwithStalk { get; set; } = true;
 
+        [Description("Is it possible to go to pocket dimension with the  [C]/sneak key?")]
+        public bool CwithPocket { get; set; } = true;
+
         [Description("How much health does it cost to go to pocket dimension?")]
         public int PocketdimensionCostHealt { get; set; } = 50;
 

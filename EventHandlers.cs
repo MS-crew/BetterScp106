@@ -5,14 +5,11 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using Interactables.Interobjects.DoorUtils;
 using MapGeneration;
-using MEC;
 using Mirror;
 using PlayerRoles;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
-using System;
 using System.Collections.Generic;
-using System.Security.Policy;
 using UnityEngine;
 
 namespace BetterScp106
@@ -43,7 +40,7 @@ namespace BetterScp106
             ev.IsAllowed = false;
             EscapeFromDimension(ev.Player);
             if (ev.Player.Role.Type == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
-                ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 3);
+                ShowRandomScp106Hint(ev.Player);
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
         {
@@ -52,7 +49,7 @@ namespace BetterScp106
                 ev.IsAllowed = false;
                 EscapeFromDimension(ev.Player);
                 if (ev.Player.Role == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
-                    ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 5);
+                    ShowRandomScp106Hint(ev.Player);
                 Log.Debug("Random Zone exit mode is active player exiting with random zone");
                 return;
             }
@@ -61,7 +58,7 @@ namespace BetterScp106
                 ev.IsAllowed = false;
                 EscapeFromDimension(ev.Player);
                 if (Plugin.Instance.Config.Reminders)
-                    ev.Player.ShowHint(plugin.Translation.Scp106StartMessage, 3);
+                    ShowRandomScp106Hint(ev.Player);
                 Log.Debug("106 escape the pocket dimension finding the right exit(Random Zone mode is Deactive)");
             }
         }
@@ -160,6 +157,73 @@ namespace BetterScp106
                 return;
             }
             Stalk.stalk(ev.Player, target);
+        }
+        public void Tf(ChangingMoveStateEventArgs ev)
+        {
+            if (ev.Player.Role.Type != RoleTypeId.Scp106)
+                return;
+
+            var config = Plugin.Instance.Config;
+            if (!config.CwithPocket)
+                return;
+
+            if (ev.NewState != PlayerMovementState.Sneaking)
+                return;            
+
+            ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
+            if (AlphaWarheadController.Detonated)
+            {
+                if (scp106.RemainingSinkholeCooldown <= 0f)
+                {
+                    scp106.IsSubmerged = true;
+                }
+                ev.Player.Broadcast(Plugin.Instance.Translation.afternuke, shouldClearPrevious: true);
+                return;
+            }
+
+            if (scp106.RemainingSinkholeCooldown > 0)
+            {
+                ev.Player.Broadcast(Plugin.Instance.Translation.cooldown, shouldClearPrevious: true);
+                return;
+            }
+
+            Room pocketRoom = Room.Get(RoomType.Pocket);
+            if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
+            {
+                ev.Player.Broadcast(plugin.Translation.scp106alreadypocket);
+                return;
+            }
+
+            if (scp106.Vigor < Mathf.Clamp01(config.PocketdimensionCostVigor / 100f) || ev.Player.Health <= config.PocketdimensionCostHealt)
+            {
+                ev.Player.Broadcast(plugin.Translation.scp106cantpocket);
+                return;
+            }
+
+            PocketDimension.GoPocket(ev.Player);
+        }
+        private void ShowRandomScp106Hint(Player player)
+        {
+            var config = Plugin.Instance.Config;
+            System.Random random = new System.Random();
+            int randomIndex = random.Next(0, 3);
+            string hint;
+            switch (randomIndex)
+            {
+                case 0:
+                    hint = Plugin.Instance.Translation.Scp106PowersPocket.Replace("$pockethealt", config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", config.PocketdimensionCostVigor.ToString());
+                    break;
+                case 1:
+                    hint = Plugin.Instance.Translation.Scp106PowersPocketin.Replace("$pocketinhealt", config.PocketinCostHealt.ToString()).Replace("$pocketinvigor", config.PocketinCostVigor.ToString());
+                    break;
+                case 2:
+                    hint = Plugin.Instance.Translation.Scp106PowersStalk.Replace("$stalkhealt", config.StalkCostHealt.ToString()).Replace("$stalkvigor", config.StalkCostVigor.ToString());
+                    break;
+                default:
+                    hint = Plugin.Instance.Translation.Scp106StartMessage;
+                    break;
+            }
+            player.ShowHint(hint, 3);
         }
     }
 }

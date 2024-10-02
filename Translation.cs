@@ -1,15 +1,18 @@
 ﻿namespace BetterScp106
 {
-    using System;
     using System.ComponentModel;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Hints;
-
     public class Translation : ITranslation
     {
         [Description("The broadcast when Scp 106 goes to the pocket dimension")]
         public Broadcast scp106inpocket { get; set; } = new Broadcast("<color=red>Ahh ,Home sweet home...</color>", 4);
+
+        [Description("The broadcast when Scp 106 trying go to pocket dimension but its already pocket")]
+        public Broadcast scp106alreadypocket { get; set; } = new Broadcast("<color=red>You are already in pocket dimension?</color>", 3);
+
+        [Description("There is not enough health or vigor to stalk for go to pocket")]
+        public Broadcast scp106cantpocket { get; set; } = new Broadcast("<color=red>You don't have enough energy or health to return to your kingdom!</color>", 3);
 
         [Description("Message that will appear when scp 106 tries to take someone to pocket")]
         public Broadcast scp106ReqFriendinpocket { get; set; } = new Broadcast("<color=red>Scp-106 trying to take you to Pocket, if you don't want it, JUMP! in 3 seconds</color>", 3);
@@ -45,7 +48,7 @@
         public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features by typing</color></voffset> \n <voffset=-0.05em><color=blue>'.Better106'</color><color=red> or</color> <color=blue>'.106'</color> <color=red>on the console.</color></voffset>";
 
         [Description("Pocket feature description")]
-        public string Scp106PowersPocket { get; set; } = "Pocket: You can go to pocket dimension with '.pocket' or '.pd' command. It will cost: $pockethealt healt & $pocketvigor vigor";
+        public string Scp106PowersPocket { get; set; } = "Pocket: You can go to pocket dimension with [C]/sneak key or '.pocket' or '.pd' command. It will cost: $pockethealt healt & $pocketvigor vigor";
 
         [Description("Pocket in feature description")]
         public string Scp106PowersPocketin { get; set; } = "Pocket in: You can put a SCP in your pocket dimension with '.pocket in' or '.pd in' command. It will cost: $pocketinhealt healt & $pocketinvigor vigor";

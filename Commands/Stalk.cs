@@ -19,6 +19,11 @@ namespace BetterScp106
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if(!Plugin.Instance.Config.StalkFeature)
+            { 
+                response = "This feature is closed by server owner.";
+                return false;
+            }
             Player player = Player.Get(sender);
             if (player == null)
             {

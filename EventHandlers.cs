@@ -9,8 +9,11 @@ using Mirror;
 using PlayerRoles;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using PlayerHandlers = Exiled.Events.Handlers.Player;
 
 namespace BetterScp106
 {
@@ -24,9 +27,26 @@ namespace BetterScp106
         public static bool GetScpPerm = false;
         public void OnSpawned(SpawnedEventArgs ev)
         {
-            if (ev.Player.Role == RoleTypeId.Scp106)
+            if (ev.Player.Role != RoleTypeId.Scp106)
             {
-                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+                return;
+            }
+
+            ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+            if (Player.List.Where(x => x.Role.Type == RoleTypeId.Scp106).Count() <= 1)
+            {
+                if (Plugin.Instance.Config.PocketFeature)
+                    PlayerHandlers.ChangingMoveState += Tf;
+                PlayerHandlers.TogglingNoClip += Alt;
+            }
+        }
+        public void OnDied(DiedEventArgs ev)
+        {
+            if (ev.Player.Role == RoleTypeId.Scp106 && Player.List.Where(x => x.Role.Type == RoleTypeId.Scp106).Count() == 0)
+            {
+                if (Plugin.Instance.Config.PocketFeature)
+                    PlayerHandlers.ChangingMoveState -= Tf;
+                PlayerHandlers.TogglingNoClip -= Alt;
             }
         }
         public void OnFailingEscape(FailingEscapePocketDimensionEventArgs ev)
@@ -44,7 +64,7 @@ namespace BetterScp106
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
         {
-            if(plugin.Config.PocketexitRandomZonemode)
+            if (plugin.Config.PocketexitRandomZonemode)
             {
                 ev.IsAllowed = false;
                 EscapeFromDimension(ev.Player);
@@ -67,12 +87,12 @@ namespace BetterScp106
             ReferenceHub referenceHub = player.ReferenceHub;
             if (referenceHub.roleManager.CurrentRole is IFpcRole fpcRole)
             {
-                fpcRole.FpcModule.ServerOverridePosition(!Plugin.Instance.Config.PocketexitRandomZonemode ? Scp106PocketExitFinder.GetBestExitPosition(fpcRole) :GetBestExitPositionRandomZone(fpcRole),Vector3.zero);
+                fpcRole.FpcModule.ServerOverridePosition(!Plugin.Instance.Config.PocketexitRandomZonemode ? Scp106PocketExitFinder.GetBestExitPosition(fpcRole) : GetBestExitPositionRandomZone(fpcRole), Vector3.zero);
 
                 player.DisableEffect<PocketCorroding>();
                 player.DisableEffect<Corroding>();
 
-                if(!player.IsScp)
+                if (!player.IsScp)
                 {
                     player.EnableEffect<Disabled>(10f, true);
                     player.EnableEffect<Traumatized>();
@@ -84,7 +104,7 @@ namespace BetterScp106
         public static Vector3 GetBestExitPositionRandomZone(IFpcRole role)
         {
             if (!NetworkServer.active)
-              Log.Error("Scp106PocketExitFinder.GetBestExitPosition is a server-side only method!");
+                Log.Error("Scp106PocketExitFinder.GetBestExitPosition is a server-side only method!");
             ReferenceHub hub;
             if (!(role is PlayerRoleBase playerRoleBase) || !playerRoleBase.TryGetOwner(out hub))
                 Log.Error("Scp106PocketExitFinder.GetBestExitPosition provided with non-compatible role!");
@@ -104,8 +124,8 @@ namespace BetterScp106
             int Randomzone = new System.Random().Next(randompos.Count);
             Vector3 position = randompos[Randomzone];
             RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPositionRaycasts(position);
-            if ((UnityEngine.Object)roomIdentifier == (UnityEngine.Object)null) 
-            { 
+            if ((UnityEngine.Object)roomIdentifier == (UnityEngine.Object)null)
+            {
                 Log.Warn($"roomIdentifier was null, room is {Room.Get(position)}, roomIdentifier is {roomIdentifier}, position is {position}, seed is{Map.Seed}");
                 return position;
             }
@@ -135,13 +155,16 @@ namespace BetterScp106
                 return;
             }
 
+            if (!Plugin.Instance.Config.StalkFeature)
+                return;
+
             if (ev.Player.Role.Type != RoleTypeId.Scp106)
                 return;
 
             var config = Plugin.Instance.Config;
             if (!config.AltwithStalk)
                 return;
-   
+
             ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
 
             if (scp106.Vigor < Mathf.Clamp01(config.StalkCostVigor / 100f) || ev.Player.Health <= config.StalkCostHealt || scp106.RemainingSinkholeCooldown > 0)
@@ -168,7 +191,7 @@ namespace BetterScp106
                 return;
 
             if (ev.NewState != PlayerMovementState.Sneaking)
-                return;            
+                return;
 
             ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
             if (AlphaWarheadController.Detonated)

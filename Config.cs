@@ -8,6 +8,11 @@ namespace BetterScp106
         public bool IsEnabled { get ; set ; } = true;
         public bool Debug { get; set; } = false;
 
+        [Description("What features should be turned on??")]
+        public bool PocketFeature { get; set; } = true;
+        public bool PocketinFeature { get; set; } = true;
+        public bool StalkFeature { get; set; } = true;
+
         [Description("Should players exit a random zone when they exit the pocket dimension?")]
         public bool PocketexitRandomZonemode { get; set; } = true;
 

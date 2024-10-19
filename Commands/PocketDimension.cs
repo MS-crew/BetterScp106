@@ -24,6 +24,12 @@ namespace BetterScp106
         public PocketDimension() => LoadGeneratedCommands();
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!Plugin.Instance.Config.PocketFeature)
+            {
+                response = "This features closed by server owner.";
+                return false;
+            }
+
             Player player = Player.Get(sender);
             if (player == null)
             {
@@ -102,7 +108,8 @@ namespace BetterScp106
         }
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new PocketIn());
+            if (Plugin.Instance.Config.PocketinFeature)
+                RegisterCommand(new PocketIn());
         }
     }
 }

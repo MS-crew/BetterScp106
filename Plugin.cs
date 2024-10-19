@@ -11,16 +11,15 @@
         public override string Author => "ZurnaSever";
         public override string Name => "BetterScp106";
         public override string Prefix => "BetterScp106";
-        public override Version RequiredExiledVersion { get; } = new Version(8, 11, 0);
-        public override Version Version { get; } = new Version(1, 5, 7);
+        public override Version RequiredExiledVersion { get; } = new Version(8, 12, 2);
+        public override Version Version { get; } = new Version(1, 5, 8);
 
         public override void OnEnabled()
         {
             Instance = this;
             eventHandlers = new EventHandlers(this);
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
-            PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
-            PlayerHandlers.ChangingMoveState += eventHandlers.Tf;
+            PlayerHandlers.Died += eventHandlers.OnDied;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
             if (Config.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
@@ -30,8 +29,7 @@
         public override void OnDisabled()
         {
             PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
-            PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
-            PlayerHandlers.ChangingMoveState -= eventHandlers.Tf;
+            PlayerHandlers.Died -= eventHandlers.OnDied;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
             if (Config.RealisticPocket) PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;

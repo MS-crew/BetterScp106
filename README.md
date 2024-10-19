@@ -42,6 +42,10 @@ Thank you for using our plugin and helping us improve it!
 ```yml
 Is_enabled: true
 debug: false
+# What features should be turned on??
+pocket_feature: true
+pocketin_feature: true
+stalk_feature: true
 # Should players exit a random zone when they exit the pocket dimension?
 pocketexit_random_zonemode: true
 # Pocket dimension is not affected by warhead explosion and effect

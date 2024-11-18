@@ -9,7 +9,6 @@ using Mirror;
 using PlayerRoles;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,12 +32,6 @@ namespace BetterScp106
             }
 
             ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
-            if (Player.List.Where(x => x.Role.Type == RoleTypeId.Scp106).Count() <= 1)
-            {
-                if (Plugin.Instance.Config.PocketFeature)
-                    PlayerHandlers.ChangingMoveState += Tf;
-                PlayerHandlers.TogglingNoClip += Alt;
-            }
         }
         public void OnDied(DiedEventArgs ev)
         {

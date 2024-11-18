@@ -1,12 +1,13 @@
 ﻿namespace BetterScp106
 {
     using Exiled.API.Features;
+    using Exiled.Events.Commands.Reload;
     using System;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
 
     public class Plugin : Plugin<Config, Translation>
     {
-        private EventHandlers eventHandlers;
+        public static EventHandlers eventHandlers;
         public static Plugin Instance { get; private set; }
         public override string Author => "ZurnaSever";
         public override string Name => "BetterScp106";
@@ -23,6 +24,8 @@
             PlayerHandlers.EscapingPocketDimension += eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
             if (Config.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
+            if (Config.CwithPocket) PlayerHandlers.ChangingMoveState += eventHandlers.Tf;
+            if (Config.AltwithStalk) PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             Log.Debug("BetterScp106 is Active");
             base.OnEnabled();
         }
@@ -33,6 +36,8 @@
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
             if (Config.RealisticPocket) PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
+            if (Config.CwithPocket) PlayerHandlers.ChangingMoveState -= eventHandlers.Tf;
+            if (Config.AltwithStalk) PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             Log.Debug("BetterScp106 is Deactive");
             eventHandlers = null;
             Instance = null;

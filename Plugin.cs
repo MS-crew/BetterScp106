@@ -12,8 +12,8 @@
         public override string Author => "ZurnaSever";
         public override string Name => "BetterScp106";
         public override string Prefix => "BetterScp106";
-        public override Version RequiredExiledVersion { get; } = new Version(8, 12, 2);
-        public override Version Version { get; } = new Version(1, 5, 8);
+        public override Version RequiredExiledVersion { get; } = new Version(8, 14, 1);
+        public override Version Version { get; } = new Version(1, 5, 9);
 
         public override void OnEnabled()
         {

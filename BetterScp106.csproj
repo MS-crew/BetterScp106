@@ -87,8 +87,8 @@
     <Compile Include="Translation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILEDOFFICIAL">
-      <Version>8.12.2</Version>
+    <PackageReference Include="ExMod.Exiled">
+      <Version>8.14.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

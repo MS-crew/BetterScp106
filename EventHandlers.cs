@@ -31,10 +31,10 @@ namespace BetterScp106
         }
         public void OnSpawned(SpawnedEventArgs ev)
         {
-            if (ev.Player.Role != RoleTypeId.Scp106)
-                return;
+            if (ev.Player.Role == RoleTypeId.Scp106)
+                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
 
-            ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+            
         }
         public void Alt(TogglingNoClipEventArgs ev)
         {

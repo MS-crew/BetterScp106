@@ -99,14 +99,13 @@ namespace BetterScp106
             yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.NormalizedState == 1.0f);
 
             player.EnableEffect<PocketCorroding>();
-            player.DisableAllEffects();
-
-            player.Health -= Plugin.config.PocketdimensionCostHealt;
-            scp106.Vigor -= Mathf.Clamp01(Plugin.config.PocketdimensionCostVigor / 100f);
+            player.DisableAllEffects();       
 
             yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.NormalizedState == 1.0f);
 
             scp106.RemainingSinkholeCooldown = Plugin.config.AfterPocketdimensionCooldown;
+            player.Health -= Plugin.config.PocketdimensionCostHealt;
+            scp106.Vigor -= Mathf.Clamp01(Plugin.config.PocketdimensionCostVigor / 100f);
             player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);
             Better106.Using = false;
         }

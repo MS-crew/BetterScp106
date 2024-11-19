@@ -1,13 +1,14 @@
-﻿using System;
-using CommandSystem;
-using Exiled.API.Features;
+﻿using MEC;
+using System;
 using PlayerRoles;
 using UnityEngine;
+using CommandSystem;
 using Exiled.API.Enums;
-using Player = Exiled.API.Features.Player;
-using MEC;
 using CustomPlayerEffects;
+using Exiled.API.Features;
 using BetterScp106.Commands;
+using System.Collections.Generic;
+using Player = Exiled.API.Features.Player;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
 
 namespace BetterScp106
@@ -16,15 +17,17 @@ namespace BetterScp106
     public class PocketDimension : ParentCommand
     {
         public override string Command => "pocket";
-
         public override string[] Aliases { get; } = { "pd" };
-
         public override string Description => "Sends Scp-106 to pocket dimension";
-
         public PocketDimension() => LoadGeneratedCommands();
+        public override void LoadGeneratedCommands()
+        {
+            if (Plugin.config.PocketinFeature)
+                RegisterCommand(new PocketIn());
+        }
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!Plugin.Instance.Config.PocketFeature)
+            if (!Plugin.config.PocketFeature)
             {
                 response = "This features closed by server owner.";
                 return false;
@@ -43,12 +46,7 @@ namespace BetterScp106
                 return false;
             }
 
-            if (!(player.Role is Scp106Role scp106))
-            {
-                response = "Role error!";
-                return false;
-            }
-
+            player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
 
             if (AlphaWarheadController.Detonated)
             {
@@ -68,8 +66,8 @@ namespace BetterScp106
                 player.Broadcast(Plugin.Instance.Translation.cooldown, shouldClearPrevious: true);
                 return false;
             }
-            Room pocketRoom = Room.Get(RoomType.Pocket);
 
+            Room pocketRoom = Room.Get(RoomType.Pocket);
             if (player.CurrentRoom.Type == RoomType.Pocket)
             {
                 player.Broadcast(Plugin.Instance.Translation.scp106alreadypocket);
@@ -77,39 +75,41 @@ namespace BetterScp106
                 return false;
             }
 
-            var config = Plugin.Instance.Config;
-            if (scp106.Vigor < Mathf.Clamp01(config.PocketdimensionCostVigor / 100f) || player.Health <= config.PocketdimensionCostHealt)
+            if (scp106.Vigor < Mathf.Clamp01(Plugin.config.PocketdimensionCostVigor / 100f) || player.Health <= Plugin.config.PocketdimensionCostHealt)
             {
                 player.Broadcast(Plugin.Instance.Translation.scp106cantpocket);
                 response = "You don't have enough energy or health to return to your kingdom!";
                 return false;
             }
+
+            Timing.RunCoroutine(GoPocketV2(player));
             response = "<color=red>You go underground and come out in the pocket dimension...</color>";
-            GoPocket(player);
             return true;
         }
-        public static void GoPocket(Player player)
+        public static IEnumerator<float> GoPocketV2(Player player)
         {
-            player.Role.Is(out Scp106Role scp106);
-            var config = Plugin.Instance.Config;
-            scp106.StalkAbility.IsActive = true;
-            Timing.CallDelayed(3f, () =>
-            {
-                player.EnableEffect<PocketCorroding>();
-                scp106.StalkAbility.IsActive = false;
-                player.DisableAllEffects();
-            });
+            if (Better106.Using)
+                yield break;
 
-            player.Health -= config.PocketdimensionCostHealt;
-            scp106.Vigor -= Mathf.Clamp01(config.PocketdimensionCostVigor / 100f);
-            scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown;
+            Better106.Using = true;
+            var scp106 = player.Role as Scp106Role;
+
+            
+            scp106.HuntersAtlasAbility.SetSubmerged(true);
+            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.NormalizedState == 1.0f);
+
+            player.EnableEffect<PocketCorroding>();
+            player.DisableAllEffects();
+
+            player.Health -= Plugin.config.PocketdimensionCostHealt;
+            scp106.Vigor -= Mathf.Clamp01(Plugin.config.PocketdimensionCostVigor / 100f);
+
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.NormalizedState == 1.0f);
+
+            scp106.RemainingSinkholeCooldown = Plugin.config.AfterPocketdimensionCooldown;
             player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);
-            Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.AfterPocketdimensionCooldown);
+            Better106.Using = false;
         }
-        public override void LoadGeneratedCommands()
-        {
-            if (Plugin.Instance.Config.PocketinFeature)
-                RegisterCommand(new PocketIn());
-        }
+
     }
 }

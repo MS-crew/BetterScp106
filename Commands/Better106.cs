@@ -1,11 +1,9 @@
-﻿using CommandSystem;
-using Exiled.API.Features;
-using MEC;
-using NorthwoodLib.Pools;
-using PlayerRoles;
-using System;
+﻿using System;
 using System.Text;
-using UnityEngine;
+using PlayerRoles;
+using CommandSystem;
+using Exiled.API.Features;
+using NorthwoodLib.Pools;
 
 namespace BetterScp106.Commands
 {
@@ -17,7 +15,7 @@ namespace BetterScp106.Commands
         public string[] Aliases { get; } = { "106" };
 
         public string Description => "Features of 106";
-
+        public static bool Using = false;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
@@ -32,16 +30,17 @@ namespace BetterScp106.Commands
                 response = "This command only for Scp-106";
                 return false;
             }
-            var config = Plugin.Instance.Config;
+
             var trans = Plugin.Instance.Translation;
+
             StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
             stringBuilder.AppendLine("Better Scp-106:");
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine(trans.Scp106PowersPocket.Replace("$pockethealt", config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", config.PocketdimensionCostVigor.ToString()));
+            stringBuilder.AppendLine(trans.Scp106PowersPocket.Replace("$pockethealt", Plugin.config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.config.PocketdimensionCostVigor.ToString()));
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine(trans.Scp106PowersPocketin.Replace("$pocketinhealt", config.PocketinCostHealt.ToString()).Replace("$pocketinvigor", config.PocketinCostVigor.ToString()));
+            stringBuilder.AppendLine(trans.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.config.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.config.PocketinCostVigor.ToString()));
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine(trans.Scp106PowersStalk.Replace("$stalkhealt", config.StalkCostHealt.ToString()).Replace("$stalkvigor", config.StalkCostVigor.ToString()));
+            stringBuilder.AppendLine(trans.Scp106PowersStalk.Replace("$stalkhealt", Plugin.config.StalkCostHealt.ToString()).Replace("$stalkvigor", Plugin.config.StalkCostVigor.ToString()));
             response = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
             return true;
         }

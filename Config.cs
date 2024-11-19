@@ -60,6 +60,8 @@ namespace BetterScp106
 
         [Description("How much Vigor/106 energy would a successful stalk cost?")]
         public int StalkCostVigor { get; set; } = 25;
+        [Description("How many seconds before target warning in Stalks")]
+        public float StalkWarningBefore { get; set; } = 1;
 
         [Description("How much cooldown should be after Stalk?")]
         public int AfterStalkCooldown { get; set; } = 90;

@@ -1,12 +1,13 @@
-﻿using System;
+﻿using MEC;
+using System;
 using System.Linq;
-using CommandSystem;
-using CustomPlayerEffects;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using MEC;
 using PlayerRoles;
 using UnityEngine;
+using CommandSystem;
+using Exiled.API.Enums;
+using CustomPlayerEffects;
+using Exiled.API.Features;
+using System.Collections.Generic;
 
 namespace BetterScp106.Commands
 {
@@ -31,9 +32,9 @@ namespace BetterScp106.Commands
                 response = "This command can only be used for SCP-106!";
                 return false;
             }
-            var config = Plugin.Instance.Config;
+
             player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
-            if (scp106.Vigor < Mathf.Clamp01(config.PocketinCostVigor / 100f) || player.Health <= config.PocketinCostHealt)
+            if (scp106.Vigor < Mathf.Clamp01(Plugin.config.PocketinCostVigor / 100f) || player.Health <= Plugin.config.PocketinCostHealt)
             {
                 response = "You don't have enough energy or health to carry your henchman!";
                 return false;
@@ -43,31 +44,35 @@ namespace BetterScp106.Commands
             {
                 if (scp106.RemainingSinkholeCooldown <= 0f)
                     scp106.IsSubmerged = true;
-                response = "You can't go to your pocket dimension after Warhead explodes!";
+                
                 player.Broadcast(Plugin.Instance.Translation.afternuke, shouldClearPrevious: true);
+                response = "You can't go to your pocket dimension after Warhead explodes!";
                 return false;
             }
 
 
             if (scp106.RemainingSinkholeCooldown > 0)
-            {
-                response = "You can't change dimension that often! Wait a cooldown before changing it again.";
+            {  
                 player.Broadcast(Plugin.Instance.Translation.cooldown, shouldClearPrevious: true);
+                response = "You can't change dimension that often! Wait a cooldown before changing it again.";
                 return false;
             }
 
             Room pocketRoom = Room.Get(RoomType.Pocket);
-
             if (player.CurrentRoom.Type == RoomType.Pocket)
             {
                 response = "<color=red>You are already in pocket dimension?</color>";
                 return false;
             }
 
-            Player friend = Player.List
-            .Where(p => p != player && p.IsScp && Vector3.Distance(p.Position, player.Position) <= 1.5)
-            .OrderBy(p => Vector3.Distance(p.Position, player.Position))
-            .FirstOrDefault();
+            Player friend = 
+                Player.List.Where
+                (p => p != player &&
+                          p.IsScp && 
+                          Vector3.Distance(p.Position, player.Position) <= 1.5
+                )
+                .OrderBy(p => Vector3.Distance(p.Position, player.Position))
+                .FirstOrDefault();
 
             if (friend == null)
             {
@@ -75,48 +80,58 @@ namespace BetterScp106.Commands
                 return false;
             }
 
+            Timing.RunCoroutine(GotoPocketInV2(player, friend));
             response = "<color=red>You take " + friend.Role.Type + " and go underground and come out in the pocket dimension...</color>";
-            scp106.StalkAbility.IsActive = true;
+            return true;
+
+        }
+        public static IEnumerator<float> GotoPocketInV2(Player player, Player friend)
+        {
+            if (Better106.Using)
+                yield break;
+
+            Better106.Using = true;
+
+            player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
             friend.Broadcast(Plugin.Instance.Translation.scp106ReqFriendinpocket, shouldClearPrevious: true);
             friend.EnableEffect<Flashed>();
             friend.EnableEffect<Ensnared>();
             EventHandlers.GetPocketScp = friend.Id;
-            Timing.CallDelayed(3f, () =>
-            {
-                if (EventHandlers.GetScpPerm == true)
-                {
-                    friend.DisableEffect<Flashed>();
-                    friend.DisableEffect<Ensnared>();
-                    scp106.StalkAbility.IsActive = false;
-                    player.Broadcast(Plugin.Instance.Translation.scp106friendrefusedlpocketin, true);
-                    scp106.Vigor -= Mathf.Clamp01(config.PocketinCostVigor / 200f);
-                    EventHandlers.GetScpPerm = false;
-                    EventHandlers.GetPocketScp = -1;
-                }
-                else
-                {
-                    player.EnableEffect<PocketCorroding>();
-                    scp106.StalkAbility.IsActive = false;
-                    friend.EnableEffect<PocketCorroding>();
-                    friend.DisableEffect<Flashed>();
-                    friend.DisableEffect<Ensnared>();
-                    player.DisableAllEffects();
-                }
-            });
+
+            scp106.HuntersAtlasAbility.SetSubmerged(true);
+            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.NormalizedState == 1.0f);
 
             if (EventHandlers.GetScpPerm == true)
             {
-                Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.CanceledPocketingScpCooldown);
-                return false;
+                friend.DisableEffect<Flashed>();
+                friend.DisableEffect<Ensnared>();
+                player.Broadcast(Plugin.Instance.Translation.scp106friendrefusedlpocketin, true);
+                EventHandlers.GetScpPerm = false;
+                EventHandlers.GetPocketScp = -1;
+
+                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.NormalizedState == 1.0f);
+
+                scp106.RemainingSinkholeCooldown = (float)Plugin.config.CanceledPocketingScpCooldown;
+                scp106.Vigor -= Mathf.Clamp01(Plugin.config.PocketinCostVigor / 200f);
+                
             }
-            player.Health -= config.PocketinCostHealt;
-            scp106.Vigor -= Mathf.Clamp01(config.PocketinCostVigor / 100f);
-            player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);
-            friend.Broadcast(Plugin.Instance.Translation.scp106Friendinpocket, shouldClearPrevious: true);
+            else
+            {
+                player.EnableEffect<PocketCorroding>();
+                friend.EnableEffect<PocketCorroding>();
+                friend.DisableEffect<Ensnared>();
+                friend.DisableEffect<Flashed>();
+                player.DisableAllEffects();
+                player.Broadcast(Plugin.Instance.Translation.scp106inpocket, shouldClearPrevious: true);
+                friend.Broadcast(Plugin.Instance.Translation.scp106Friendinpocket, shouldClearPrevious: true);
 
-            Timing.CallDelayed(3.5f, () => scp106.RemainingSinkholeCooldown = (float)config.AfterPocketingScpCooldown);
-            return true;
+                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.NormalizedState == 1.0f);
 
+                scp106.RemainingSinkholeCooldown = (float)Plugin.Instance.Config.AfterPocketingScpCooldown;
+                scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 100f);
+                player.Health -= Plugin.Instance.Config.PocketinCostHealt;     
+            }
+            Better106.Using = false;
         }
     }
 }

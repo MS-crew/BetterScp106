@@ -1,8 +1,8 @@
-﻿namespace BetterScp106
+﻿using System.ComponentModel;
+using Exiled.API.Interfaces;
+namespace BetterScp106
 {
-    using System.ComponentModel;
     using Exiled.API.Features;
-    using Exiled.API.Interfaces;
     public class Translation : ITranslation
     {
         [Description("The broadcast when Scp 106 goes to the pocket dimension")]

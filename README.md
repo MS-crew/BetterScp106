@@ -39,7 +39,7 @@ This is the initial release of the plugin. We welcome any feedback, bug reports,
 Thank you for using our plugin and helping us improve it!
 ## Default Config
 ```yml
-Is_enabled: true
+is_enabled: true
 debug: false
 # What features should be turned on??
 pocket_feature: true
@@ -53,10 +53,12 @@ realistic_pocket: true
 reminders: true
 # Is it possible to stalk with the Alt key?
 altwith_stalk: true
+# Is it possible to go to pocket dimension with the  [C]/sneak key?
+cwith_pocket: true
 # How much health does it cost to go to pocket dimension?
 pocketdimension_cost_healt: 50
 # How much Vigor/106 energy does it cost to go to pocket dimension?
-pocketdimension_cost_vigor: 100
+pocketdimension_cost_vigor: 25
 # How much cooldown should be after the Pocketdim?
 after_pocketdimension_cooldown: 30
 # How much health does it cost pocketing a scp?
@@ -75,6 +77,8 @@ stalk_targetmax_healt: 90
 stalk_cost_healt: 150
 # How much Vigor/106 energy would a successful stalk cost?
 stalk_cost_vigor: 25
+# How many seconds before target warning in Stalks
+stalk_warning_before: 1
 # How much cooldown should be after Stalk?
 after_stalk_cooldown: 90
 ```

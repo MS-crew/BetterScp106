@@ -13,7 +13,7 @@
         public override string Name => "BetterScp106";
         public override string Prefix => "BetterScp106";
         public override Version RequiredExiledVersion { get; } = new Version(8, 14, 1);
-        public override Version Version { get; } = new Version(1, 6, 5);
+        public override Version Version { get; } = new Version(1, 6, 6);
         public static Config config => Instance?.Config;
         public override void OnEnabled()
         {

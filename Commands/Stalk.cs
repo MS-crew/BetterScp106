@@ -124,6 +124,7 @@ namespace BetterScp106
                 Log.Debug("SCP-106 exiting ground.");
                 player.Health -= Plugin.config.StalkCostHealt;
                 scp106.RemainingSinkholeCooldown = (float)Plugin.config.AfterStalkCooldown;
+                scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f);
                 Log.Debug("cooldown is added and health and vigor are reduced");
             }
 

@@ -11,10 +11,10 @@
         public static Plugin Instance { get; private set; }
         public override string Author => "ZurnaSever";
         public override string Name => "BetterScp106";
-        public override string Prefix => "BetterScp106";
-        public override Version RequiredExiledVersion { get; } = new Version(8, 14, 1);
-        public override Version Version { get; } = new Version(1, 6, 6);
+        public override string Prefix => "BetterScp106"; 
         public static Config config => Instance?.Config;
+        public override Version Version { get; } = new Version(1, 6, 7);
+        public override Version RequiredExiledVersion { get; } = new Version(8, 14, 1);
         public override void OnEnabled()
         {
             Instance = this;
@@ -24,6 +24,8 @@
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
+
+            if (Config.OneHitPocket) Scp106.Attacking += eventHandlers.On106Attack;
             if (Config.AltwithStalk) PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             if (Config.CwithPocket) PlayerHandlers.ChangingMoveState += eventHandlers.Tf;
             if (Config.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
@@ -38,6 +40,8 @@
             PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.pd;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
+
+            if (Config.OneHitPocket) Scp106.Attacking -= eventHandlers.On106Attack;
             if (Config.AltwithStalk) PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             if (Config.CwithPocket) PlayerHandlers.ChangingMoveState -= eventHandlers.Tf;
             if (Config.RealisticPocket) PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;

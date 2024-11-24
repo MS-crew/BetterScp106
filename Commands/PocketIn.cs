@@ -64,15 +64,9 @@ namespace BetterScp106.Commands
                 response = "<color=red>You are already in pocket dimension?</color>";
                 return false;
             }
-
-            Player friend = 
-                Player.List.Where
-                (p => p != player &&
-                          p.IsScp && 
-                          Vector3.Distance(p.Position, player.Position) <= 1.5
-                )
-                .OrderBy(p => Vector3.Distance(p.Position, player.Position))
-                .FirstOrDefault();
+            #nullable enable
+            Player? friend = Methods.FindFriend(player);
+            #nullable disable
 
             if (friend == null)
             {

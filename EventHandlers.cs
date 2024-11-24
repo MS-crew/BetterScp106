@@ -1,18 +1,14 @@
 ﻿using MEC;
 using UnityEngine;
 using PlayerRoles;
-using MapGeneration;
 using CustomRendering;
 using Exiled.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
 using BetterScp106.Commands;
-using System.Collections.Generic;
 using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
-using PlayerRoles.PlayableScps.Scp106;
-using Interactables.Interobjects.DoorUtils;
 
 namespace BetterScp106
 {
@@ -32,10 +28,8 @@ namespace BetterScp106
         public void OnSpawned(SpawnedEventArgs ev)
         {
             if (ev.Player.Role == RoleTypeId.Scp106)
-                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
-
-            
-        }
+                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));   
+        } 
         public void Alt(TogglingNoClipEventArgs ev)
         {
             if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
@@ -64,7 +58,7 @@ namespace BetterScp106
                 return;
             }
 
-            Player target = Stalk.Findtarget(ev.Player);
+            Player target = Methods.Findtarget(ev.Player);
 
             if (target == null)
             {
@@ -115,42 +109,28 @@ namespace BetterScp106
 
             Timing.RunCoroutine(PocketDimension.GoPocketV2(ev.Player));
         }
+        public void On106Attack(AttackingEventArgs ev)
+        {
+            if (ev.Target.GetEffect<Traumatized>().IsEnabled)
+                return;
+
+            ev.Target.EnableEffect<PocketCorroding>();
+            Log.Debug($"Scp106 drew the {ev.Target.Nickname} directly into the pocket");
+        }
         public void OnTeleport(TeleportingEventArgs ev)
         {
             if (Better106.Using)
                 ev.IsAllowed = false;
-        }
-        private void ShowRandomScp106Hint(Player player)
-        {
-            int randomIndex = new System.Random().Next(0, 3);
-            string hint;
-
-            switch (randomIndex)
-            {
-                case 0:
-                    hint = Plugin.Instance.Translation.Scp106PowersPocket.Replace("$pockethealt", Plugin.config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.config.PocketdimensionCostVigor.ToString());
-                    break;
-                case 1:
-                    hint = Plugin.Instance.Translation.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.config.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.config.PocketinCostVigor.ToString());
-                    break;
-                case 2:
-                    hint = Plugin.Instance.Translation.Scp106PowersStalk.Replace("$stalkhealt", Plugin.config.StalkCostHealt.ToString()).Replace("$stalkvigor", Plugin.config.StalkCostVigor.ToString());
-                    break;
-                default:
-                    hint = Plugin.Instance.Translation.Scp106StartMessage;
-                    break;
-            }
-            player.ShowHint(hint, 3);
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
         {
             if (plugin.Config.PocketexitRandomZonemode)
             {
                 ev.IsAllowed = false;
-                EscapeFromDimension(ev.Player);
+                Methods.EscapeFromDimension(ev.Player);
 
                 if (ev.Player.Role == RoleTypeId.Scp106 && Plugin.config.Reminders)
-                    ShowRandomScp106Hint(ev.Player);
+                    Methods.ShowRandomScp106Hint(ev.Player);
 
                 Log.Debug("Random Zone exit mode is active player exiting with random zone");
                 return;
@@ -158,31 +138,12 @@ namespace BetterScp106
             if (ev.Player.Role == RoleTypeId.Scp106)
             {
                 ev.IsAllowed = false;
-                EscapeFromDimension(ev.Player);
+                Methods.EscapeFromDimension(ev.Player);
 
                 if (Plugin.Instance.Config.Reminders)
-                    ShowRandomScp106Hint(ev.Player);
+                    Methods.ShowRandomScp106Hint(ev.Player);
 
                 Log.Debug("106 escape the pocket dimension finding the right exit(Random Zone mode is Deactive)");
-            }
-        }
-        public static void EscapeFromDimension(Player player)
-        {
-            ReferenceHub referenceHub = player.ReferenceHub;
-            if (referenceHub.roleManager.CurrentRole is IFpcRole fpcRole)
-            {
-                fpcRole.FpcModule.ServerOverridePosition(!Plugin.config.PocketexitRandomZonemode ? Scp106PocketExitFinder.GetBestExitPosition(fpcRole) : GetBestExitPositionRandomZone(fpcRole), Vector3.zero);
-
-                player.DisableEffect<PocketCorroding>();
-                player.DisableEffect<Corroding>();
-
-                if (!player.IsScp)
-                {
-                    player.EnableEffect<Disabled>(10f, true);
-                    player.EnableEffect<Traumatized>();
-                }
-
-                PocketDimensionGenerator.RandomizeTeleports();
             }
         }
         public void Warheadkillinhibitor(HurtingEventArgs ev)
@@ -196,34 +157,7 @@ namespace BetterScp106
                 FogControl fogControl = ev.Player.ReferenceHub.playerEffectsController.GetEffect<FogControl>();
                 fogControl?.SetFogType(FogType.Outside);
             }
-        }
-        public static Vector3 GetBestExitPositionRandomZone(IFpcRole role)
-        {
-            List<Vector3> randompos = new List<Vector3>
-            {
-                Room.Get(RoomType.Surface).Position
-            };
-
-            if (!Warhead.IsDetonated)
-            {
-                if (!Map.IsLczDecontaminated)
-                    randompos.Add(Room.Get(RoomType.Lcz914).Position);
-                randompos.Add(Room.Get(RoomType.HczArmory).Position);
-                randompos.Add(Room.Get(RoomType.EzCafeteria).Position);
-            }
-
-            int Randomzone = new System.Random().Next(randompos.Count);
-            Vector3 position = randompos[Randomzone];
-            RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPositionRaycasts(position);
-            if (roomIdentifier == null)
-            {
-                Log.Warn($"roomIdentifier was null, room is {Room.Get(position)}, roomIdentifier is {roomIdentifier}, position is {position}, seed is{Map.Seed}");
-                return position;
-            }
-
-            DoorVariant[] whitelistedDoorsForZone = Scp106PocketExitFinder.GetWhitelistedDoorsForZone(roomIdentifier.Zone);
-            return whitelistedDoorsForZone.Length != 0 ? Scp106PocketExitFinder.GetSafePositionForDoor(Scp106PocketExitFinder.GetRandomDoor(whitelistedDoorsForZone), roomIdentifier.Zone == FacilityZone.Surface ? 45f : 11f, role.FpcModule.CharController) : position;
-        }
+        } 
         public void OnFailingEscape(FailingEscapePocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)
@@ -232,12 +166,11 @@ namespace BetterScp106
                 return;
             }
             
-
             ev.IsAllowed = false;
-            EscapeFromDimension(ev.Player);
+            Methods.EscapeFromDimension(ev.Player);
 
             if (ev.Player.Role.Type == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
-                ShowRandomScp106Hint(ev.Player);
+                Methods.ShowRandomScp106Hint(ev.Player);
 
             Log.Debug("Escape failed but player is Scp and successful escape will be made");
         }

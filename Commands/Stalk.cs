@@ -2,14 +2,10 @@
 using System;
 using PlayerRoles;
 using UnityEngine;
-using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 using BetterScp106.Commands;
 using System.Collections.Generic;
-using Exiled.API.Features.Doors;
-using PlayerRoles.FirstPersonControl;
-using Exiled.API.Features.Roles;
 
 
 namespace BetterScp106
@@ -55,7 +51,7 @@ namespace BetterScp106
                 return false;
             }
 
-            Player target = Findtarget(player);
+            Player target = Methods.Findtarget(player);
             if (target == null)
             {
                 response = "You cant find any victim.";
@@ -65,26 +61,6 @@ namespace BetterScp106
             Timing.RunCoroutine(StalkV2(player, target));
             response = "Yesssss the fragrance of suffering";
             return true;
-        }
-
-        public static Player Findtarget(Player player)
-        {
-            Player target = Player.List
-                .Where(p =>
-                    p.IsHuman && 
-                    p.CurrentRoom != null &&
-                    p.Health < Plugin.config.StalkTargetmaxHealt &&
-                    (
-                        Vector3.Distance(p.Position, player.Position) <= Plugin.config.StalkDistance 
-                        ||
-                        (p.CurrentRoom.Doors != null &&
-                         p.CurrentRoom.Doors.Any(door => door is ElevatorDoor) &&
-                         Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.config.StalkDistance)
-                    )
-                )
-                .OrderBy(p => p.Health)
-                .FirstOrDefault();
-            return target;
         }
 
         public static IEnumerator<float> StalkV2(Player player, Player target)

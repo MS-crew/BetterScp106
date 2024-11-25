@@ -20,13 +20,13 @@ namespace BetterScp106
                 .Where(p =>
                     p.IsHuman &&
                     p.CurrentRoom != null &&
-                    p.Health < Plugin.config.StalkTargetmaxHealt &&
+                    p.Health < Plugin.C.StalkTargetmaxHealt &&
                     (
-                        Vector3.Distance(p.Position, player.Position) <= Plugin.config.StalkDistance
+                        Vector3.Distance(p.Position, player.Position) <= Plugin.C.StalkDistance
                         ||
                         (p.CurrentRoom.Doors != null &&
                          p.CurrentRoom.Doors.Any(door => door is ElevatorDoor) &&
-                         Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.config.StalkDistance)
+                         Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance)
                     )
                 )
                 .OrderBy(p => p.Health)
@@ -49,7 +49,7 @@ namespace BetterScp106
             ReferenceHub referenceHub = player.ReferenceHub;
             if (referenceHub.roleManager.CurrentRole is IFpcRole fpcRole)
             {
-                fpcRole.FpcModule.ServerOverridePosition(!Plugin.config.PocketexitRandomZonemode ? Scp106PocketExitFinder.GetBestExitPosition(fpcRole) : Methods.GetBestExitPositionRandomZone(fpcRole), Vector3.zero);
+                fpcRole.FpcModule.ServerOverridePosition(!Plugin.C.PocketexitRandomZonemode ? Scp106PocketExitFinder.GetBestExitPosition(fpcRole) : Methods.GetBestExitPositionRandomZone(fpcRole), Vector3.zero);
 
                 player.DisableEffect<PocketCorroding>();
                 player.DisableEffect<Corroding>();
@@ -68,10 +68,10 @@ namespace BetterScp106
             int randomIndex = new System.Random().Next(0, 3);
             string hint = randomIndex switch
             {
-                0 => Plugin.Instance.Translation.Scp106PowersPocket.Replace("$pockethealt", Plugin.config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.config.PocketdimensionCostVigor.ToString()),
-                1 => Plugin.Instance.Translation.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.config.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.config.PocketinCostVigor.ToString()),
-                2 => Plugin.Instance.Translation.Scp106PowersStalk.Replace("$stalkhealt", Plugin.config.StalkCostHealt.ToString()).Replace("$stalkvigor", Plugin.config.StalkCostVigor.ToString()),
-                _ => Plugin.Instance.Translation.Scp106StartMessage,
+                0 => Plugin.T.Scp106PowersPocket.Replace("$pockethealt", Plugin.C.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.C.PocketdimensionCostVigor.ToString()),
+                1 => Plugin.T.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.C.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.C.PocketinCostVigor.ToString()),
+                2 => Plugin.T.Scp106PowersStalk.Replace("$stalkhealt", Plugin.C.StalkCostHealt.ToString()).Replace("$stalkvigor", Plugin.C.StalkCostVigor.ToString()),
+                _ => Plugin.T.Scp106StartMessage,
             };
             player.ShowHint(hint, 3);
         }

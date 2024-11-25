@@ -14,12 +14,12 @@ namespace BetterScp106
 {
     public class EventHandlers
     {
-        private readonly Plugin plugin;
-        public EventHandlers(Plugin plugin) => this.plugin = plugin;
+        public readonly Plugin plugin;
 
         public static int GetPocketScp;
 
         public static bool GetScpPerm = false;
+        public EventHandlers(Plugin plugin) => this.plugin = plugin;
         public void OnStalk(StalkingEventArgs ev)
         {
             if (Better106.Using)
@@ -41,18 +41,14 @@ namespace BetterScp106
                 return;
             }
 
-            if (!Plugin.config.StalkFeature)
-                return;
-
-            if (!Plugin.config.AltwithStalk)
-                return;
-
             if (ev.Player.Role.Type != RoleTypeId.Scp106)
                 return;
 
-            ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
+            if (!plugin.Config.StalkFeature || !plugin.Config.AltwithStalk)
+                return;
 
-            if (scp106.Vigor < Mathf.Clamp01(Plugin.config.StalkCostVigor / 100f) || ev.Player.Health <= Plugin.config.StalkCostHealt || scp106.RemainingSinkholeCooldown > 0)
+            ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
+            if (scp106.Vigor < Mathf.Clamp01(plugin.Config.StalkCostVigor / 100f) || ev.Player.Health <= plugin.Config.StalkCostHealt || scp106.RemainingSinkholeCooldown > 0)
             {
                 ev.Player.Broadcast(Plugin.Instance.Translation.StalkCant);
                 return;
@@ -78,19 +74,23 @@ namespace BetterScp106
 
             ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
 
-            if (AlphaWarheadController.Detonated)
+            if (scp106.RemainingSinkholeCooldown > 0f)
             {
-                if (scp106.RemainingSinkholeCooldown <= 0f)
-                {
-                    scp106.IsSubmerged = true;
-                }
-                ev.Player.Broadcast(Plugin.Instance.Translation.afternuke, shouldClearPrevious: true);
+                ev.Player.Broadcast(plugin.Translation.cooldown, shouldClearPrevious: true);
                 return;
             }
 
-            if (scp106.RemainingSinkholeCooldown > 0)
+            if (scp106.Vigor < Mathf.Clamp01(plugin.Config.PocketdimensionCostVigor / 100f)
+                             || ev.Player.Health <= plugin.Config.PocketdimensionCostHealt)
             {
-                ev.Player.Broadcast(Plugin.Instance.Translation.cooldown, shouldClearPrevious: true);
+                ev.Player.Broadcast(plugin.Translation.scp106cantpocket);
+                return;
+            }
+
+            if (AlphaWarheadController.Detonated)
+            {
+                scp106.IsSubmerged = true;
+                ev.Player.Broadcast(plugin.Translation.afternuke, shouldClearPrevious: true);
                 return;
             }
 
@@ -98,12 +98,6 @@ namespace BetterScp106
             if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
             {
                 ev.Player.Broadcast(plugin.Translation.scp106alreadypocket);
-                return;
-            }
-
-            if (scp106.Vigor < Mathf.Clamp01(Plugin.config.PocketdimensionCostVigor / 100f) || ev.Player.Health <= Plugin.config.PocketdimensionCostHealt)
-            {
-                ev.Player.Broadcast(plugin.Translation.scp106cantpocket);
                 return;
             }
 
@@ -124,26 +118,16 @@ namespace BetterScp106
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
         {
-            if (plugin.Config.PocketexitRandomZonemode)
+            if (plugin.Config.PocketexitRandomZonemode || ev.Player.Role == RoleTypeId.Scp106)
             {
                 ev.IsAllowed = false;
                 Methods.EscapeFromDimension(ev.Player);
 
-                if (ev.Player.Role == RoleTypeId.Scp106 && Plugin.config.Reminders)
+                if (ev.Player.Role == RoleTypeId.Scp106 && plugin.Config.Reminders)
                     Methods.ShowRandomScp106Hint(ev.Player);
 
                 Log.Debug("Random Zone exit mode is active player exiting with random zone");
                 return;
-            }
-            if (ev.Player.Role == RoleTypeId.Scp106)
-            {
-                ev.IsAllowed = false;
-                Methods.EscapeFromDimension(ev.Player);
-
-                if (Plugin.Instance.Config.Reminders)
-                    Methods.ShowRandomScp106Hint(ev.Player);
-
-                Log.Debug("106 escape the pocket dimension finding the right exit(Random Zone mode is Deactive)");
             }
         }
         public void Warheadkillinhibitor(HurtingEventArgs ev)
@@ -169,7 +153,7 @@ namespace BetterScp106
             ev.IsAllowed = false;
             Methods.EscapeFromDimension(ev.Player);
 
-            if (ev.Player.Role.Type == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
+            if (ev.Player.Role.Type == RoleTypeId.Scp106 && plugin.Config.Reminders)
                 Methods.ShowRandomScp106Hint(ev.Player);
 
             Log.Debug("Escape failed but player is Scp and successful escape will be made");

@@ -18,7 +18,7 @@ namespace BetterScp106
         public string Description => "Sends Scp-106 to someone injured";
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!Plugin.config.StalkFeature)
+            if (!Plugin.C.StalkFeature)
             {
                 response = "This feature is closed by server owner.";
                 return false;
@@ -36,22 +36,23 @@ namespace BetterScp106
                 response = "This command only for Scp-106";
                 return false;
             }
-
             
             player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
-            if (scp106.Vigor < Mathf.Clamp01(Plugin.config.StalkCostVigor / 100f) || player.Health <= Plugin.config.StalkCostHealt)
-            {
-                response = "You don't have enough energy or health to stalk anybody!";
-                return false;
-            }
-
             if (scp106.RemainingSinkholeCooldown > 0)
             {
                 response = "You can't Stalk that often! Wait a cooldown before Stalk again.";
                 return false;
             }
 
-            Player target = Methods.Findtarget(player);
+            if (scp106.Vigor < Mathf.Clamp01(Plugin.C.StalkCostVigor / 100f) || player.Health <= Plugin.C.StalkCostHealt)
+            {
+                response = "You don't have enough energy or health to stalk anybody!";
+                return false;
+            }
+    
+            #nullable enable
+            Player? target = Methods.Findtarget(player);
+            #nullable disable
             if (target == null)
             {
                 response = "You cant find any victim.";
@@ -71,18 +72,18 @@ namespace BetterScp106
             Better106.Using = true;
 
             player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
-            target.Broadcast(Plugin.Instance.Translation.StalkVictimWarn, shouldClearPrevious: true);
+            target.Broadcast(Plugin.T.StalkVictimWarn, shouldClearPrevious: true);
 
-            yield return Timing.WaitForSeconds(Plugin.config.StalkWarningBefore);
+            yield return Timing.WaitForSeconds(Plugin.C.StalkWarningBefore);
 
             if (!target.IsAlive)
             {
-                player.Broadcast(Plugin.Instance.Translation.StalkFailed, shouldClearPrevious: true);
+                player.Broadcast(Plugin.T.StalkFailed, shouldClearPrevious: true);
                 Log.Debug("Cant find any player for stalk");
             }
             else
             {
-                player.Broadcast(Plugin.Instance.Translation.StalkSuccesfull, shouldClearPrevious: true);
+                player.Broadcast(Plugin.T.StalkSuccesfull, shouldClearPrevious: true);
                 Log.Debug("Stalk teleport starting");
 
                 Vector3 tp = target.Position;
@@ -98,9 +99,9 @@ namespace BetterScp106
 
                 yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.NormalizedState == 1.0f);
                 Log.Debug("SCP-106 exiting ground.");
-                player.Health -= Plugin.config.StalkCostHealt;
-                scp106.RemainingSinkholeCooldown = (float)Plugin.config.AfterStalkCooldown;
-                scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f);
+                player.Health -= Plugin.C.StalkCostHealt;
+                scp106.RemainingSinkholeCooldown = (float)Plugin.C.AfterStalkCooldown;
+                scp106.Vigor -= Mathf.Clamp01(Plugin.C.StalkCostVigor / 100f);
                 Log.Debug("cooldown is added and health and vigor are reduced");
             }
 

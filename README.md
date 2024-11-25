@@ -1,7 +1,7 @@
 <h1 align="center">Better Scp-106</h1>
 <div align="center">
 <a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/github/downloads/MS-crew/BetterScp106/total?style=for-the-badge&logo=githubactions&label=Downloads" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Release Download"></a>
-<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-1.6.5-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
+<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-1.6.7-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
 <a href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE"><img src="https://img.shields.io/badge/Licence-GNU_3.0-blue?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE" alt="General Public License v3.0"></a>
 <a href="https://github.com/ExMod-Team/EXILED"><img src="https://img.shields.io/badge/Exiled-8.14.1-red?style=for-the-badge&logo=gitbook" href="https://github.com/ExMod-Team/EXILED" alt="GitHub Exiled"></a>
 
@@ -21,6 +21,7 @@ This add-on for SCP: Secret Laboratory brings new features closer to the lore fo
 
 - **Pocket exit random zone mode:** When players successfully exit the pocket dimension, they exit from a random zone depending on chance instead of the same zone.
 - **Realistic Pocket mode:** Pocket dimension is not affected by warhead explosion and effect.
+- **One Hit Pocket:** 106 sends its victims directly to the pocket in one hit.
 
 ## Installation
 
@@ -45,10 +46,11 @@ debug: false
 pocket_feature: true
 pocketin_feature: true
 stalk_feature: true
+one_hit_pocket: false
 # Should players exit a random zone when they exit the pocket dimension?
 pocketexit_random_zonemode: true
 # Pocket dimension is not affected by warhead explosion and effect
-realistic_pocket: true
+realistic_pocket: false
 # Should you be reminded of your 106 powers every time you leave your pocket?
 reminders: true
 # Is it possible to stalk with the Alt key?
@@ -58,7 +60,7 @@ cwith_pocket: true
 # How much health does it cost to go to pocket dimension?
 pocketdimension_cost_healt: 50
 # How much Vigor/106 energy does it cost to go to pocket dimension?
-pocketdimension_cost_vigor: 25
+pocketdimension_cost_vigor: 100
 # How much cooldown should be after the Pocketdim?
 after_pocketdimension_cooldown: 30
 # How much health does it cost pocketing a scp?
@@ -81,4 +83,5 @@ stalk_cost_vigor: 25
 stalk_warning_before: 1
 # How much cooldown should be after Stalk?
 after_stalk_cooldown: 90
+
 ```

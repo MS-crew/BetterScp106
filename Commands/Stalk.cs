@@ -6,6 +6,7 @@ using CommandSystem;
 using Exiled.API.Features;
 using BetterScp106.Commands;
 using System.Collections.Generic;
+using CustomPlayerEffects;
 
 
 namespace BetterScp106
@@ -90,15 +91,18 @@ namespace BetterScp106
                 if (!Physics.Raycast(target.Position + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, 2))
                     tp = target.CurrentRoom.Position;
 
-                scp106.HuntersAtlasAbility.SetSubmerged(true);
+                scp106.IsSubmerged = true;
+                player.EnableEffect<Ensnared>();
 
-                yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.NormalizedState == 1.0f);
+                yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
 
                 scp106.Owner.Teleport(tp);
                 Log.Debug("SCP-106 is ground'.");
 
-                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.NormalizedState == 1.0f);
+                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
                 Log.Debug("SCP-106 exiting ground.");
+
+                player.DisableEffect<Ensnared>();
                 player.Health -= Plugin.C.StalkCostHealt;
                 scp106.RemainingSinkholeCooldown = (float)Plugin.C.AfterStalkCooldown;
                 scp106.Vigor -= Mathf.Clamp01(Plugin.C.StalkCostVigor / 100f);

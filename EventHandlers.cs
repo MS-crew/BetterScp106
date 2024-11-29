@@ -10,6 +10,7 @@ using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
 
+
 namespace BetterScp106
 {
     public class EventHandlers
@@ -28,7 +29,7 @@ namespace BetterScp106
         public void OnSpawned(SpawnedEventArgs ev)
         {
             if (ev.Player.Role == RoleTypeId.Scp106)
-                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));   
+                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
         } 
         public void Alt(TogglingNoClipEventArgs ev)
         {
@@ -73,15 +74,13 @@ namespace BetterScp106
                 return;
 
             ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
-
             if (scp106.RemainingSinkholeCooldown > 0f)
             {
                 ev.Player.Broadcast(plugin.Translation.cooldown, shouldClearPrevious: true);
                 return;
             }
 
-            if (scp106.Vigor < Mathf.Clamp01(plugin.Config.PocketdimensionCostVigor / 100f)
-                             || ev.Player.Health <= plugin.Config.PocketdimensionCostHealt)
+            if (scp106.Vigor < Mathf.Clamp01(plugin.Config.PocketdimensionCostVigor / 100f) || ev.Player.Health <= plugin.Config.PocketdimensionCostHealt)
             {
                 ev.Player.Broadcast(plugin.Translation.scp106cantpocket);
                 return;
@@ -118,17 +117,12 @@ namespace BetterScp106
         }
         public void pd(EscapingPocketDimensionEventArgs ev)
         {
-            if (plugin.Config.PocketexitRandomZonemode || ev.Player.Role == RoleTypeId.Scp106)
-            {
-                ev.IsAllowed = false;
-                Methods.EscapeFromDimension(ev.Player);
-
-                if (ev.Player.Role == RoleTypeId.Scp106 && plugin.Config.Reminders)
-                    Methods.ShowRandomScp106Hint(ev.Player);
-
-                Log.Debug("Random Zone exit mode is active player exiting with random zone");
+            if (!ev.Player.IsScp)
                 return;
-            }
+
+            ev.IsAllowed = false;
+            Methods.EscapeFromDimension(ev.Player);
+            Log.Debug("Scp exit the dimension with find right exit");
         }
         public void Warheadkillinhibitor(HurtingEventArgs ev)
         {
@@ -152,10 +146,6 @@ namespace BetterScp106
             
             ev.IsAllowed = false;
             Methods.EscapeFromDimension(ev.Player);
-
-            if (ev.Player.Role.Type == RoleTypeId.Scp106 && plugin.Config.Reminders)
-                Methods.ShowRandomScp106Hint(ev.Player);
-
             Log.Debug("Escape failed but player is Scp and successful escape will be made");
         }
     }

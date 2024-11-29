@@ -1,19 +1,38 @@
 ﻿using System.Linq;
 using UnityEngine;
-using MapGeneration;
+using PlayerRoles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using CustomPlayerEffects;
+using RelativePositioning;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
-using Interactables.Interobjects.DoorUtils;
 
 namespace BetterScp106
 {
     public class Methods
     {
+        public static RelativePosition RandomZone()
+        {
+            List<Vector3> randompos =
+            [
+                Room.Get(RoomType.Surface).Position
+            ];
+            if (!Warhead.IsDetonated)
+            {
+                if(!Map.IsLczDecontaminated)
+                    randompos.Add(Room.Get(RoomType.Lcz914).Position);
+                randompos.Add(Room.Get(RoomType.EzGateB).Position);
+                randompos.Add(Room.Get(RoomType.Hcz096).Position);
+            }
+
+            int Randomzone = new System.Random().Next(randompos.Count);
+            Log.Debug( randompos.Count + Randomzone);
+            RelativePosition position = new(randompos[Randomzone]);
+            Log.Debug(Room.Get(position));
+            return position;
+        }
         public static Player Findtarget(Player player)
         {
             Player target = Player.List
@@ -49,18 +68,12 @@ namespace BetterScp106
             ReferenceHub referenceHub = player.ReferenceHub;
             if (referenceHub.roleManager.CurrentRole is IFpcRole fpcRole)
             {
-                fpcRole.FpcModule.ServerOverridePosition(!Plugin.C.PocketexitRandomZonemode ? Scp106PocketExitFinder.GetBestExitPosition(fpcRole) : Methods.GetBestExitPositionRandomZone(fpcRole), Vector3.zero);
+                fpcRole.FpcModule.ServerOverridePosition(Scp106PocketExitFinder.GetBestExitPosition(fpcRole), Vector3.zero);
 
-                player.DisableEffect<PocketCorroding>();
-                player.DisableEffect<Corroding>();
+                player.DisableAllEffects();
 
-                if (!player.IsScp)
-                {
-                    player.EnableEffect<Disabled>(10f, true);
-                    player.EnableEffect<Traumatized>();
-                }
-
-                PocketDimensionGenerator.RandomizeTeleports();
+                if (player.Role == RoleTypeId.Scp106 && Plugin.C.Reminders)
+                    Methods.ShowRandomScp106Hint(player);
             }
         }
         public static void ShowRandomScp106Hint(Player player)
@@ -74,33 +87,6 @@ namespace BetterScp106
                 _ => Plugin.T.Scp106StartMessage,
             };
             player.ShowHint(hint, 3);
-        }
-        public static Vector3 GetBestExitPositionRandomZone(IFpcRole role)
-        {
-            List<Vector3> randompos = new List<Vector3>
-            {
-                Room.Get(RoomType.Surface).Position
-            };
-
-            if (!Warhead.IsDetonated)
-            {
-                if (!Map.IsLczDecontaminated)
-                    randompos.Add(Room.Get(RoomType.Lcz914).Position);
-                randompos.Add(Room.Get(RoomType.HczArmory).Position);
-                randompos.Add(Room.Get(RoomType.EzCafeteria).Position);
-            }
-
-            int Randomzone = new System.Random().Next(randompos.Count);
-            Vector3 position = randompos[Randomzone];
-            RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPositionRaycasts(position);
-            if (roomIdentifier == null)
-            {
-                Log.Warn($"roomIdentifier was null, room is {Room.Get(position)}, roomIdentifier is {roomIdentifier}, position is {position}, seed is{Map.Seed}");
-                return position;
-            }
-
-            DoorVariant[] whitelistedDoorsForZone = Scp106PocketExitFinder.GetWhitelistedDoorsForZone(roomIdentifier.Zone);
-            return whitelistedDoorsForZone.Length != 0 ? Scp106PocketExitFinder.GetSafePositionForDoor(Scp106PocketExitFinder.GetRandomDoor(whitelistedDoorsForZone), roomIdentifier.Zone == FacilityZone.Surface ? 45f : 11f, role.FpcModule.CharController) : position;
         }
     }
 }

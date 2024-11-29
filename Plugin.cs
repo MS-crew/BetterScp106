@@ -3,10 +3,12 @@
     using System;
     using Exiled.API.Features;
     using Scp106 = Exiled.Events.Handlers.Scp106;
-    using PlayerHandlers = Exiled.Events.Handlers.Player; 
+    using PlayerHandlers = Exiled.Events.Handlers.Player;
+    using HarmonyLib;
 
     public class Plugin : Plugin<Config, Translation>
     {
+        private Harmony harmony;
         public static Config C => Instance?.Config;
         public static Translation T => Instance?.Translation;
 
@@ -15,12 +17,13 @@
         public override string Author => "ZurnaSever";
         public override string Name => "BetterScp106";
         public override string Prefix => "BetterScp106"; 
-        public override Version Version { get; } = new Version(1, 6, 7);
-        public override Version RequiredExiledVersion { get; } = new Version(8, 14, 1);
+        public override Version Version { get; } = new Version(1, 2, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
         public override void OnEnabled()
         {
             Instance = this;
             eventHandlers = new EventHandlers(this);
+
             Scp106.Stalking += eventHandlers.OnStalk;
             Scp106.Teleporting += eventHandlers.OnTeleport;
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
@@ -31,7 +34,10 @@
             if (C.AltwithStalk) PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             if (C.CwithPocket) PlayerHandlers.ChangingMoveState += eventHandlers.Tf;
             if (C.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
-                        
+
+            harmony = new Harmony("Better106RandomZoneMode");
+            harmony.PatchAll();          
+
             Log.Debug("BetterScp106 is Active");
             base.OnEnabled();
         }
@@ -47,6 +53,8 @@
             if (C.AltwithStalk) PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             if (C.CwithPocket) PlayerHandlers.ChangingMoveState -= eventHandlers.Tf;
             if (C.RealisticPocket) PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
+
+            harmony.UnpatchAll(harmonyID: "Better106RandomZoneMode");
 
             Log.Debug("BetterScp106 is Deactive");
             eventHandlers = null;

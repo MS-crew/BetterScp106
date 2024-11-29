@@ -42,7 +42,7 @@ namespace BetterScp106
         public Broadcast afternuke { get; set; } = new Broadcast("<color=red>The urge inside you pushes you out to hunt...</color>", 4);
 
         [Description("Cooldown warning")]
-        public Broadcast cooldown { get; set; } = new Broadcast("You can't change dimension that often! You should wait a bit before changing it again.", 4);
+        public Broadcast cooldown { get; set; } = new Broadcast("<color=red>You can't change dimension that often! You should wait a bit before changing it again.</color>", 4);
 
         [Description("Message to be shown to player spawn as Scp-106")]
         public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features by typing</color></voffset> \n <voffset=-0.05em><color=blue>'.Better106'</color><color=red> or</color> <color=blue>'.106'</color> <color=red>on the console.</color></voffset>";

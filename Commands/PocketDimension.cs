@@ -90,14 +90,16 @@ namespace BetterScp106
             Better106.Using = true;
             var scp106 = player.Role as Scp106Role;
 
-            scp106.HuntersAtlasAbility.SetSubmerged(true);
-            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.NormalizedState == 1.0f);
+            scp106.IsStalking = true;
+
+            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.SubmergeProgress == 1f); 
 
             player.EnableEffect<PocketCorroding>();
-            player.DisableAllEffects();       
+            scp106.IsStalking = false;
 
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.NormalizedState == 1.0f);
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.TargetSubmerged); 
 
+            player.DisableAllEffects();
             scp106.RemainingSinkholeCooldown = Plugin.C.AfterPocketdimensionCooldown;
             player.Health -= Plugin.C.PocketdimensionCostHealt;
             scp106.Vigor -= Mathf.Clamp01(Plugin.C.PocketdimensionCostVigor / 100f);

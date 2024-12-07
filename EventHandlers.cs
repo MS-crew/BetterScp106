@@ -33,9 +33,9 @@ namespace BetterScp106
             if (ev.Player.Role == RoleTypeId.Scp106)
             {
                 ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
-                ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub, SettingHandlers.Better106Menu());
-                ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;
-            }    
+              /*ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub, SettingHandlers.Better106Menu());
+                ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;*/
+            }
         } 
         public void Alt(TogglingNoClipEventArgs ev)
         {

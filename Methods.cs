@@ -4,10 +4,10 @@ using PlayerRoles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using RelativePositioning;
-using BetterScp106.Features;
+//using BetterScp106.Features;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
-using UserSettings.ServerSpecific;
+//using UserSettings.ServerSpecific;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
 
@@ -15,12 +15,12 @@ namespace BetterScp106
 {
     public class Methods
     {
-        public enum Features
+      /*public enum Features
         {
             PocketKey,
             PocketinKey,
             StalkKey
-        } 
+        } */
         public static RelativePosition RandomZone()
         {
             List<Vector3> randompos =
@@ -114,7 +114,7 @@ namespace BetterScp106
             };
             player.ShowHint(hint, 3);
         }
-        public static void ProcessUserInput(ReferenceHub sender, ServerSpecificSettingBase setting)
+      /*public static void ProcessUserInput(ReferenceHub sender, ServerSpecificSettingBase setting)
         {
             switch ((Features) setting.SettingId)
             {
@@ -140,6 +140,6 @@ namespace BetterScp106
                     }
                     break;
             }
-        }  
+        }*/
     }
 }

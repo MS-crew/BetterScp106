@@ -1,4 +1,5 @@
-﻿using MEC;
+﻿//In Progges
+/*using MEC;
 using UnityEngine;
 using CustomPlayerEffects;
 using Exiled.API.Features;
@@ -83,4 +84,4 @@ namespace BetterScp106.Features
             Better106.Using = false;
         }
     }
-}
+}*/

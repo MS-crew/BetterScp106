@@ -75,20 +75,20 @@ canceled_pocketing_scp_cooldown: 15
 stalk_distance: 200
 # Stalk from any distance.
 stalk_from_everywhere: false
-# Warn victim before Stalk.
-stalk_warning: false
 # How low should the health of the target to be stalked be? 106 tracks moribund targets, so the target to be stalked will be the one with the lowest health and the one you set. (if you want him to be able to stalk everyone, you can just write 101)
 stalk_targetmax_healt: 90
 # How much healt would a successful stalk cost?
 stalk_cost_healt: 150
 # How much Vigor/106 energy would a successful stalk cost?
 stalk_cost_vigor: 25
-# How many seconds before target warning in Stalks
+# Warn victim before Stalk.
+stalk_warning: true
+# How many seconds before target warning in Stalks (If the stalk warning is on)
 stalk_warning_before: 1
 # How much cooldown should be after Stalk?
 after_stalk_cooldown: 90
 # Which roles can be Stalked?
-salking_roles:
+stalkable_roles:
 - ClassD
 - Scientist
 - FacilityGuard

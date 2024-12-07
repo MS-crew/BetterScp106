@@ -6,10 +6,11 @@ using Exiled.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
 using BetterScp106.Commands;
+using UserSettings.ServerSpecific;
 using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
-using UserSettings.ServerSpecific;
+
 
 
 namespace BetterScp106

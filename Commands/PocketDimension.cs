@@ -51,13 +51,13 @@ namespace BetterScp106
             if (scp106.RemainingSinkholeCooldown > 0)
             {
                 response = "You can't change dimension that often! Wait a cooldown before changing it again.";
-                player.Broadcast(Plugin.T.cooldown, shouldClearPrevious: true);
+                player.Broadcast(Plugin.T.Cooldown, shouldClearPrevious: true);
                 return false;
             }
 
             if (scp106.Vigor < Mathf.Clamp01(Plugin.C.PocketdimensionCostVigor / 100f) || player.Health <= Plugin.C.PocketdimensionCostHealt)
             {
-                player.Broadcast(Plugin.T.scp106cantpocket);
+                player.Broadcast(Plugin.T.Scp106cantpocket);
                 response = "You don't have enough energy or health to return to your kingdom!";
                 return false;
             }
@@ -66,14 +66,14 @@ namespace BetterScp106
             {
                 scp106.IsSubmerged = true;
                 response = "You can't go to your pocket dimension after Warhead explodes!";
-                player.Broadcast(Plugin.T.afternuke, shouldClearPrevious: true);
+                player.Broadcast(Plugin.T.Afternuke, shouldClearPrevious: true);
                 return false;
             }
 
             Room pocketRoom = Room.Get(RoomType.Pocket);
             if (player.CurrentRoom.Type == RoomType.Pocket)
             {
-                player.Broadcast(Plugin.T.scp106alreadypocket);
+                player.Broadcast(Plugin.T.Scp106alreadypocket);
                 response = "<color=red>You are already in pocket dimension?</color>";
                 return false;
             }
@@ -103,7 +103,7 @@ namespace BetterScp106
             scp106.RemainingSinkholeCooldown = Plugin.C.AfterPocketdimensionCooldown;
             player.Health -= Plugin.C.PocketdimensionCostHealt;
             scp106.Vigor -= Mathf.Clamp01(Plugin.C.PocketdimensionCostVigor / 100f);
-            player.Broadcast(Plugin.T.scp106inpocket, shouldClearPrevious: true);
+            player.Broadcast(Plugin.T.Scp106inpocket, shouldClearPrevious: true);
             Better106.Using = false;
         }
 

@@ -11,20 +11,13 @@ namespace BetterScp106
     {
         public static void Postfix(PocketCorroding __instance, ref RelativePosition __result)
         {
-            if (__instance?.Hub?.roleManager?.CurrentRole == null)
-            {
-                Log.Error("Hub or roleManager is null");
-                return;
-            }
-
-            if (Plugin.C.PocketexitRandomZonemode || __instance.Hub.roleManager.CurrentRole.Team == Team.SCPs)
-            {
-                Log.Debug("Setting random zone...");
+            bool flagLogic = Plugin.C.PocketexitRandomZonemode || __instance?.Hub?.roleManager?.CurrentRole.Team == Team.SCPs;
+            if (flagLogic && !Warhead.IsDetonated)
+            {              
                 __result = Methods.RandomZone();
-                Log.Debug($"Random value: {__result.Relative}");
+                Log.Debug($"Setting random zone... random value: {__result}");
                 return;
             }
-
             Log.Debug("Using default CapturePosition.");
         }
     }

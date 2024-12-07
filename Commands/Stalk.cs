@@ -51,9 +51,7 @@ namespace BetterScp106
                 return false;
             }
     
-            #nullable enable
-            Player? target = Methods.Findtarget(player);
-            #nullable disable
+            Player target = Methods.Findtarget(player);
             if (target == null)
             {
                 response = "You cant find any victim.";

@@ -1,10 +1,10 @@
 ﻿namespace BetterScp106
 {   
     using System;
+    using HarmonyLib;
     using Exiled.API.Features;
     using Scp106 = Exiled.Events.Handlers.Scp106;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
-    using HarmonyLib;
 
     public class Plugin : Plugin<Config, Translation>
     {
@@ -17,7 +17,7 @@
         public override string Author => "ZurnaSever";
         public override string Name => "BetterScp106";
         public override string Prefix => "BetterScp106"; 
-        public override Version Version { get; } = new Version(2, 0, 1);
+        public override Version Version { get; } = new Version(2, 0, 2);
         public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
         public override void OnEnabled()
         {
@@ -27,7 +27,7 @@
             Scp106.Stalking += eventHandlers.OnStalk;
             Scp106.Teleporting += eventHandlers.OnTeleport;
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
-            PlayerHandlers.EscapingPocketDimension += eventHandlers.pd;
+            PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
 
             if (C.OneHitPocket) Scp106.Attacking += eventHandlers.On106Attack;
@@ -46,7 +46,7 @@
             Scp106.Stalking -= eventHandlers.OnStalk;
             Scp106.Teleporting -= eventHandlers.OnTeleport;
             PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
-            PlayerHandlers.EscapingPocketDimension -= eventHandlers.pd;
+            PlayerHandlers.EscapingPocketDimension -= eventHandlers.Pd;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
 
             if (C.OneHitPocket) Scp106.Attacking -= eventHandlers.On106Attack;

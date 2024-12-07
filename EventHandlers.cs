@@ -22,7 +22,10 @@ namespace BetterScp106
         public static int GetPocketScp;
 
         public static bool GetScpPerm = false;
-        public EventHandlers(Plugin plugin) => this.plugin = plugin;
+        public EventHandlers(Plugin plugin)
+        {
+            this.plugin = plugin;
+        }
         public void OnStalk(StalkingEventArgs ev)
         {
             if (Better106.Using)
@@ -30,13 +33,13 @@ namespace BetterScp106
         }
         public void OnSpawned(SpawnedEventArgs ev)
         {
-            if (ev.Player.Role == RoleTypeId.Scp106)
-            {
-                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
-              /*ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub, SettingHandlers.Better106Menu());
-                ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;*/
-            }
-        } 
+            if (ev.Player.Role != RoleTypeId.Scp106)
+                return;
+
+          /*ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub, SettingHandlers.Better106Menu());
+            ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;*/
+            ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+        }
         public void Alt(TogglingNoClipEventArgs ev)
         {
             if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
@@ -82,27 +85,26 @@ namespace BetterScp106
             ev.Player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
             if (scp106.RemainingSinkholeCooldown > 0f)
             {
-                ev.Player.Broadcast(plugin.Translation.cooldown, shouldClearPrevious: true);
+                ev.Player.Broadcast(plugin.Translation.Cooldown, shouldClearPrevious: true);
                 return;
             }
 
             if (scp106.Vigor < Mathf.Clamp01(plugin.Config.PocketdimensionCostVigor / 100f) || ev.Player.Health <= plugin.Config.PocketdimensionCostHealt)
             {
-                ev.Player.Broadcast(plugin.Translation.scp106cantpocket);
+                ev.Player.Broadcast(plugin.Translation.Scp106cantpocket);
                 return;
             }
 
             if (AlphaWarheadController.Detonated)
             {
                 scp106.IsSubmerged = true;
-                ev.Player.Broadcast(plugin.Translation.afternuke, shouldClearPrevious: true);
+                ev.Player.Broadcast(plugin.Translation.Afternuke, shouldClearPrevious: true);
                 return;
             }
 
-            Room pocketRoom = Room.Get(RoomType.Pocket);
             if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
             {
-                ev.Player.Broadcast(plugin.Translation.scp106alreadypocket);
+                ev.Player.Broadcast(plugin.Translation.Scp106alreadypocket);
                 return;
             }
 
@@ -121,7 +123,7 @@ namespace BetterScp106
             if (Better106.Using)
                 ev.IsAllowed = false;
         }
-        public void pd(EscapingPocketDimensionEventArgs ev)
+        public void Pd(EscapingPocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)
                 return;
@@ -135,13 +137,13 @@ namespace BetterScp106
             if (ev.DamageHandler.Type != DamageType.Warhead)
                 return;
 
-            if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
-            {
-                ev.IsAllowed = false;
-                FogControl fogControl = ev.Player.ReferenceHub.playerEffectsController.GetEffect<FogControl>();
-                fogControl?.SetFogType(FogType.Outside);
-            }
-        } 
+            if (ev.Player.CurrentRoom.Type != RoomType.Pocket)
+                return;
+
+            ev.IsAllowed = false;
+            FogControl fogControl = ev.Player.ReferenceHub.playerEffectsController.GetEffect<FogControl>();
+            fogControl?.SetFogType(FogType.Outside);
+        }
         public void OnFailingEscape(FailingEscapePocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)

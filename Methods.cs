@@ -25,26 +25,24 @@ namespace BetterScp106
         {
             List<Vector3> randompos =
             [
-                Room.Get(RoomType.Surface).Position
-            ];
-            if (!Warhead.IsDetonated)
-            {
-                if(!Map.IsLczDecontaminated)
-                    randompos.Add(Room.Get(RoomType.Lcz914).Position);
-                randompos.Add(Room.Get(RoomType.EzGateB).Position);
-                randompos.Add(Room.Get(RoomType.Hcz096).Position);
-            }
+                Room.Get(RoomType.Hcz096).Position,
+                Room.Get(RoomType.Lcz914).Position,
+                Room.Get(RoomType.EzGateB).Position,
+                Room.Get(RoomType.Surface).Position,
+            ]; 
+            if (Map.IsLczDecontaminated)
+                randompos.Remove(Room.Get(RoomType.Lcz914).Position);
 
             int Randomzone = new System.Random().Next(randompos.Count);
-            Log.Debug( randompos.Count + Randomzone);
             RelativePosition position = new(randompos[Randomzone]);
-            Log.Debug(position);
+            Log.Debug("Random Zones count: " + randompos.Count + "random position " + position);
             return position;
         }
         public static Player Findtarget(Player player)
         {
             IEnumerable<Player> stalkablePlayers = Player.List.Where
-            (p =>
+            (
+                p =>
                 Plugin.C.StalkableRoles.Contains(p.Role) &&
                 p.Health < Plugin.C.StalkTargetmaxHealt &&
                 p.CurrentRoom?.Type != RoomType.Pocket
@@ -53,11 +51,12 @@ namespace BetterScp106
             if (!Plugin.C.StalkFromEverywhere)
             {
                 stalkablePlayers = stalkablePlayers.Where
-                (p =>
+                (
+                    p =>
                     Vector3.Distance(p.Position, player.Position) <= Plugin.C.StalkDistance ||
                     (
-                    p.CurrentRoom.Doors?.Any(door => door is ElevatorDoor) ==true &&
-                     Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance
+                        p.CurrentRoom.Doors?.Any(door => door is ElevatorDoor) ==true &&
+                        Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance
                     )
                 );
             }
@@ -67,9 +66,11 @@ namespace BetterScp106
         public static Player FindFriend(Player player)
         {
             Player friend = Player.List.Where
-                            (p => p != player &&
-                                      p.IsScp &&
-                                      Vector3.Distance(p.Position, player.Position) <= 1.5
+                            (
+                                p => 
+                                p != player &&
+                                p.IsScp &&
+                                Vector3.Distance(p.Position, player.Position) <= 1.5
                             )
                             .OrderBy(p => Vector3.Distance(p.Position, player.Position))
                             .FirstOrDefault();
@@ -77,16 +78,14 @@ namespace BetterScp106
         }   
         public static void EscapeFromDimension(Player player)
         {
-            ReferenceHub referenceHub = player.ReferenceHub;
-            if (referenceHub.roleManager.CurrentRole is IFpcRole fpcRole)
-            {
-                fpcRole.FpcModule.ServerOverridePosition(Scp106PocketExitFinder.GetBestExitPosition(fpcRole), Vector3.zero);
+            if (player.ReferenceHub.roleManager.CurrentRole is not IFpcRole fpcRole)
+                return;
 
-                player.DisableAllEffects();
-
-                if (player.Role == RoleTypeId.Scp106 && Plugin.C.Reminders)
-                    Methods.ShowRandomScp106Hint(player);
-            }
+            player.DisableAllEffects();
+            fpcRole.FpcModule.ServerOverridePosition(Scp106PocketExitFinder.GetBestExitPosition(fpcRole), Vector3.zero);
+            
+            if (player.Role == RoleTypeId.Scp106 && Plugin.C.Reminders)
+                ShowRandomScp106Hint(player);
         }
         public static void ShowRandomScp106Hint(Player player)
         {

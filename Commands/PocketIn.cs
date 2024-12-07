@@ -36,7 +36,7 @@ namespace BetterScp106.Commands
             player.Role.Is(out Scp106Role scp106);
             if (scp106.RemainingSinkholeCooldown > 0)
             {
-                player.Broadcast(Plugin.T.cooldown, shouldClearPrevious: true);
+                player.Broadcast(Plugin.T.Cooldown, shouldClearPrevious: true);
                 response = "You can't change dimension that often! Wait a cooldown before changing it again.";
                 return false;
             }
@@ -50,7 +50,7 @@ namespace BetterScp106.Commands
             if (AlphaWarheadController.Detonated)
             {
                 scp106.IsSubmerged = true;
-                player.Broadcast(Plugin.T.afternuke, shouldClearPrevious: true);
+                player.Broadcast(Plugin.T.Afternuke, shouldClearPrevious: true);
                 response = "You can't go to your pocket dimension after Warhead explodes!";
                 return false;
             }
@@ -84,7 +84,7 @@ namespace BetterScp106.Commands
             Better106.Using = true;
 
             player.Role.Is(out Scp106Role scp106);
-            friend.Broadcast(Plugin.T.scp106ReqFriendinpocket, shouldClearPrevious: true);
+            friend.Broadcast(Plugin.T.Scp106ReqFriendinpocket, shouldClearPrevious: true);
             friend.EnableEffect<Flashed>();
             friend.EnableEffect<Ensnared>();
             EventHandlers.GetPocketScp = friend.Id;
@@ -97,7 +97,7 @@ namespace BetterScp106.Commands
                 friend.DisableEffect<Flashed>();
                 friend.DisableEffect<Ensnared>();
                 player.DisableEffect<Ensnared>();
-                player.Broadcast(Plugin.T.scp106friendrefusedlpocketin, true);
+                player.Broadcast(Plugin.T.Scp106friendrefusedlpocketin, true);
                 EventHandlers.GetScpPerm = false;
                 EventHandlers.GetPocketScp = -1;
 
@@ -116,8 +116,8 @@ namespace BetterScp106.Commands
                 friend.DisableEffect<Ensnared>();
                 friend.DisableEffect<Flashed>();
                 player.DisableAllEffects();
-                player.Broadcast(Plugin.T.scp106inpocket, shouldClearPrevious: true);
-                friend.Broadcast(Plugin.T.scp106Friendinpocket, shouldClearPrevious: true);
+                player.Broadcast(Plugin.T.Scp106inpocket, shouldClearPrevious: true);
+                friend.Broadcast(Plugin.T.Scp106Friendinpocket, shouldClearPrevious: true);
 
                 yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.TargetSubmerged);
 

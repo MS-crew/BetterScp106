@@ -1,27 +1,28 @@
 ﻿using System.ComponentModel;
 using Exiled.API.Interfaces;
+
 namespace BetterScp106
 {
     using Exiled.API.Features;
     public class Translation : ITranslation
     {
         [Description("The broadcast when Scp 106 goes to the pocket dimension")]
-        public Broadcast scp106inpocket { get; set; } = new Broadcast("<color=red>Ahh ,Home sweet home...</color>", 4);
+        public Broadcast Scp106inpocket { get; set; } = new Broadcast("<color=red>Ahh ,Home sweet home...</color>", 4);
 
         [Description("The broadcast when Scp 106 trying go to pocket dimension but its already pocket")]
-        public Broadcast scp106alreadypocket { get; set; } = new Broadcast("<color=red>You are already in pocket dimension?</color>", 3);
+        public Broadcast Scp106alreadypocket { get; set; } = new Broadcast("<color=red>You are already in pocket dimension?</color>", 3);
 
         [Description("There is not enough health or vigor to stalk for go to pocket")]
-        public Broadcast scp106cantpocket { get; set; } = new Broadcast("<color=red>You don't have enough energy or health to return to your kingdom!</color>", 3);
+        public Broadcast Scp106cantpocket { get; set; } = new Broadcast("<color=red>You don't have enough energy or health to return to your kingdom!</color>", 3);
 
         [Description("Message that will appear when scp 106 tries to take someone to pocket")]
-        public Broadcast scp106ReqFriendinpocket { get; set; } = new Broadcast("<color=red>Scp-106 trying to take you to Pocket, if you don't want it, JUMP! in 3 seconds</color>", 3);
+        public Broadcast Scp106ReqFriendinpocket { get; set; } = new Broadcast("<color=red>Scp-106 trying to take you to Pocket, if you don't want it, JUMP! in 3 seconds</color>", 3);
 
         [Description("The broadcast when The Scp bow that Scp 106 carries goes to the pocket dimension")]
-        public Broadcast scp106Friendinpocket { get; set; } = new Broadcast("<color=red>Welcome to my home friend...</color>", 4);
+        public Broadcast Scp106Friendinpocket { get; set; } = new Broadcast("<color=red>Welcome to my home friend...</color>", 4);
 
         [Description("If the scp that scp106 is trying to throw into the pocket dimension refuses to enter the pocket dimension, the message that will appear to 106")]
-        public Broadcast scp106friendrefusedlpocketin { get; set; } = new Broadcast("<color=red>Your friend refused to go into your pocket!</color>", 3);
+        public Broadcast Scp106friendrefusedlpocketin { get; set; } = new Broadcast("<color=red>Your friend refused to go into your pocket!</color>", 3);
 
         [Description("Warning message to the victim of Scp106 (Warns the victim the second before set in the Config)")]
         public Broadcast StalkVictimWarn { get; set; } = new Broadcast("<color=red>A black liquid rises from the ground. Coming for you RUN!!!</color>", 4);
@@ -39,10 +40,10 @@ namespace BetterScp106
         public Broadcast StalkCant { get; set; } = new Broadcast("<color=red>You can't stalk right now, you don't have enough energy or health, or you try to do it too often.</color>", 3);
 
         [Description("The broadcast that appears when trying to go to the pocket dimension after the warhead explodes")]
-        public Broadcast afternuke { get; set; } = new Broadcast("<color=red>The urge inside you pushes you out to hunt...</color>", 4);
+        public Broadcast Afternuke { get; set; } = new Broadcast("<color=red>The urge inside you pushes you out to hunt...</color>", 4);
 
         [Description("Cooldown warning")]
-        public Broadcast cooldown { get; set; } = new Broadcast("<color=red>You can't change dimension that often! You should wait a bit before changing it again.</color>", 4);
+        public Broadcast Cooldown { get; set; } = new Broadcast("<color=red>You can't change dimension that often! You should wait a bit before changing it again.</color>", 4);
 
         [Description("Message to be shown to player spawn as Scp-106")]
         public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features by typing</color></voffset> \n <voffset=-0.05em><color=blue>'.Better106'</color><color=red> or</color> <color=blue>'.106'</color> <color=red>on the console.</color></voffset>";

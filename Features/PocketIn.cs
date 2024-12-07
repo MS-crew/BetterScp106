@@ -1,5 +1,4 @@
 ﻿using MEC;
-using PlayerRoles;
 using UnityEngine;
 using Exiled.API.Enums;
 using CustomPlayerEffects;
@@ -12,19 +11,12 @@ namespace BetterScp106.Features
 {
     public class PocketIn
     {
-        public static void PocketInV3(Player player)
+        public static void PocketInFeature(Player player)
         {
-            if (player.Role != RoleTypeId.Scp106)
-            {
-                player.ShowHint("This command can only be used for SCP-106!",3);
-                return;
-            }
-
             player.Role.Is(out Scp106Role scp106);
             if (scp106.RemainingSinkholeCooldown > 0)
             {
                 player.Broadcast(Plugin.T.cooldown, shouldClearPrevious: true);
-                player.ShowHint("You can't change dimension that often! Wait a cooldown before changing it again.", 3);
                 return;
             }
 
@@ -38,7 +30,6 @@ namespace BetterScp106.Features
             {
                 scp106.IsSubmerged = true;
                 player.Broadcast(Plugin.T.afternuke, shouldClearPrevious: true);
-                player.ShowHint("You can't go to your pocket dimension after Warhead explodes!", 3);
                 return;
             }
 

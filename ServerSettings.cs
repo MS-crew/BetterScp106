@@ -23,7 +23,7 @@ namespace BetterScp106
                 new SSGroupHeader("Better Scp-106"),
                 new SSTextArea         (107, StringBuilderPool.Shared.ToStringReturn(stringBuilder), SSTextArea.FoldoutMode.ExtendedByDefault),
                 new SSTwoButtonsSetting(108, "Stalk mode", "Healt", "Distance",defaultIsB: false,hint: "According to this setting, you either stalk the closest person at first, or more logical according to lore, the person with the lowest health."),
-                new SSSliderSetting    (109, "SliderSetting", 0.0f, Plugin.C.StalkDistance, defaultValue: Plugin.C.StalkDistance, integer:true, hint:"The size of the local radius that can be stalked (the server owner determines the maximum distance)"),
+                new SSSliderSetting    (109, "SliderSetting", 0.0f, Plugin.C.StalkFromEverywhere? 20000: Plugin.C.StalkDistance, defaultValue: Plugin.C.StalkFromEverywhere? 20000: Plugin.C.StalkDistance, integer:true, hint:"The size of the local radius that can be stalked (the server owner determines the maximum distance)"),
                 new SSKeybindSetting   ((int)Methods.Features.PocketKey, "Pocket Dimension Key", suggestedKey: UnityEngine.KeyCode.F),
                 new SSKeybindSetting   ((int)Methods.Features.PocketinKey, "Pocket In Key", suggestedKey: UnityEngine.KeyCode.G),
                 new SSKeybindSetting   ((int)Methods.Features.StalkKey, "Stalk Key", suggestedKey: UnityEngine.KeyCode.H),

@@ -55,7 +55,10 @@ namespace BetterScp106
         public int StalkDistance { get; set; } = 200;
 
         [Description("Stalk from any distance.")]
-        public bool StalkFromEverywhere { get; set; } = false;
+        public bool StalkFromEverywhere { get; set; } = false; 
+
+        [Description("Warn victim before Stalk.")]
+        public bool StalkWarning { get; set; } = false;
 
         [Description("How low should the health of the target to be stalked be? 106 tracks moribund targets, so the target to be stalked will be the one with the lowest health and the one you set. (if you want him to be able to stalk everyone, you can just write 101)")]
         public int StalkTargetmaxHealt { get; set; } = 90;

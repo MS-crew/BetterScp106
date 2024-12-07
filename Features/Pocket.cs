@@ -1,13 +1,11 @@
-﻿using BetterScp106.Commands;
-using CommandSystem;
-using CustomPlayerEffects;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.API.Features.Roles;
-using MEC;
-using PlayerRoles;
-using System.Collections.Generic;
+﻿using MEC;
 using UnityEngine;
+using Exiled.API.Enums;
+using CustomPlayerEffects;
+using Exiled.API.Features;
+using BetterScp106.Commands;
+using Exiled.API.Features.Roles;
+using System.Collections.Generic;
 
 namespace BetterScp106.Features
 {
@@ -15,18 +13,6 @@ namespace BetterScp106.Features
     {
         public static void PocketFeature(Player sender)
         {
-            if (sender == null)
-            {
-                sender.ShowHint("This command must be executed in-game.", 3);
-                return;
-            }
-
-            if (sender.Role != RoleTypeId.Scp106)
-            {
-                sender.ShowHint("This command only for Scp-106", 3);
-                return;
-            }
-
             sender.Role.Is(out Scp106Role scp106);
             if (scp106.RemainingSinkholeCooldown > 0)
             {

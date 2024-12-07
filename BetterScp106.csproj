@@ -98,6 +98,7 @@
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Features\Pocket.cs" />
     <Compile Include="Features\PocketIn.cs" />
+    <Compile Include="Features\Stalking.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="Patchs.cs" />
     <Compile Include="Plugin.cs" />

@@ -129,7 +129,14 @@ namespace BetterScp106
                 when setting is SSKeybindSetting keybind:
                     {
                         if (keybind.SyncIsPressed)
-                            PocketIn.PocketInV3(Player.Get(sender));
+                            PocketIn.PocketInFeature(Player.Get(sender));
+                    }
+                    break;
+                case Features.StalkKey
+                when setting is SSKeybindSetting keybind:
+                    {
+                        if (keybind.SyncIsPressed)
+                            Stalking.StalkFeature(Player.Get(sender));
                     }
                     break;
             }

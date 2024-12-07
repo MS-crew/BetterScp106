@@ -23,7 +23,7 @@ namespace BetterScp106
         [Description("If the scp that scp106 is trying to throw into the pocket dimension refuses to enter the pocket dimension, the message that will appear to 106")]
         public Broadcast scp106friendrefusedlpocketin { get; set; } = new Broadcast("<color=red>Your friend refused to go into your pocket!</color>", 3);
 
-        [Description("Warning message to the victim of Scp106 (It warns the victim 1 second before, you can just leave it blank if you do not want it)")]
+        [Description("Warning message to the victim of Scp106 (Warns the victim the second before set in the Config)")]
         public Broadcast StalkVictimWarn { get; set; } = new Broadcast("<color=red>A black liquid rises from the ground. Coming for you RUN!!!</color>", 4);
 
         [Description("Broadcast message to Scp 106 after stalking the victim")]

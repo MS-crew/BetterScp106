@@ -43,40 +43,26 @@ namespace BetterScp106
         }
         public static Player Findtarget(Player player)
         {
-            Player target;
-            if (Plugin.C.StalkFromEverywhere)
+            IEnumerable<Player> stalkablePlayers = Player.List.Where
+            (p =>
+                Plugin.C.StalkableRoles.Contains(p.Role) &&
+                p.Health < Plugin.C.StalkTargetmaxHealt &&
+                p.CurrentRoom?.Type != RoomType.Pocket
+            );
+
+            if (!Plugin.C.StalkFromEverywhere)
             {
-                target = Player.List
-                .Where(p =>
-                    Plugin.C.StalkableRoles.Contains(p.Role) &&
-                    p.Health < Plugin.C.StalkTargetmaxHealt &&
-                    p.CurrentRoom != null &&
-                    p.CurrentRoom.Type != RoomType.Pocket
-                )
-                .OrderBy(p => p.Health)
-                .FirstOrDefault();
-            }
-            else
-            {
-                target = Player.List
-                .Where(p =>
-                    Plugin.C.StalkableRoles.Contains(p.Role) &&
-                    p.Health < Plugin.C.StalkTargetmaxHealt &&
-                    p.CurrentRoom != null &&
-                    p.CurrentRoom.Type != RoomType.Pocket &&
+                stalkablePlayers = stalkablePlayers.Where
+                (p =>
+                    Vector3.Distance(p.Position, player.Position) <= Plugin.C.StalkDistance ||
                     (
-                        Vector3.Distance(p.Position, player.Position) <= Plugin.C.StalkDistance ||
-                        (
-                         p.CurrentRoom.Doors != null &&
-                         p.CurrentRoom.Doors.Any(door => door is ElevatorDoor) &&
-                         Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance
-                         )
+                    p.CurrentRoom.Doors?.Any(door => door is ElevatorDoor) ==true &&
+                     Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance
                     )
-                )
-                .OrderBy(p => p.Health)
-                .FirstOrDefault();
+                );
             }
-            return target;
+
+            return stalkablePlayers.OrderBy(p => p.Health).FirstOrDefault();
         }
         public static Player FindFriend(Player player)
         {

@@ -80,7 +80,7 @@ namespace BetterScp106
             if (!target.IsAlive)
             {
                 player.Broadcast(Plugin.T.StalkFailed, shouldClearPrevious: true);
-                Log.Debug("Cant find any player for stalk");
+                Log.Debug("Stalk victim die before stalk");
             }
             else
             {

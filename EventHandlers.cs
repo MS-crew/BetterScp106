@@ -9,6 +9,7 @@ using BetterScp106.Commands;
 using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
+using UserSettings.ServerSpecific;
 
 
 namespace BetterScp106
@@ -29,7 +30,11 @@ namespace BetterScp106
         public void OnSpawned(SpawnedEventArgs ev)
         {
             if (ev.Player.Role == RoleTypeId.Scp106)
+            {
                 ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+                ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub, SettingHandlers.Better106Menu());
+                ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;
+            }    
         } 
         public void Alt(TogglingNoClipEventArgs ev)
         {

@@ -4,8 +4,10 @@ using PlayerRoles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using RelativePositioning;
+using BetterScp106.Features;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
+using UserSettings.ServerSpecific;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
 
@@ -13,6 +15,12 @@ namespace BetterScp106
 {
     public class Methods
     {
+        public enum Features
+        {
+            PocketKey,
+            PocketinKey,
+            StalkKey
+        } 
         public static RelativePosition RandomZone()
         {
             List<Vector3> randompos =
@@ -30,26 +38,44 @@ namespace BetterScp106
             int Randomzone = new System.Random().Next(randompos.Count);
             Log.Debug( randompos.Count + Randomzone);
             RelativePosition position = new(randompos[Randomzone]);
-            Log.Debug(Room.Get(position));
+            Log.Debug(position);
             return position;
         }
         public static Player Findtarget(Player player)
         {
-            Player target = Player.List
+            Player target;
+            if (Plugin.C.StalkFromEverywhere)
+            {
+                target = Player.List
                 .Where(p =>
-                    p.IsHuman &&
-                    p.CurrentRoom != null &&
+                    Plugin.C.SalkingRoles.Contains(p.Role) &&
                     p.Health < Plugin.C.StalkTargetmaxHealt &&
+                    p.CurrentRoom != null &&
+                    p.CurrentRoom.Type != RoomType.Pocket
+                )
+                .OrderBy(p => p.Health)
+                .FirstOrDefault();
+            }
+            else
+            {
+                target = Player.List
+                .Where(p =>
+                    Plugin.C.SalkingRoles.Contains(p.Role) &&
+                    p.Health < Plugin.C.StalkTargetmaxHealt &&
+                    p.CurrentRoom != null &&
+                    p.CurrentRoom.Type != RoomType.Pocket &&
                     (
-                        Vector3.Distance(p.Position, player.Position) <= Plugin.C.StalkDistance
-                        ||
-                        (p.CurrentRoom.Doors != null &&
+                        Vector3.Distance(p.Position, player.Position) <= Plugin.C.StalkDistance ||
+                        (
+                         p.CurrentRoom.Doors != null &&
                          p.CurrentRoom.Doors.Any(door => door is ElevatorDoor) &&
-                         Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance)
+                         Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance
+                         )
                     )
                 )
                 .OrderBy(p => p.Health)
                 .FirstOrDefault();
+            }
             return target;
         }
         public static Player FindFriend(Player player)
@@ -88,5 +114,25 @@ namespace BetterScp106
             };
             player.ShowHint(hint, 3);
         }
+        public static void ProcessUserInput(ReferenceHub sender, ServerSpecificSettingBase setting)
+        {
+            switch ((Features) setting.SettingId)
+            {
+                case Features.PocketKey
+                when setting is SSKeybindSetting keybind:
+                    {
+                        if (keybind.SyncIsPressed)
+                            Pocket.PocketFeature(Player.Get(sender));
+                    }
+                    break;
+                case Features.PocketinKey
+                when setting is SSKeybindSetting keybind:
+                    {
+                        if (keybind.SyncIsPressed)
+                            PocketIn.PocketInV3(Player.Get(sender));
+                    }
+                    break;
+            }
+        }  
     }
 }

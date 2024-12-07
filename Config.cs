@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using PlayerRoles;
 using System.ComponentModel;
 
 namespace BetterScp106
@@ -53,6 +54,9 @@ namespace BetterScp106
         [Description("How far can you go to victims with Stalk. If you want everywhere you can enter crazy numbers like 99999")]
         public int StalkDistance { get; set; } = 200;
 
+        [Description("Stalk from any distance.")]
+        public bool StalkFromEverywhere { get; set; } = false;
+
         [Description("How low should the health of the target to be stalked be? 106 tracks moribund targets, so the target to be stalked will be the one with the lowest health and the one you set. (if you want him to be able to stalk everyone, you can just write 101)")]
         public int StalkTargetmaxHealt { get; set; } = 90;
 
@@ -66,6 +70,21 @@ namespace BetterScp106
 
         [Description("How much cooldown should be after Stalk?")]
         public int AfterStalkCooldown { get; set; } = 90;
+        [Description("Which roles can be Stalked?")]
+        public RoleTypeId[] SalkingRoles { get; set; } =
+        [
+            RoleTypeId.ClassD,
+            RoleTypeId.Scientist,
+            RoleTypeId.FacilityGuard,
+            RoleTypeId.ChaosConscript,
+            RoleTypeId.ChaosMarauder,
+            RoleTypeId.ChaosRepressor,
+            RoleTypeId.ChaosRifleman,
+            RoleTypeId.NtfCaptain,
+            RoleTypeId.NtfPrivate,
+            RoleTypeId.NtfSergeant,
+            RoleTypeId.NtfSpecialist
+        ];
 
     }
 }

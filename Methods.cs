@@ -48,7 +48,7 @@ namespace BetterScp106
             {
                 target = Player.List
                 .Where(p =>
-                    Plugin.C.SalkingRoles.Contains(p.Role) &&
+                    Plugin.C.StalkableRoles.Contains(p.Role) &&
                     p.Health < Plugin.C.StalkTargetmaxHealt &&
                     p.CurrentRoom != null &&
                     p.CurrentRoom.Type != RoomType.Pocket
@@ -60,7 +60,7 @@ namespace BetterScp106
             {
                 target = Player.List
                 .Where(p =>
-                    Plugin.C.SalkingRoles.Contains(p.Role) &&
+                    Plugin.C.StalkableRoles.Contains(p.Role) &&
                     p.Health < Plugin.C.StalkTargetmaxHealt &&
                     p.CurrentRoom != null &&
                     p.CurrentRoom.Type != RoomType.Pocket &&

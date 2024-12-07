@@ -1,5 +1,5 @@
-﻿using Exiled.API.Interfaces;
-using PlayerRoles;
+﻿using PlayerRoles;
+using Exiled.API.Interfaces;
 using System.ComponentModel;
 
 namespace BetterScp106
@@ -57,9 +57,6 @@ namespace BetterScp106
         [Description("Stalk from any distance.")]
         public bool StalkFromEverywhere { get; set; } = false; 
 
-        [Description("Warn victim before Stalk.")]
-        public bool StalkWarning { get; set; } = false;
-
         [Description("How low should the health of the target to be stalked be? 106 tracks moribund targets, so the target to be stalked will be the one with the lowest health and the one you set. (if you want him to be able to stalk everyone, you can just write 101)")]
         public int StalkTargetmaxHealt { get; set; } = 90;
 
@@ -68,13 +65,18 @@ namespace BetterScp106
 
         [Description("How much Vigor/106 energy would a successful stalk cost?")]
         public int StalkCostVigor { get; set; } = 25;
-        [Description("How many seconds before target warning in Stalks")]
+
+        [Description("Warn victim before Stalk.")]
+        public bool StalkWarning { get; set; } = true;
+
+        [Description("How many seconds before target warning in Stalks (If the stalk warning is on)")]
         public float StalkWarningBefore { get; set; } = 1;
 
         [Description("How much cooldown should be after Stalk?")]
         public int AfterStalkCooldown { get; set; } = 90;
+
         [Description("Which roles can be Stalked?")]
-        public RoleTypeId[] SalkingRoles { get; set; } =
+        public RoleTypeId[] StalkableRoles { get; set; } =
         [
             RoleTypeId.ClassD,
             RoleTypeId.Scientist,

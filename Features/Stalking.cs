@@ -1,9 +1,7 @@
-﻿/*In Progges
-using MEC;
+﻿using MEC;
 using UnityEngine;
 using CustomPlayerEffects;
 using Exiled.API.Features;
-using BetterScp106.Commands;
 using System.Collections.Generic;
 
 namespace BetterScp106.Features
@@ -15,11 +13,11 @@ namespace BetterScp106.Features
             player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
             if (scp106.RemainingSinkholeCooldown > 0)
             {
-                player.Broadcast(Plugin.T.cooldown,true);
+                player.Broadcast(Plugin.T.Cooldown,true);
                 return;
             }
 
-            if (Better106.Using || scp106.Vigor < Mathf.Clamp01(Plugin.C.StalkCostVigor / 100f) || player.Health <= Plugin.C.StalkCostHealt)
+            if (Plugin.Using || scp106.Vigor < Mathf.Clamp01(Plugin.C.StalkCostVigor / 100f) || player.Health <= Plugin.C.StalkCostHealt)
             {
                 player.Broadcast(Plugin.T.StalkCant, true);
                 return;
@@ -37,10 +35,10 @@ namespace BetterScp106.Features
         }
         public static IEnumerator<float> StalkV3(Player player, Player target)
         {
-            if (Better106.Using)
+            if (Plugin.Using)
                 yield break;
 
-            Better106.Using = true;
+            Plugin.Using = true;
 
             if (Plugin.C.StalkWarning) 
             {
@@ -81,7 +79,7 @@ namespace BetterScp106.Features
                 Log.Debug("cooldown is added and health and vigor are reduced");
             }
 
-            Better106.Using = false;
+            Plugin.Using = false;
         }
     }
-}*/
+}

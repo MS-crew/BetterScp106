@@ -4,10 +4,10 @@ using PlayerRoles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using RelativePositioning;
-//using BetterScp106.Features;
+using BetterScp106.Features;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
-//using UserSettings.ServerSpecific;
+using UserSettings.ServerSpecific;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
 
@@ -15,12 +15,15 @@ namespace BetterScp106
 {
     public class Methods
     {
-      /*public enum Features
+        public static float StalkDistance = Plugin.C.StalkDistance;
+        public enum Features
         {
             PocketKey,
             PocketinKey,
-            StalkKey
-        } */
+            StalkKey,
+            StalkMode,
+            StalkDistanceSlider
+        }
         public static RelativePosition RandomZone()
         {
             List<Vector3> randompos =
@@ -30,7 +33,13 @@ namespace BetterScp106
                 Room.Get(RoomType.EzGateB).Position,
                 Room.Get(RoomType.Surface).Position,
             ]; 
-            if (Map.IsLczDecontaminated)
+            if(Warhead.RealDetonationTimer < 15) 
+            { 
+                randompos.Remove(Room.Get(RoomType.Lcz914).Position);
+                randompos.Remove(Room.Get(RoomType.EzGateB).Position);
+                randompos.Remove(Room.Get(RoomType.Hcz096).Position);
+            }
+            if (Map.IsLczDecontaminated || Map.DecontaminationState == DecontaminationState.Countdown)
                 randompos.Remove(Room.Get(RoomType.Lcz914).Position);
 
             int Randomzone = new System.Random().Next(randompos.Count);
@@ -40,6 +49,9 @@ namespace BetterScp106
         }
         public static Player Findtarget(Player player)
         {
+            bool StalkMode = ServerSpecificSettingsSync.GetSettingOfUser<SSTwoButtonsSetting>(player.ReferenceHub, Plugin.C.AbilitySettingIds[Features.StalkMode]).SyncIsB;
+            float StalkDistance = ServerSpecificSettingsSync.GetSettingOfUser<SSSliderSetting>(player.ReferenceHub, Plugin.C.AbilitySettingIds[Features.StalkDistanceSlider]).SyncFloatValue;
+
             IEnumerable<Player> stalkablePlayers = Player.List.Where
             (
                 p =>
@@ -53,15 +65,23 @@ namespace BetterScp106
                 stalkablePlayers = stalkablePlayers.Where
                 (
                     p =>
-                    Vector3.Distance(p.Position, player.Position) <= Plugin.C.StalkDistance ||
+                    Vector3.Distance(p.Position, player.Position) <= StalkDistance ||
                     (
-                        p.CurrentRoom.Doors?.Any(door => door is ElevatorDoor) ==true &&
-                        Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Plugin.C.StalkDistance
+                        p.CurrentRoom.Doors?.Any(door => door is ElevatorDoor) == true &&
+                        Vector3.Distance(p.CurrentRoom.Position, player.Position) <= StalkDistance
                     )
                 );
             }
-
-            return stalkablePlayers.OrderBy(p => p.Health).FirstOrDefault();
+            if (StalkMode)
+            {
+                Log.Debug("Stalk Mode: For Healt and Stalk Distance is " + StalkDistance);
+                return stalkablePlayers.OrderBy(p => p.Health).FirstOrDefault();
+            }
+            else
+            {
+                Log.Debug("Stalk Mode: For Distance and Stalk Distance is" + StalkDistance);
+                return stalkablePlayers.OrderBy(p => Vector3.Distance(p.Position, player.Position)).FirstOrDefault();
+            }
         }
         public static Player FindFriend(Player player)
         {
@@ -99,32 +119,24 @@ namespace BetterScp106
             };
             player.ShowHint(hint, 3);
         }
-      /*public static void ProcessUserInput(ReferenceHub sender, ServerSpecificSettingBase setting)
+        internal static void ProcessUserInput(ReferenceHub sender, ServerSpecificSettingBase settingbase)
         {
-            switch ((Features) setting.SettingId)
+            if (settingbase is SSKeybindSetting keybindSetting && sender.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106 && keybindSetting.SyncIsPressed)
             {
-                case Features.PocketKey
-                when setting is SSKeybindSetting keybind:
-                    {
-                        if (keybind.SyncIsPressed)
-                            Pocket.PocketFeature(Player.Get(sender));
-                    }
-                    break;
-                case Features.PocketinKey
-                when setting is SSKeybindSetting keybind:
-                    {
-                        if (keybind.SyncIsPressed)
-                            PocketIn.PocketInFeature(Player.Get(sender));
-                    }
-                    break;
-                case Features.StalkKey
-                when setting is SSKeybindSetting keybind:
-                    {
-                        if (keybind.SyncIsPressed)
-                            Stalking.StalkFeature(Player.Get(sender));
-                    }
-                    break;
+                if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.PocketKey])
+                {
+                    Pocket.PocketFeature(Player.Get(sender));
+                }
+                else if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.PocketinKey])
+                {
+                    PocketIn.PocketInFeature(Player.Get(sender));
+                }
+                else if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.StalkKey])
+                {
+                    Stalking.StalkFeature(Player.Get(sender));
+                }
             }
-        }*/
+        }
+
     }
 }

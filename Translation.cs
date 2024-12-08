@@ -12,11 +12,14 @@ namespace BetterScp106
         [Description("The broadcast when Scp 106 trying go to pocket dimension but its already pocket")]
         public Broadcast Scp106alreadypocket { get; set; } = new Broadcast("<color=red>You are already in pocket dimension?</color>", 3);
 
-        [Description("There is not enough health or vigor to stalk for go to pocket")]
+        [Description("There is not enough health or vigor to for go to pocket")]
         public Broadcast Scp106cantpocket { get; set; } = new Broadcast("<color=red>You don't have enough energy or health to return to your kingdom!</color>", 3);
 
         [Description("Message that will appear when scp 106 tries to take someone to pocket")]
         public Broadcast Scp106ReqFriendinpocket { get; set; } = new Broadcast("<color=red>Scp-106 trying to take you to Pocket, if you don't want it, JUMP! in 3 seconds</color>", 3);
+
+        [Description("What Scp 106 will see when it try pocket in but can't find a Scp")]
+        public Broadcast Scp106CantFindFriend { get; set; } = new Broadcast("<color=red>There are no SCPs here or you're not close enough.</color>", 4);
 
         [Description("The broadcast when The Scp bow that Scp 106 carries goes to the pocket dimension")]
         public Broadcast Scp106Friendinpocket { get; set; } = new Broadcast("<color=red>Welcome to my home friend...</color>", 4);
@@ -46,15 +49,15 @@ namespace BetterScp106
         public Broadcast Cooldown { get; set; } = new Broadcast("<color=red>You can't change dimension that often! You should wait a bit before changing it again.</color>", 4);
 
         [Description("Message to be shown to player spawn as Scp-106")]
-        public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features by typing</color></voffset> \n <voffset=-0.05em><color=blue>'.Better106'</color><color=red> or</color> <color=blue>'.106'</color> <color=red>on the console.</color></voffset>";
+        public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features </color></voffset> \n <voffset=-0.05em><color=blue>'by Server Specific tab'</color> \n <color=red>on Setting.</color></voffset>";
 
         [Description("Pocket feature description")]
-        public string Scp106PowersPocket { get; set; } = "Pocket: You can go to pocket dimension with [C]/sneak key or '.pocket' or '.pd' command. It will cost: $pockethealt healt & $pocketvigor vigor";
+        public string Scp106PowersPocket { get; set; } = "<color=red>Pocket: You can go to pocket dimension. It will cost: $pockethealt healt & $pocketvigor vigor</color>";
 
         [Description("Pocket in feature description")]
-        public string Scp106PowersPocketin { get; set; } = "Pocket in: You can put a SCP in your pocket dimension with '.pocket in' or '.pd in' command. It will cost: $pocketinhealt healt & $pocketinvigor vigor";
+        public string Scp106PowersPocketin { get; set; } = "<color=red>Pocket in: You can put a SCP in your pocket dimension. It will cost: $pocketinhealt healt & $pocketinvigor vigor</color>";
 
         [Description("Stalk feature description")]
-        public string Scp106PowersStalk { get; set; } = "Stalk: You can teleport to a suffering victim with '.stalk' or '.sk' command. It will cost: $stalkhealt healt & $stalkvigor vigor";
+        public string Scp106PowersStalk { get; set; } = "<color=red>Stalk: You can teleport to a suffering victim. It will cost: $stalkhealt healt & $stalkvigor vigor</color>";
     }
 }

@@ -90,10 +90,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Better106.cs" />
-    <Compile Include="Commands\PocketDimension.cs" />
-    <Compile Include="Commands\PocketIn.cs" />
-    <Compile Include="Commands\Stalk.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Features\Pocket.cs" />

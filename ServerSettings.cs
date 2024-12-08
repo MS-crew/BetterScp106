@@ -11,8 +11,6 @@ namespace BetterScp106
         public static ServerSpecificSettingBase[] Better106Menu()
         {
             StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
-            stringBuilder.AppendLine("Better Scp-106:");
-            stringBuilder.AppendLine();
             stringBuilder.AppendLine(Plugin.T.Scp106PowersPocket.Replace("$pockethealt", Plugin.C.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.C.PocketdimensionCostVigor.ToString()));
             stringBuilder.AppendLine();
             stringBuilder.AppendLine(Plugin.T.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.C.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.C.PocketinCostVigor.ToString()));
@@ -28,19 +26,19 @@ namespace BetterScp106
             if (Plugin.C.PocketFeature) 
             {
                 Log.Debug("Pocket feature is open");
-                mainMenu.Add(new SSKeybindSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.PocketKey],"Pocket Dimension Key", suggestedKey: UnityEngine.KeyCode.F));
+                mainMenu.Add(new SSKeybindSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.PocketKey],"Pocket Dimension Key", suggestedKey: UnityEngine.KeyCode.F, hint: "The button you'll use to go to the pocket"));
             }
             if (Plugin.C.PocketinFeature)
             {
                 Log.Debug("Pocket In feature is open");
-                mainMenu.Add(new SSKeybindSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.PocketinKey], "Pocket In Key", suggestedKey: UnityEngine.KeyCode.G));
+                mainMenu.Add(new SSKeybindSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.PocketinKey], "Pocket In Key", suggestedKey: UnityEngine.KeyCode.G, hint: "The button you use to bring your friend to the pocket"));
             }
             if (Plugin.C.StalkFeature)
             {
                 Log.Debug("Stalk feature is open");
-                mainMenu.Add(new SSKeybindSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.StalkKey],"Stalk Key", suggestedKey: UnityEngine.KeyCode.H));
+                mainMenu.Add(new SSKeybindSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.StalkKey],"Stalk Key", suggestedKey: UnityEngine.KeyCode.H, hint: "The button you want to stalk"));
                 mainMenu.Add(new SSTwoButtonsSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.StalkMode], "Stalk mode", "Distance", "Healt", defaultIsB: true, hint: "According to this setting, you either stalk the closest person at first, or more logical according to lore, the person with the lowest health."));
-                mainMenu.Add(new SSSliderSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.StalkDistanceSlider], "SliderSetting", 0.0f, Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, defaultValue: Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, integer: true, hint: "The size of the local radius that can be stalked (the server owner determines the maximum distance)"));
+                mainMenu.Add(new SSSliderSetting(id: Plugin.C.AbilitySettingIds[Methods.Features.StalkDistanceSlider], "Stalk Distance", 0.0f, Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, defaultValue: Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, integer: true, hint: "The size of the local radius that can be stalked (the server owner determines the maximum distance)"));
             }
             return [.. mainMenu];
         }

@@ -1,7 +1,7 @@
 <h1 align="center">Better Scp-106</h1>
 <div align="center">
 <a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/github/downloads/MS-crew/BetterScp106/total?style=for-the-badge&logo=githubactions&label=Downloads" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Release Download"></a>
-<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-1.6.7-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
+<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-2.5.0-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
 <a href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE"><img src="https://img.shields.io/badge/Licence-GNU_3.0-blue?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE" alt="General Public License v3.0"></a>
 <a href="https://github.com/ExMod-Team/EXILED"><img src="https://img.shields.io/badge/Exiled-8.14.1-red?style=for-the-badge&logo=gitbook" href="https://github.com/ExMod-Team/EXILED" alt="GitHub Exiled"></a>
 
@@ -9,12 +9,11 @@
 This add-on for SCP: Secret Laboratory brings new features closer to the lore for the existing SCP-106. The plugin provides a number of customizable features to enhance your server's gaming or RP experience.
 </div>
 
-## Commands Features
+## Features
 
-- **Pocket:** With this command, 106 can return to her own pocket dimension (unless the warhead has exploded in order not to spoil the game experience/and now you can do it with the [C]/sneak walk key).
-- **Pocket in:** With this command, 106 can pull a scp he goes near to his pocket dimension (Scp trying to be taken to pocket can reject it by pressing the [ALT] key).
-- **Stalk:** The most important feature is that if there is an injured victim, you can teleport to a place where he is with the stalk feature (the victim is warned 1 second in advance/and now you can do it with the [ALT] key).
-- **Better106:** It tells you all the features of the 106 and how much they will cost.
+- **Pocket:** 106 can return to her own pocket dimension (unless the warhead has exploded in order not to spoil the game experience).
+- **Pocket in:** 106 can pull a scp he goes near to his pocket dimension (Scp trying to be taken to pocket can reject it by pressing the [ALT] key).
+- **Stalk:** The most important feature is that if there is an injured victim, you can teleport to a place where he is with the stalk feature (the victim is warned 1 second in advance).
 - **Flexible management:** With the config file, you can determine which feature will cost how much vigor or healt, how many meters away the victim can be teleported to the nearby victim with Stalk, or how long the cooldown time will be given to Scp-106 by which feature. Additionally, some features can be turned on or off optionally.
 
 ## Experimental feature
@@ -41,22 +40,25 @@ Thank you for using our plugin and helping us improve it!
 ## Default Config
 ```yml
 is_enabled: true
-debug: false
+debug: true
 # What features should be turned on??
 pocket_feature: true
 pocketin_feature: true
 stalk_feature: true
 one_hit_pocket: false
+# Button setting ids of features
+ability_setting_ids:
+  PocketKey: 106
+  PocketinKey: 107
+  StalkKey: 108
+  StalkMode: 109
+  StalkDistanceSlider: 110
 # Should players exit a random zone when they exit the pocket dimension?
 pocketexit_random_zonemode: true
 # Pocket dimension is not affected by warhead explosion and effect
 realistic_pocket: false
 # Should you be reminded of your 106 powers every time you leave your pocket?
 reminders: true
-# Is it possible to stalk with the Alt key?
-altwith_stalk: true
-# Is it possible to go to pocket dimension with the  [C]/sneak key?
-cwith_pocket: true
 # How much health does it cost to go to pocket dimension?
 pocketdimension_cost_healt: 50
 # How much Vigor/106 energy does it cost to go to pocket dimension?
@@ -100,4 +102,5 @@ stalkable_roles:
 - NtfPrivate
 - NtfSergeant
 - NtfSpecialist
+
 ```

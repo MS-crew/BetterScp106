@@ -42,6 +42,12 @@ namespace BetterScp106
         [Description("There is not enough health or vigor to stalk or there is a cooldown")]
         public Broadcast StalkCant { get; set; } = new Broadcast("<color=red>You can't stalk right now, you don't have enough energy or health, or you try to do it too often.</color>", 3);
 
+        [Description("There is not enough health or vigor to Teleport")]
+        public Broadcast TeleportCant { get; set; } = new Broadcast("<color=red>You cant't Teleport right now, you don't have enough energy or health.</color>", 3);
+
+        [Description("You must be in the same zone to teleport")]
+        public Broadcast TeleportCantforZone { get; set; } = new Broadcast("<color=red>You can't teleport here, you have to be in the same zone.</color>", 3);
+
         [Description("The broadcast that appears when trying to go to the pocket dimension after the warhead explodes")]
         public Broadcast Afternuke { get; set; } = new Broadcast("<color=red>The urge inside you pushes you out to hunt...</color>", 4);
 
@@ -49,15 +55,19 @@ namespace BetterScp106
         public Broadcast Cooldown { get; set; } = new Broadcast("<color=red>You can't change dimension that often! You should wait a bit before changing it again.</color>", 4);
 
         [Description("Message to be shown to player spawn as Scp-106")]
-        public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features </color></voffset> \n <voffset=-0.05em><color=blue>'by Server Specific tab'</color> \n <color=red>on Setting.</color></voffset>";
+        public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features </color></voffset> \n <voffset=-0.05em><color=blue>'by Server Specific tab'</color> <color=red>on Setting.</color></voffset>";
 
         [Description("Pocket feature description")]
-        public string Scp106PowersPocket { get; set; } = "<color=red>Pocket: You can go to pocket dimension. It will cost: $pockethealt healt & $pocketvigor vigor</color>";
+        public string Scp106PowersPocket { get; set; } = "Pocket : You can go to pocket dimension. It will cost: $pockethealt healt & $pocketvigor vigor";
 
         [Description("Pocket in feature description")]
-        public string Scp106PowersPocketin { get; set; } = "<color=red>Pocket in: You can put a SCP in your pocket dimension. It will cost: $pocketinhealt healt & $pocketinvigor vigor</color>";
+        public string Scp106PowersPocketin { get; set; } = "Pocket in : You can put a SCP in your pocket dimension. It will cost: $pocketinhealt healt & $pocketinvigor vigor";
 
         [Description("Stalk feature description")]
-        public string Scp106PowersStalk { get; set; } = "<color=red>Stalk: You can teleport to a suffering victim. It will cost: $stalkhealt healt & $stalkvigor vigor</color>";
+        public string Scp106PowersStalk { get; set; } = "Stalk : You can teleport to a suffering victim. It will cost: $stalkhealt healt & $stalkvigor vigor";
+
+        [Description("Teleport feature description")]
+        public string Scp106PowersTeleport { get; set; } = "Teleport : You can get teleport in the room you want . It will cost: $teleporthealt healt & $teleportvigor vigor";
+
     }
 }

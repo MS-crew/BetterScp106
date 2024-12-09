@@ -26,18 +26,6 @@ namespace BetterScp106
             if (Plugin.Using)
                 ev.IsAllowed = false;
         }
-        public void OnSpawned(SpawnedEventArgs ev)
-        {
-            if (ev.Player.Role != RoleTypeId.Scp106)
-            {
-                ServerSpecificSettingsSync.DefinedSettings = null;
-                ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub);
-                return;
-            }
-            ServerSpecificSettingsSync.DefinedSettings = SettingHandlers.Better106Menu();
-            ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub);
-            ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
-        }
         public void Alt(TogglingNoClipEventArgs ev)
         {
             if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
@@ -70,6 +58,21 @@ namespace BetterScp106
             ev.IsAllowed = false;
             Methods.EscapeFromDimension(ev.Player);
             Log.Debug("Scp exit the dimension with find right exit");
+        }
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (ev.Player.Role != null && ev.Player.Role == RoleTypeId.Scp106)
+            {
+                ServerSpecificSettingsSync.DefinedSettings = null;
+                ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub);
+                return;
+            }
+            if (ev.NewRole != null && ev.NewRole == RoleTypeId.Scp106)
+            {
+                ServerSpecificSettingsSync.DefinedSettings = SettingHandlers.Better106Menu();
+                ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub);
+                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+            }
         }
         public void Warheadkillinhibitor(HurtingEventArgs ev)
         {

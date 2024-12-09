@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using PlayerRoles;
+using MapGeneration;
 using Exiled.API.Enums;
+using ProgressiveCulling;
 using Exiled.API.Features;
 using RelativePositioning;
 using BetterScp106.Features;
@@ -10,11 +13,13 @@ using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
+using Interactables.Interobjects.DoorUtils;
 
 namespace BetterScp106
 {
     public class Methods
     {
+        static RoomIdentifier syncroom;
         public static float StalkDistance = Plugin.C.StalkDistance;
         public enum Features
         {
@@ -22,7 +27,9 @@ namespace BetterScp106
             PocketinKey,
             StalkKey,
             StalkMode,
-            StalkDistanceSlider
+            StalkDistanceSlider,
+            TeleportRooms,
+            TeleportRoomsList
         }
         public static RelativePosition RandomZone()
         {
@@ -119,9 +126,72 @@ namespace BetterScp106
             };
             player.ShowHint(hint, 3);
         }
+        private static bool ValidateDestinationDoor(DoorVariant dv)
+        {
+            return dv is IScp106PassableDoor scp106PassableDoor && scp106PassableDoor.IsScp106Passable && dv.Rooms.Contains<RoomIdentifier>(syncroom);
+        }
+        public static Vector3 GetSafePosition(Player scp106, Vector3 targetpos)
+        {
+            Vector3 safePosition = scp106.Position;
+            syncroom = Room.Get(targetpos).Identifier;
+            float num1 = float.MaxValue;
+            foreach (Pose location in SafeLocationFinder.GetLocations(new Predicate<RoomCullingConnection>(ValidateDestinationConnection), new Predicate<DoorVariant>(ValidateDestinationDoor)))
+            {
+                if ((double)Mathf.Abs(location.position.y - targetpos.y) <= 50.0)
+                {
+                    Vector3 vector3 = ClosestDoorPosition(location.position, targetpos);
+                    float num2 = (vector3 - targetpos).SqrMagnitudeIgnoreY();
+                    if ((double)num2 <= (double)num1)
+                    {
+                        num1 = num2;
+                        safePosition = vector3;
+                    }
+                }
+            }
+            return safePosition;
+        }
+        private static Vector3 ClosestDoorPosition(Vector3 doorPos, Vector3 targetpos)
+        {
+            Vector3 vector3 = targetpos - doorPos;
+            Vector3 dir = new(vector3.x, 0.0f, vector3.z);
+            float maxDis = dir.magnitude;
+            if ((double)maxDis > 0.0)
+                dir /= maxDis;
+            float radius = 0.2f;
+            float height = 0.5f;
+            Vector3 origin = doorPos + Vector3.up * (0.2f + radius);
+            Color debugColor = (double)Scp106HuntersAtlasAbility.DebugDuration > 0.0 ? UnityEngine.Random.ColorHSV(0.0f, 1f, 0.5f, 1f, 0.4f, 0.8f) : Color.clear;
+            var scp106HuntersAtlasAbility = new Scp106HuntersAtlasAbility();
+            Vector3 pos;
+            while (!scp106HuntersAtlasAbility.TrySphereCast(debugColor, origin, dir, radius, height, maxDis, out pos))
+            {
+                maxDis = Mathf.Min(15f, maxDis - radius);
+                if ((double)maxDis < (double)radius)
+                    return doorPos + Vector3.up * height;
+            }
+            return pos;
+        }
+        private static bool ValidateDestinationConnection(RoomCullingConnection connection)
+        {
+            RoomCullingConnection.RoomLink link = connection.Link;
+            if (!link.Valid)
+                return false;
+            return syncroom == link.RoomA || syncroom == link.RoomB;
+        }
         internal static void ProcessUserInput(ReferenceHub sender, ServerSpecificSettingBase settingbase)
         {
-            if (settingbase is SSKeybindSetting keybindSetting && sender.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106 && keybindSetting.SyncIsPressed)
+            if (sender.roleManager.CurrentRole.RoleTypeId != RoleTypeId.Scp106)
+                return;
+
+            if (settingbase is SSButton teleportbuton)
+            {
+                if (teleportbuton.SettingId == Plugin.C.AbilitySettingIds[Features.TeleportRooms])
+                {
+                    TeleportRooms.TeleportFeature(Player.Get(sender));
+                }
+            }
+
+            if (settingbase is SSKeybindSetting keybindSetting && keybindSetting.SyncIsPressed)
             {
                 if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.PocketKey])
                 {
@@ -137,6 +207,5 @@ namespace BetterScp106
                 }
             }
         }
-
     }
 }

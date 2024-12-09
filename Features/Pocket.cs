@@ -32,7 +32,6 @@ namespace BetterScp106.Features
                 return;
             }
 
-            Room pocketRoom = Room.Get(RoomType.Pocket);
             if (sender.CurrentRoom.Type == RoomType.Pocket)
             {
                 sender.Broadcast(Plugin.T.Scp106alreadypocket);
@@ -46,16 +45,18 @@ namespace BetterScp106.Features
                 yield break;
 
             Plugin.Using = true;
-            var scp106 = player.Role as Scp106Role;
+            player.Role.Is(out Scp106Role scp106);
 
-            scp106.IsStalking = true;
+            scp106.IsSubmerged = true;
+            player.EnableEffect<Ensnared>();
 
-            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.SubmergeProgress == 1f);
+            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
 
             player.EnableEffect<PocketCorroding>();
-            scp106.IsStalking = false;
+            Log.Debug("SCP-106 is ground'.");
 
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.TargetSubmerged);
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
+            Log.Debug("SCP-106 exiting ground.");
 
             player.DisableAllEffects();
             scp106.RemainingSinkholeCooldown = Plugin.C.AfterPocketdimensionCooldown;

@@ -59,10 +59,12 @@ namespace BetterScp106.Features
             friend.Broadcast(Plugin.T.Scp106ReqFriendinpocket, shouldClearPrevious: true);
             friend.EnableEffect<Flashed>();
             friend.EnableEffect<Ensnared>();
+            player.EnableEffect<Ensnared>();
             EventHandlers.GetPocketScp = friend.Id;
 
-            scp106.IsStalking = true;
-            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.SubmergeProgress == 1f);
+            scp106.IsSubmerged = true;
+
+            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
 
             if (EventHandlers.GetScpPerm == true)
             {
@@ -73,9 +75,8 @@ namespace BetterScp106.Features
                 EventHandlers.GetScpPerm = false;
                 EventHandlers.GetPocketScp = -1;
 
-                scp106.IsStalking = false;
-                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.TargetSubmerged);
-
+                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
+                player.DisableEffect<Ensnared>();
                 scp106.RemainingSinkholeCooldown = (float)Plugin.C.CanceledPocketingScpCooldown;
                 scp106.Vigor -= Mathf.Clamp01(Plugin.C.PocketinCostVigor / 200f);
 
@@ -83,16 +84,16 @@ namespace BetterScp106.Features
             else
             {
                 player.EnableEffect<PocketCorroding>();
-                scp106.IsStalking = false;
                 friend.EnableEffect<PocketCorroding>();
                 friend.DisableEffect<Ensnared>();
                 friend.DisableEffect<Flashed>();
-                player.DisableAllEffects();
+
                 player.Broadcast(Plugin.T.Scp106inpocket, shouldClearPrevious: true);
                 friend.Broadcast(Plugin.T.Scp106Friendinpocket, shouldClearPrevious: true);
 
-                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.TargetSubmerged);
+                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
 
+                player.DisableAllEffects();
                 scp106.RemainingSinkholeCooldown = (float)Plugin.C.AfterPocketingScpCooldown;
                 scp106.Vigor -= Mathf.Clamp01(Plugin.C.PocketinCostVigor / 100f);
                 player.Health -= Plugin.C.PocketinCostHealt;

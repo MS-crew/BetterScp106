@@ -29,9 +29,9 @@
 
             Scp106.Stalking += eventHandlers.OnStalk;
             Scp106.Teleporting += eventHandlers.OnTeleport;
-            PlayerHandlers.Spawned += eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
-            PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd;
+            PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd; 
+            PlayerHandlers.ChangingRole += eventHandlers.OnChangingRole;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
             ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;
             
@@ -48,9 +48,9 @@
         {
             Scp106.Stalking -= eventHandlers.OnStalk;
             Scp106.Teleporting -= eventHandlers.OnTeleport;
-            PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.Pd;
+            PlayerHandlers.ChangingRole -= eventHandlers.OnChangingRole;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
             ServerSpecificSettingsSync.ServerOnSettingValueReceived -= Methods.ProcessUserInput;
 

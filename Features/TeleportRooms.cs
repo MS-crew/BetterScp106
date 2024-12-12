@@ -5,6 +5,7 @@ using CustomPlayerEffects;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
+using Exiled.API.Enums;
 
 namespace BetterScp106.Features
 {
@@ -41,6 +42,15 @@ namespace BetterScp106.Features
             if (Plugin.C.TeleportOnlySameZone && player.Zone != targetRoom.Zone) 
             {
                 player.Broadcast(Plugin.T.TeleportCantforZone, shouldClearPrevious: true);
+                return;
+            }
+
+            bool flaglcz = Map.IsLczDecontaminated && targetRoom.Zone == ZoneType.LightContainment;
+            bool flagSite = Warhead.IsDetonated && targetRoom.Zone != ZoneType.Surface;
+
+            if (flaglcz || flagSite)
+            {
+                player.Broadcast(Plugin.T.TeleportRoomDanger, shouldClearPrevious: true);
                 return;
             }
 

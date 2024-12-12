@@ -59,7 +59,7 @@ namespace BetterScp106.Features
 
                 Vector3 tp = target.Position;
                 if (!Physics.Raycast(target.Position + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, 2))
-                    tp = target.CurrentRoom.Position;
+                   tp = target.CurrentRoom.Position;
 
                 scp106.IsSubmerged = true;
                 player.EnableEffect<Ensnared>();

@@ -45,6 +45,9 @@ namespace BetterScp106
         [Description("There is not enough health or vigor to Teleport")]
         public Broadcast TeleportCant { get; set; } = new Broadcast("<color=red>You cant't Teleport right now, you don't have enough energy or health.</color>", 3);
 
+        [Description("The room to be teleported was destroyed or Danger")]
+        public Broadcast TeleportRoomDanger { get; set; } = new Broadcast("<color=red>You can't teleport to this room, it's being destroyed or terminated.</color>", 3);
+
         [Description("You must be in the same zone to teleport")]
         public Broadcast TeleportCantforZone { get; set; } = new Broadcast("<color=red>You can't teleport here, you have to be in the same zone.</color>", 3);
 

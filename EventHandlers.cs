@@ -3,10 +3,10 @@ using CustomRendering;
 using Exiled.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
-using UserSettings.ServerSpecific;
 using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
+
 
 namespace BetterScp106
 {
@@ -61,17 +61,14 @@ namespace BetterScp106
         }
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Player.Role != null && ev.Player.Role == RoleTypeId.Scp106)
+            if (ev.NewRole == RoleTypeId.Scp106)
             {
-                ServerSpecificSettingsSync.DefinedSettings = null;
-                ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub);
-                return;
+                Methods.Apply106Menu(ev.Player, true);
+                ev.Player.ShowHint(new Hint(Plugin.T.Scp106StartMessage, 10, true));
             }
-            if (ev.NewRole != null && ev.NewRole == RoleTypeId.Scp106)
+            else if (ev.Player.Role == RoleTypeId.Scp106)
             {
-                ServerSpecificSettingsSync.DefinedSettings = SettingHandlers.Better106Menu();
-                ServerSpecificSettingsSync.SendToPlayer(ev.Player.ReferenceHub);
-                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+                Methods.Apply106Menu(ev.Player, false);
             }
         }
         public void Warheadkillinhibitor(HurtingEventArgs ev)

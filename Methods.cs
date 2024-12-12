@@ -40,7 +40,7 @@ namespace BetterScp106
                 Room.Get(RoomType.EzGateB).Position,
                 Room.Get(RoomType.Surface).Position,
             ]; 
-            if(Warhead.RealDetonationTimer < 15) 
+            if(Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated) 
             { 
                 randompos.Remove(Room.Get(RoomType.Lcz914).Position);
                 randompos.Remove(Room.Get(RoomType.EzGateB).Position);
@@ -89,7 +89,7 @@ namespace BetterScp106
                 Log.Debug("Stalk Mode: For Distance and Stalk Distance is" + StalkDistance);
                 return stalkablePlayers.OrderBy(p => Vector3.Distance(p.Position, player.Position)).FirstOrDefault();
             }
-        }
+        }  
         public static Player FindFriend(Player player)
         {
             Player friend = Player.List.Where
@@ -130,6 +130,14 @@ namespace BetterScp106
         {
             return dv is IScp106PassableDoor scp106PassableDoor && scp106PassableDoor.IsScp106Passable && dv.Rooms.Contains<RoomIdentifier>(syncroom);
         }
+        public static void Apply106Menu(Player player, bool activate)
+        {
+            if (!Plugin.Sssisactive)
+            {
+                ServerSpecificSettingsSync.DefinedSettings = activate ? SettingHandlers.Better106Menu() : null;
+                ServerSpecificSettingsSync.SendToPlayer(player.ReferenceHub);
+            }
+        }
         public static Vector3 GetSafePosition(Player scp106, Vector3 targetpos)
         {
             Vector3 safePosition = scp106.Position;
@@ -157,11 +165,11 @@ namespace BetterScp106
             float maxDis = dir.magnitude;
             if ((double)maxDis > 0.0)
                 dir /= maxDis;
-            float radius = 0.2f;
+            float radius = 0.3f;
             float height = 0.5f;
             Vector3 origin = doorPos + Vector3.up * (0.2f + radius);
             Color debugColor = (double)Scp106HuntersAtlasAbility.DebugDuration > 0.0 ? UnityEngine.Random.ColorHSV(0.0f, 1f, 0.5f, 1f, 0.4f, 0.8f) : Color.clear;
-            var scp106HuntersAtlasAbility = new Scp106HuntersAtlasAbility();
+            Scp106HuntersAtlasAbility scp106HuntersAtlasAbility = new();
             Vector3 pos;
             while (!scp106HuntersAtlasAbility.TrySphereCast(debugColor, origin, dir, radius, height, maxDis, out pos))
             {

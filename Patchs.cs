@@ -12,7 +12,7 @@ namespace BetterScp106
         public static void Postfix(PocketCorroding __instance, ref RelativePosition __result)
         {
             bool flagLogic = Plugin.C.PocketexitRandomZonemode || __instance?.Hub?.roleManager?.CurrentRole.Team == Team.SCPs;
-            if (flagLogic && !Warhead.IsDetonated)
+            if (flagLogic)
             {              
                 __result = Methods.RandomZone();
                 Log.Debug($"Setting random zone... random value: {__result}");

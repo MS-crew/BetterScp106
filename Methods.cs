@@ -39,9 +39,9 @@ namespace BetterScp106
                 Room.Get(RoomType.Lcz914).Position,
                 Room.Get(RoomType.EzGateB).Position,
                 Room.Get(RoomType.Surface).Position,
-            ]; 
-            if(Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated) 
-            { 
+            ];
+            if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
+            {
                 randompos.Remove(Room.Get(RoomType.Lcz914).Position);
                 randompos.Remove(Room.Get(RoomType.EzGateB).Position);
                 randompos.Remove(Room.Get(RoomType.Hcz096).Position);
@@ -89,12 +89,12 @@ namespace BetterScp106
                 Log.Debug("Stalk Mode: For Distance and Stalk Distance is" + StalkDistance);
                 return stalkablePlayers.OrderBy(p => Vector3.Distance(p.Position, player.Position)).FirstOrDefault();
             }
-        }  
+        }
         public static Player FindFriend(Player player)
         {
             Player friend = Player.List.Where
                             (
-                                p => 
+                                p =>
                                 p != player &&
                                 p.IsScp &&
                                 Vector3.Distance(p.Position, player.Position) <= 1.5
@@ -102,7 +102,7 @@ namespace BetterScp106
                             .OrderBy(p => Vector3.Distance(p.Position, player.Position))
                             .FirstOrDefault();
             return friend;
-        }   
+        }
         public static void EscapeFromDimension(Player player)
         {
             if (player.ReferenceHub.roleManager.CurrentRole is not IFpcRole fpcRole)
@@ -110,7 +110,7 @@ namespace BetterScp106
 
             player.DisableAllEffects();
             fpcRole.FpcModule.ServerOverridePosition(Scp106PocketExitFinder.GetBestExitPosition(fpcRole), Vector3.zero);
-            
+
             if (player.Role == RoleTypeId.Scp106 && Plugin.C.Reminders)
                 ShowRandomScp106Hint(player);
         }
@@ -132,11 +132,11 @@ namespace BetterScp106
         }
         public static void Apply106Menu(Player player, bool activate)
         {
-            if (!Plugin.Sssisactive)
-            {
+            //if (!Plugin.Sssisactive)
+            //{
                 ServerSpecificSettingsSync.DefinedSettings = activate ? SettingHandlers.Better106Menu() : null;
                 ServerSpecificSettingsSync.SendToPlayer(player.ReferenceHub);
-            }
+            //}
         }
         public static Vector3 GetSafePosition(Player scp106, Vector3 targetpos)
         {
@@ -201,6 +201,26 @@ namespace BetterScp106
 
             if (settingbase is SSKeybindSetting keybindSetting && keybindSetting.SyncIsPressed)
             {
+                switch ((int)keybindSetting.SettingId)
+                {
+                    case int id when id == Plugin.C.AbilitySettingIds[Features.PocketKey]:
+                        Pocket.PocketFeature(Player.Get(sender));
+                        break;
+
+                    case int id when id == Plugin.C.AbilitySettingIds[Features.PocketinKey]:
+                        PocketIn.PocketInFeature(Player.Get(sender));
+                        break;
+
+                    case int id when id == Plugin.C.AbilitySettingIds[Features.StalkKey]:
+                        Stalking.StalkFeature(Player.Get(sender));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            /*if (settingbase is SSKeybindSetting keybindSetting && keybindSetting.SyncIsPressed)
+            {
                 if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.PocketKey])
                 {
                     Pocket.PocketFeature(Player.Get(sender));
@@ -213,7 +233,7 @@ namespace BetterScp106
                 {
                     Stalking.StalkFeature(Player.Get(sender));
                 }
-            }
+            }*/
         }
     }
 }

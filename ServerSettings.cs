@@ -1,10 +1,9 @@
 ﻿using System.Text;
 using System.Linq;
-using PlayerRoles;
 using NorthwoodLib.Pools;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
-using ServerSpecificSyncer.Features;
+//using ServerSpecificSyncer.Features;
 
 namespace BetterScp106
 {
@@ -15,7 +14,7 @@ namespace BetterScp106
             return SettingsHelper.GetSettings();
         }
     }
-    internal class ServerSettingsSyncer : Menu
+    /*internal class ServerSettingsSyncer : Menu
     {
         public override ServerSpecificSettingBase[] Settings
         {
@@ -27,7 +26,7 @@ namespace BetterScp106
         public override bool CheckAccess(ReferenceHub hub) => hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106;
         public override string Name { get; set; } = "Better 106";
         public override int Id { get; set; } = -106;
-    }
+    }*/
     public class SettingsHelper
     {
         public static ServerSpecificSettingBase[] GetSettings()
@@ -54,20 +53,20 @@ namespace BetterScp106
             settings.Add(new SSGroupHeader("Better Scp-106"));
             settings.Add(new SSTextArea(null, StringBuilderPool.Shared.ToStringReturn(stringBuilder), SSTextArea.FoldoutMode.ExtendedByDefault));
 
-            AddKeybindSetting(settings, Plugin.C.PocketFeature, Methods.Features.PocketKey, "Pocket Dimension Key", UnityEngine.KeyCode.F, "The button you'll use to go to the pocket");
-            AddKeybindSetting(settings, Plugin.C.PocketinFeature, Methods.Features.PocketinKey, "Pocket In Key", UnityEngine.KeyCode.G, "The button you use to bring your friend to the pocket");
+            AddKeybindSetting(settings, Plugin.C.PocketFeature, Methods.Features.PocketKey, Plugin.T.Pocket[0], UnityEngine.KeyCode.F, Plugin.T.Pocket[1]);
+            AddKeybindSetting(settings, Plugin.C.PocketinFeature, Methods.Features.PocketinKey, Plugin.T.PocketIn[0], UnityEngine.KeyCode.G, Plugin.T.PocketIn[1]);
 
             if (Plugin.C.StalkFeature)
             {
-                settings.Add(new SSKeybindSetting(Plugin.C.AbilitySettingIds[Methods.Features.StalkKey], "Stalk Key", UnityEngine.KeyCode.H, hint:"The button you want to stalk"));
-                settings.Add(new SSTwoButtonsSetting(Plugin.C.AbilitySettingIds[Methods.Features.StalkMode], "Stalk mode", "Distance", "Healt", true, "According to this setting, you either stalk the closest person or the one with the lowest health."));
-                settings.Add(new SSSliderSetting(Plugin.C.AbilitySettingIds[Methods.Features.StalkDistanceSlider], "Stalk Distance", 0.0f, Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, true, "The size of the local radius that can be stalked."));
+                settings.Add(new SSKeybindSetting(Plugin.C.AbilitySettingIds[Methods.Features.StalkKey], Plugin.T.Stalk[0], UnityEngine.KeyCode.H, hint: Plugin.T.Stalk[1]));
+                settings.Add(new SSTwoButtonsSetting(Plugin.C.AbilitySettingIds[Methods.Features.StalkMode], Plugin.T.Stalk[2], Plugin.T.Stalk[3], Plugin.T.Stalk[4], true, Plugin.T.Stalk[5]));
+                settings.Add(new SSSliderSetting(Plugin.C.AbilitySettingIds[Methods.Features.StalkDistanceSlider], Plugin.T.Stalk[6], 0.0f, Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, Plugin.C.StalkFromEverywhere ? 20000 : Plugin.C.StalkDistance, true, Plugin.T.Stalk[7]));
             }
 
             if (Plugin.C.TeleportRoomsFeature)
             {
-                settings.Add(new SSDropdownSetting(Plugin.C.AbilitySettingIds[Methods.Features.TeleportRoomsList], "Rooms", Plugin.C.Rooms.Select(r => r.ToString()).ToArray()));
-                settings.Add(new SSButton(Plugin.C.AbilitySettingIds[Methods.Features.TeleportRooms], "Teleport Room", "Teleport", 2f));
+                settings.Add(new SSDropdownSetting(Plugin.C.AbilitySettingIds[Methods.Features.TeleportRoomsList], Plugin.T.Teleport[0], Plugin.C.Rooms.Select(r => r.ToString()).ToArray()));
+                settings.Add(new SSButton(Plugin.C.AbilitySettingIds[Methods.Features.TeleportRooms], Plugin.T.Teleport[1], Plugin.T.Teleport[2], 2f));
             }
 
             return [.. settings];

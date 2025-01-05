@@ -60,10 +60,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Desktop\Assembly-CSharp-Publicized.dll</HintPath>
-    </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Mirror.dll</HintPath>
@@ -73,9 +69,6 @@
     </Reference>
     <Reference Include="SemanticVersioning">
       <HintPath>..\..\..\Desktop\EXILED\Plugins\dependencies\SemanticVersioning.dll</HintPath>
-    </Reference>
-    <Reference Include="ServerSpecificSyncer-EXILED">
-      <HintPath>..\..\..\Downloads\ServerSpecificSyncer-EXILED.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -112,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.0.0-alpha.4</Version>
+      <Version>9.2.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

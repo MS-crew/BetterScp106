@@ -6,7 +6,7 @@
     using Exiled.Loader;
     using Exiled.API.Features;
     using UserSettings.ServerSpecific;
-    using ServerSpecificSyncer.Features;
+    //using ServerSpecificSyncer.Features;
     using Scp106 = Exiled.Events.Handlers.Scp106;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
     public class Plugin : Plugin<Config, Translation>
@@ -22,8 +22,8 @@
         public override string Prefix => "BetterScp106"; 
         public static Plugin Instance { get; private set; }
         public static Translation T => Plugin.Instance?.Translation;
-        public override Version Version { get; } = new Version(2, 5, 2);
-        public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
+        public override Version Version { get; } = new Version(2, 5, 5);
+        public override Version RequiredExiledVersion { get; } = new Version(9,2, 1);
         public override void OnEnabled()
         {
             Instance = this;
@@ -39,10 +39,11 @@
             
             if (C.OneHitPocket) Scp106.Attacking += eventHandlers.On106Attack;
             if (C.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
+
             Sssisactive = Loader.Plugins.Any(p => p.Name == "ServerSpecificSyncer" && p.Config.IsEnabled);
             if (Sssisactive)
             {
-                Menu.RegisterAll();
+                //Menu.RegisterAll();
                 Log.Debug("ServerSpecificSyncer is present and active, subscribing to the main menu...");
             }
 
@@ -67,7 +68,7 @@
 
             if (Sssisactive) 
             {
-                Menu.UnregisterAll();
+                //Menu.UnregisterAll();
                 Log.Debug("ServerSpecificSyncer is present and active,but Better 106 is deactive Unsubscribing to the main menu...");
             }
 

@@ -66,10 +66,6 @@ namespace BetterScp106
                 Methods.Apply106Menu(ev.Player, true);
                 ev.Player.ShowHint(new Hint(Plugin.T.Scp106StartMessage, 10, true));
             }
-            else if (ev.Player.Role == RoleTypeId.Scp106)
-            {
-                Methods.Apply106Menu(ev.Player, false);
-            }
         }
         public void Warheadkillinhibitor(HurtingEventArgs ev)
         {

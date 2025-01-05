@@ -4,6 +4,8 @@ using Exiled.API.Interfaces;
 namespace BetterScp106
 {
     using Exiled.API.Features;
+    using System.Collections.Generic;
+
     public class Translation : ITranslation
     {
         [Description("The broadcast when Scp 106 goes to the pocket dimension")]
@@ -71,6 +73,35 @@ namespace BetterScp106
 
         [Description("Teleport feature description")]
         public string Scp106PowersTeleport { get; set; } = "Teleport : You can get teleport in the room you want . It will cost: $teleporthealt healt & $teleportvigor vigor";
+
+        [Description("Server Specific Settings Translates")]
+        public List<string> Pocket { get; set; } =
+        [
+            "Pocket Dimension Key",
+            "The button you'll use to go to the pocket"
+        ];
+        public List<string> PocketIn { get; set; } =
+        [
+            "Pocket In Key",
+            "The button you use to bring your friend to the pocket"
+        ];
+        public List<string> Stalk { get; set; } =
+        [
+            "Stalk Key",
+            "The button you want to stalk",
+            "Stalk mode", 
+            "Distance", 
+            "Healt",
+            "According to this setting, you either stalk the closest person or the one with the lowest health.",
+            "Stalk Distance",
+            "The size of the local radius that can be stalked."
+        ];
+        public List<string> Teleport { get; set; } =
+        [
+            "Rooms",
+            "Teleport Room",
+            "Teleport"
+        ];
 
     }
 }

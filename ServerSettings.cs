@@ -3,7 +3,7 @@ using System.Linq;
 using NorthwoodLib.Pools;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
-//using ServerSpecificSyncer.Features;
+using ServerSpecificSyncer.Features;
 
 namespace BetterScp106
 {
@@ -14,7 +14,7 @@ namespace BetterScp106
             return SettingsHelper.GetSettings();
         }
     }
-    /*internal class ServerSettingsSyncer : Menu
+    public class ServerSettingsSyncer : Menu
     {
         public override ServerSpecificSettingBase[] Settings
         {
@@ -23,10 +23,10 @@ namespace BetterScp106
                 return SettingsHelper.GetSettings();
             }
         }
-        public override bool CheckAccess(ReferenceHub hub) => hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106;
+        public override bool CheckAccess(ReferenceHub hub) => hub;
         public override string Name { get; set; } = "Better 106";
         public override int Id { get; set; } = -106;
-    }*/
+    }
     public class SettingsHelper
     {
         public static ServerSpecificSettingBase[] GetSettings()

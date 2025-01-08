@@ -1,11 +1,11 @@
 ﻿using MEC;
 using UnityEngine;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using CustomPlayerEffects;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
-using Exiled.API.Enums;
 
 namespace BetterScp106.Features
 {
@@ -38,7 +38,11 @@ namespace BetterScp106.Features
                 .SyncSelectionIndexRaw;
 
             Room targetRoom = Room.Get(Plugin.C.Rooms[TargetRoomIndex]);
-           
+            if(targetRoom == null)
+            {
+                player.Broadcast(Plugin.T.TeleportRoomNull, shouldClearPrevious: true);
+                return;
+            }
             if (Plugin.C.TeleportOnlySameZone && player.Zone != targetRoom.Zone) 
             {
                 player.Broadcast(Plugin.T.TeleportCantforZone, shouldClearPrevious: true);

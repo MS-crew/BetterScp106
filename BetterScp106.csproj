@@ -70,6 +70,10 @@
     <Reference Include="SemanticVersioning">
       <HintPath>..\..\..\Desktop\EXILED\Plugins\dependencies\SemanticVersioning.dll</HintPath>
     </Reference>
+    <Reference Include="ServerSpecificSyncer-EXILED, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Downloads\ServerSpecificSyncer-EXILED.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />

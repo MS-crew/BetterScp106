@@ -50,6 +50,9 @@ namespace BetterScp106
         [Description("The room to be teleported was destroyed or Danger")]
         public Broadcast TeleportRoomDanger { get; set; } = new Broadcast("<color=red>You can't teleport to this room, it's being destroyed or terminated.</color>", 3);
 
+        [Description("The room to be teleported was null")]
+        public Broadcast TeleportRoomNull { get; set; } = new Broadcast("<color=red>You can't teleport to this room, this room lost in a different dimension.</color>", 3);
+
         [Description("You must be in the same zone to teleport")]
         public Broadcast TeleportCantforZone { get; set; } = new Broadcast("<color=red>You can't teleport here, you have to be in the same zone.</color>", 3);
 

@@ -31,7 +31,7 @@ namespace BetterScp106
             TeleportRooms,
             TeleportRoomsList
         }
-        public static RelativePosition RandomZone()
+        /*public static RelativePosition RandomZone()
         {
             List<Vector3> randompos =
             [
@@ -53,6 +53,35 @@ namespace BetterScp106
             RelativePosition position = new(randompos[Randomzone]);
             Log.Debug("Random Zones count: " + randompos.Count + "random position " + position);
             return position;
+        }*/
+        public static RelativePosition RandomZone()
+        {
+            List<RoomType> randompos =
+            [
+                RoomType.Lcz914,
+                RoomType.Hcz096,
+                RoomType.EzGateB,
+                RoomType.Surface,
+            ];
+            if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
+            {
+                randompos.RemoveAt(0);
+                randompos.RemoveAt(1);
+                randompos.RemoveAt(2);
+            }
+            if (Map.IsLczDecontaminated || Map.DecontaminationState == DecontaminationState.Countdown)
+                randompos.RemoveAt(0);
+
+            int Randomzone = new System.Random().Next(randompos.Count);
+            Vector3 position = Room.Get(randompos[Randomzone]).Position;
+
+            if (position == Vector3.zero)
+                position = Room.Get(RoomType.Surface).Position;
+
+            RelativePosition Relaiveposition = new(position);
+            Log.Debug("Random Zones count: " + randompos.Count + "random position " + position);
+
+            return Relaiveposition;
         }
         public static Player Findtarget(Player player)
         {
@@ -132,11 +161,11 @@ namespace BetterScp106
         }
         public static void Apply106Menu(Player player, bool activate)
         {
-            //if (!Plugin.Sssisactive)
-            //{
+            if (!Plugin.Sssisactive)
+            {
                 ServerSpecificSettingsSync.DefinedSettings = activate ? SettingHandlers.Better106Menu() : null;
                 ServerSpecificSettingsSync.SendToPlayer(player.ReferenceHub);
-            //}
+            }
         }
         public static Vector3 GetSafePosition(Player scp106, Vector3 targetpos)
         {

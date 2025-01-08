@@ -31,29 +31,6 @@ namespace BetterScp106
             TeleportRooms,
             TeleportRoomsList
         }
-        /*public static RelativePosition RandomZone()
-        {
-            List<Vector3> randompos =
-            [
-                Room.Get(RoomType.Hcz096).Position,
-                Room.Get(RoomType.Lcz914).Position,
-                Room.Get(RoomType.EzGateB).Position,
-                Room.Get(RoomType.Surface).Position,
-            ];
-            if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
-            {
-                randompos.Remove(Room.Get(RoomType.Lcz914).Position);
-                randompos.Remove(Room.Get(RoomType.EzGateB).Position);
-                randompos.Remove(Room.Get(RoomType.Hcz096).Position);
-            }
-            if (Map.IsLczDecontaminated || Map.DecontaminationState == DecontaminationState.Countdown)
-                randompos.Remove(Room.Get(RoomType.Lcz914).Position);
-
-            int Randomzone = new System.Random().Next(randompos.Count);
-            RelativePosition position = new(randompos[Randomzone]);
-            Log.Debug("Random Zones count: " + randompos.Count + "random position " + position);
-            return position;
-        }*/
         public static RelativePosition RandomZone()
         {
             List<RoomType> randompos =

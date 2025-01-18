@@ -17,7 +17,7 @@
         public override string Prefix => "BetterScp106"; 
         public static Plugin Instance { get; private set; }
         public static Translation T => Plugin.Instance?.Translation;
-        public override Version Version { get; } = new Version(2, 5, 5);
+        public override Version Version { get; } = new Version(2, 5, 6);
         public override Version RequiredExiledVersion { get; } = new Version(9, 2, 1);
         public override void OnEnabled()
         {

@@ -136,13 +136,10 @@ namespace BetterScp106
         {
             return dv is IScp106PassableDoor scp106PassableDoor && scp106PassableDoor.IsScp106Passable && dv.Rooms.Contains<RoomIdentifier>(syncroom);
         }
-        public static void Apply106Menu(Player player, bool activate)
+        public static void Apply106Menu(Player player)
         {
-            //if (!Plugin.Sssisactive)
-            //{
-                ServerSpecificSettingsSync.DefinedSettings = SettingHandlers.Better106Menu();
-                ServerSpecificSettingsSync.SendToPlayer(player.ReferenceHub);
-            //}
+            ServerSpecificSettingsSync.DefinedSettings = SettingHandlers.Better106Menu();
+            ServerSpecificSettingsSync.SendToPlayer(player.ReferenceHub);
         }
         public static Vector3 GetSafePosition(Player scp106, Vector3 targetpos)
         {

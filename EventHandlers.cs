@@ -60,7 +60,7 @@ namespace BetterScp106
         {
             if (ev.NewRole == RoleTypeId.Scp106)
             {
-                Methods.Apply106Menu(ev.Player, true);
+                Methods.Apply106Menu(ev.Player);
                 ev.Player.ShowHint(new Hint(Plugin.T.Scp106StartMessage, 10, true));
             }
         }

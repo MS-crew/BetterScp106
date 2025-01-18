@@ -10,14 +10,6 @@ namespace BetterScp106
     {
         public static ServerSpecificSettingBase[] Better106Menu() => SettingsHelper.GetSettings();
     }
-    /*public class ServerSettingsSyncer : Menu
-    {
-        public override int Id { get; set; } = -106;
-        public override string Name { get; set; } = "Better 106";
-        public override bool CheckAccess(ReferenceHub hub) => hub;
-        public override ServerSpecificSettingBase[] Settings => SettingsHelper.GetSettings();
-        public override void OnInput(ReferenceHub hub, ServerSpecificSettingBase setting) => Methods.ProcessUserInput(hub, setting);
-    }*/
     public class SettingsHelper
     {
         public static ServerSpecificSettingBase[] GetSettings()

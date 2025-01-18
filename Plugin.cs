@@ -2,19 +2,14 @@
 {   
     using System;
     using HarmonyLib;
-    using System.Linq;
-    using Exiled.Loader;
     using Exiled.API.Features;
     using UserSettings.ServerSpecific;
-    using ServerSpecificSyncer.Features;
     using Scp106 = Exiled.Events.Handlers.Scp106;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
     public class Plugin : Plugin<Config, Translation>
     {
         private Harmony harmony;
-
         public static bool Using = false;
-        public static bool Sssisactive = false;
         public static EventHandlers eventHandlers;
         public static Config C => Plugin.Instance?.Config;
         public override string Author => "ZurnaSever";
@@ -40,13 +35,6 @@
             if (C.OneHitPocket) Scp106.Attacking += eventHandlers.On106Attack;
             if (C.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
 
-            /*Sssisactive = Loader.Plugins.Any(p => p.Name.Contains("ServerSpecificSyncer")&& p.Config.IsEnabled);
-            if (Sssisactive)
-            {
-                Menu.RegisterAll();
-                Log.Debug("ServerSpecificSyncer is present and active, subscribing to the main menu...");
-            }*/
-
             harmony = new Harmony("Better106RandomZoneMode");
             harmony.PatchAll();
             base.OnEnabled();
@@ -63,14 +51,6 @@
 
             if (C.OneHitPocket) Scp106.Attacking -= eventHandlers.On106Attack;
             if (C.RealisticPocket) PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
-
-            Sssisactive = Loader.Plugins.Any(p => p.Name == "ServerSpecificSyncer" && p.Config.IsEnabled);
-
-            if (Sssisactive) 
-            {
-                Menu.UnregisterAll();
-                Log.Debug("ServerSpecificSyncer is present and active,but Better 106 is deactive Unsubscribing to the main menu...");
-            }
 
             harmony.UnpatchAll(harmonyID: "Better106RandomZoneMode");
             eventHandlers = null;

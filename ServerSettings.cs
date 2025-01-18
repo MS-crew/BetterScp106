@@ -3,30 +3,21 @@ using System.Linq;
 using NorthwoodLib.Pools;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
-using ServerSpecificSyncer.Features;
 
 namespace BetterScp106
 {
     public class SettingHandlers
     {
-        public static ServerSpecificSettingBase[] Better106Menu()
-        {
-            return SettingsHelper.GetSettings();
-        }
+        public static ServerSpecificSettingBase[] Better106Menu() => SettingsHelper.GetSettings();
     }
-    public class ServerSettingsSyncer : Menu
+    /*public class ServerSettingsSyncer : Menu
     {
-        public override ServerSpecificSettingBase[] Settings
-        {
-            get
-            {
-                return SettingsHelper.GetSettings();
-            }
-        }
-        public override bool CheckAccess(ReferenceHub hub) => hub;
-        public override string Name { get; set; } = "Better 106";
         public override int Id { get; set; } = -106;
-    }
+        public override string Name { get; set; } = "Better 106";
+        public override bool CheckAccess(ReferenceHub hub) => hub;
+        public override ServerSpecificSettingBase[] Settings => SettingsHelper.GetSettings();
+        public override void OnInput(ReferenceHub hub, ServerSpecificSettingBase setting) => Methods.ProcessUserInput(hub, setting);
+    }*/
     public class SettingsHelper
     {
         public static ServerSpecificSettingBase[] GetSettings()

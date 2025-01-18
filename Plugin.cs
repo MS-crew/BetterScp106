@@ -40,12 +40,12 @@
             if (C.OneHitPocket) Scp106.Attacking += eventHandlers.On106Attack;
             if (C.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
 
-            Sssisactive = Loader.Plugins.Any(p => p.Name.Contains("ServerSpecificSyncer")&& p.Config.IsEnabled);
+            /*Sssisactive = Loader.Plugins.Any(p => p.Name.Contains("ServerSpecificSyncer")&& p.Config.IsEnabled);
             if (Sssisactive)
             {
                 Menu.RegisterAll();
                 Log.Debug("ServerSpecificSyncer is present and active, subscribing to the main menu...");
-            }
+            }*/
 
             harmony = new Harmony("Better106RandomZoneMode");
             harmony.PatchAll();

@@ -17,10 +17,7 @@ namespace BetterScp106
         public static int GetPocketScp;
 
         public static bool GetScpPerm = false;
-        public EventHandlers(Plugin plugin)
-        {
-            this.plugin = plugin;
-        }
+        public EventHandlers(Plugin plugin) => this.plugin = plugin;
         public void OnStalk(StalkingEventArgs ev)
         {
             if (Plugin.Using)

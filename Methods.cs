@@ -56,7 +56,7 @@ namespace BetterScp106
                 position = Room.Get(RoomType.Surface).Position;
 
             RelativePosition Relaiveposition = new(position);
-            Log.Debug("Random Zones count: " + randompos.Count + "random position " + position);
+            Log.Debug("Random Zones count: " + randompos.Count + " selected random position: " + position + " Random zone mode: " + Plugin.C.PocketexitRandomZonemode);
 
             return Relaiveposition;
         }
@@ -138,11 +138,11 @@ namespace BetterScp106
         }
         public static void Apply106Menu(Player player, bool activate)
         {
-            if (!Plugin.Sssisactive)
-            {
-                ServerSpecificSettingsSync.DefinedSettings = activate ? SettingHandlers.Better106Menu() : null;
+            //if (!Plugin.Sssisactive)
+            //{
+                ServerSpecificSettingsSync.DefinedSettings = SettingHandlers.Better106Menu();
                 ServerSpecificSettingsSync.SendToPlayer(player.ReferenceHub);
-            }
+            //}
         }
         public static Vector3 GetSafePosition(Player scp106, Vector3 targetpos)
         {

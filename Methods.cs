@@ -40,20 +40,33 @@ namespace BetterScp106
                 RoomType.EzGateB,
                 RoomType.Surface,
             ];
+
             if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
             {
                 randompos.RemoveAt(0);
                 randompos.RemoveAt(1);
                 randompos.RemoveAt(2);
             }
-            if (Map.IsLczDecontaminated || Map.DecontaminationState == DecontaminationState.Countdown)
-                randompos.RemoveAt(0);
+
+            if (Map.IsLczDecontaminated || Map.DecontaminationState == DecontaminationState.Countdown) 
+            { 
+                randompos.Remove(RoomType.Lcz914);
+            }
+                
+            if (randompos.Count == 0)
+            {
+                Log.Error("Somethings gone wrong,No valid random zones found, defaulting to Surface.");
+                return new RelativePosition(Room.Get(RoomType.Surface).Position);
+            }
 
             int Randomzone = new System.Random().Next(randompos.Count);
             Vector3 position = Room.Get(randompos[Randomzone]).Position;
 
             if (position == Vector3.zero)
+            {
+                Log.Warn("Somethings gone wrong, invalid position detected defaulting to Surface.");
                 position = Room.Get(RoomType.Surface).Position;
+            }
 
             RelativePosition Relaiveposition = new(position);
             Log.Debug("Random Zones count: " + randompos.Count + " selected random position: " + position + " Random zone mode: " + Plugin.C.PocketexitRandomZonemode);

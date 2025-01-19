@@ -11,14 +11,14 @@
         private Harmony harmony;
         public static bool Using = false;
         public static EventHandlers eventHandlers;
-        public static Config C => Plugin.Instance?.Config;
         public override string Author => "ZurnaSever";
         public override string Name => "BetterScp106";
         public override string Prefix => "BetterScp106"; 
-        public static Plugin Instance { get; private set; }
+        public static Plugin Instance {get; private set;}
+        public static Config C => Plugin.Instance?.Config;
         public static Translation T => Plugin.Instance?.Translation;
-        public override Version Version { get; } = new Version(2, 5, 6);
-        public override Version RequiredExiledVersion { get; } = new Version(9, 2, 1);
+        public override Version Version { get; } = new Version(2, 5, 7);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
         public override void OnEnabled()
         {
             Instance = this;

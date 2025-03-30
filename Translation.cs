@@ -63,7 +63,7 @@ namespace BetterScp106
         public Broadcast Cooldown { get; set; } = new Broadcast("<color=red>You can't change dimension that often! You should wait a bit before changing it again.</color>", 4);
 
         [Description("Message to be shown to player spawn as Scp-106")]
-        public string Scp106StartMessage { get; set; } = "<voffset=-8em><color=red>Scp106 has buffed, you can learn its features </color></voffset> \n <voffset=-0.05em><color=blue>'by Server Specific tab'</color> <color=red>on Setting.</color></voffset>";
+        public string Scp106StartMessage { get; set; } = "<voffset=-9m><color=red>Scp106 has buffed, you can learn its features </color></voffset> \n <voffset=-0.05em><color=blue>'by Server Specific tab'</color> <color=red>on Setting.</color></voffset>";
 
         [Description("Pocket feature description")]
         public string Scp106PowersPocket { get; set; } = "Pocket : You can go to pocket dimension. It will cost: $pockethealt healt & $pocketvigor vigor";

@@ -53,20 +53,18 @@ namespace BetterScp106.Features
             scp106.IsSubmerged = true;
             player.EnableEffect<Ensnared>();
 
-            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
+            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden); 
 
             player.EnableEffect<PocketCorroding>();
-            Log.Debug("SCP-106 is ground'.");
-
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-            Log.Debug("SCP-106 exiting ground.");
-
             player.DisableAllEffects();
-            scp106.RemainingSinkholeCooldown = Plugin.Instance.Config.AfterPocketdimensionCooldown;
+            
             player.Health -= Plugin.Instance.Config.PocketdimensionCostHealt;
             scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketdimensionCostVigor / 100f);
+            scp106.RemainingSinkholeCooldown += Plugin.Instance.Config.AfterPocketdimensionCooldown;
+
             player.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
 
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.SubmergeProgress >= 1);
             EventHandlers.SpecialFeatureUsing = false;
         }
     }

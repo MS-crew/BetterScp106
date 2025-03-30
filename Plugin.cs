@@ -1,12 +1,13 @@
-﻿namespace BetterScp106
-{   
-    using System;
-    using HarmonyLib;
-    using Exiled.API.Features;
-    using UserSettings.ServerSpecific;
-    using Scp106 = Exiled.Events.Handlers.Scp106;
-    using PlayerHandlers = Exiled.Events.Handlers.Player;
+﻿using System;
+using HarmonyLib;
+using Exiled.API.Features;
+using Scp106 = Exiled.Events.Handlers.Scp106;
+using PlayerHandlers = Exiled.Events.Handlers.Player;
+using Exiled.API.Features.Core.UserSettings;
+using Exiled.Events.Features;
 
+namespace BetterScp106
+{   
     public class Plugin : Plugin<Config, Translation>
     {
         private Harmony harmony;
@@ -39,9 +40,7 @@
             PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
 
-            ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;
-
-            harmony = new Harmony("Better106RandomZoneMode"+ DateTime.Now.Ticks);
+            harmony = new Harmony("Better106Patchs"+ DateTime.Now.Ticks);
             harmony.PatchAll();
             base.OnEnabled();
         }
@@ -58,9 +57,7 @@
             PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
 
-            ServerSpecificSettingsSync.ServerOnSettingValueReceived -= Methods.ProcessUserInput;
-
-            harmony.UnpatchAll(harmonyID: "Better106RandomZoneMode");
+            harmony.UnpatchAll(harmonyID: "Better106Patchs");
             eventHandlers = null;
             Instance = null;
             base.OnDisabled();

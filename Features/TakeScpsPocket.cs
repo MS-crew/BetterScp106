@@ -78,8 +78,6 @@ namespace BetterScp106.Features
                 EventHandlers.GetScpPerm = false;
                 EventHandlers.ScpPullingtoPocket = -1;
 
-                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-
                 player.DisableEffect<Ensnared>();
                 scp106.RemainingSinkholeCooldown = (float)Plugin.Instance.Config.CanceledPocketingScpCooldown;
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 200f);
@@ -95,14 +93,13 @@ namespace BetterScp106.Features
                 player.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
                 friend.Broadcast(Plugin.Instance.Translation.Scp106Friendinpocket, shouldClearPrevious: true);
 
-                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-
                 player.DisableAllEffects();
                 scp106.RemainingSinkholeCooldown = Plugin.Instance.Config.AfterPocketingScpCooldown;
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 100f);
                 player.Health -= Plugin.Instance.Config.PocketinCostHealt;
             }
 
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.SubmergeProgress >= 1);
             EventHandlers.SpecialFeatureUsing = false;
         }
     }

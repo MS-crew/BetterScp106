@@ -6,6 +6,7 @@ using CustomPlayerEffects;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
+using Exiled.API.Features.Core.UserSettings;
 
 namespace BetterScp106.Features
 {
@@ -35,11 +36,15 @@ namespace BetterScp106.Features
                 return;
             }
 
-            int TargetRoomIndex = ServerSpecificSettingsSync.GetSettingOfUser<SSDropdownSetting>
-                (player.ReferenceHub, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList])
-                .SyncSelectionIndexRaw;
-
+            if(!SettingBase.TryGetSetting<DropdownSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropdown))
+            {
+                player.Broadcast(Plugin.Instance.Translation.TeleportCant);
+                return;
+            }
+            
+            int TargetRoomIndex = dropdown.SelectedIndex;
             Room targetRoom = Room.Get(Plugin.Instance.Config.Rooms[TargetRoomIndex]);
+
             if (targetRoom == null)
             {
                 player.Broadcast(Plugin.Instance.Translation.TeleportRoomNull, shouldClearPrevious: true);
@@ -60,8 +65,9 @@ namespace BetterScp106.Features
                 player.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
                 return;
             }
-
+            
             scp106.HuntersAtlasAbility._syncPos = targetRoom.Position;
+            scp106.HuntersAtlasAbility._syncRoom = targetRoom.Identifier;
             Vector3 TargetRoomPos = scp106.HuntersAtlasAbility.GetSafePosition();
 
             Timing.RunCoroutine(TeleportRoom(player, TargetRoomPos));
@@ -83,14 +89,12 @@ namespace BetterScp106.Features
             scp106.Owner.Teleport(TargetRoomPos);
             Log.Debug("SCP-106 is ground'.");
 
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-            Log.Debug("SCP-106 exiting ground.");
-
             player.DisableEffect<Ensnared>();
             player.Health -= Plugin.Instance.Config.TeleportCostHealt; 
             scp106.RemainingSinkholeCooldown = Plugin.Instance.Config.TeleportCooldown;
             scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f);
 
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.SubmergeProgress >= 1);
             EventHandlers.SpecialFeatureUsing = false;
         }
     }

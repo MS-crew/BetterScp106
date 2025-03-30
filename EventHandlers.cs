@@ -5,9 +5,10 @@ using CustomPlayerEffects;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
+using BetterScp106.Features;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Core.UserSettings;
-
+using System.Runtime;
 
 namespace BetterScp106
 {
@@ -22,8 +23,9 @@ namespace BetterScp106
 
         public void OnStalk(StalkingEventArgs ev)
         {
-            if (EventHandlers.SpecialFeatureUsing)
+            if (SpecialFeatureUsing)
                 ev.IsAllowed = false;
+
         }
 
         public void Alt(TogglingNoClipEventArgs ev)
@@ -32,10 +34,8 @@ namespace BetterScp106
                 return;
 
             if (ev.Player.Id == ScpPullingtoPocket)
-            {
                 GetScpPerm = true;
-                return;
-            }
+
         }
 
         public void On106Attack(AttackingEventArgs ev)
@@ -52,8 +52,9 @@ namespace BetterScp106
 
         public void OnTeleport(TeleportingEventArgs ev)
         {
-            if (EventHandlers.SpecialFeatureUsing)
+            if (SpecialFeatureUsing)
                 ev.IsAllowed = false;
+
         }
 
         public void Pd(EscapingPocketDimensionEventArgs ev)
@@ -70,6 +71,8 @@ namespace BetterScp106
         {
             if (ev.NewRole == RoleTypeId.Scp106)
             {
+                SpecialFeatureUsing = false;
+                SettingBase.Register(SettingsMenu.Better106Menu());
                 SettingBase.SendToPlayer(ev.Player, SettingsMenu.Better106Menu());
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }
@@ -102,5 +105,6 @@ namespace BetterScp106
             Methods.EscapeFromDimension(ev.Player);
             Log.Debug("Escape failed but player is Scp and successful escape will be made");
         }
+
     }
 }

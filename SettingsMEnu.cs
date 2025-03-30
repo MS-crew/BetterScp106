@@ -37,16 +37,37 @@ namespace BetterScp106
                 label: StringBuilderPool.Shared.ToStringReturn(stringBuilder),
                 foldoutMode: SSTextArea.FoldoutMode.ExtendedByDefault));
 
-            AddKeybindSetting(settings, Plugin.Instance.Config.PocketFeature, Methods.Features.PocketKey, Plugin.Instance.Translation.Pocket[0], UnityEngine.KeyCode.F, Plugin.Instance.Translation.Pocket[1]);
-            AddKeybindSetting(settings, Plugin.Instance.Config.PocketinFeature, Methods.Features.PocketinKey, Plugin.Instance.Translation.PocketIn[0], UnityEngine.KeyCode.G, Plugin.Instance.Translation.PocketIn[1]);
+            if(Plugin.Instance.Config.PocketFeature)
+            {
+                settings.Add(new KeybindSetting(
+                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketKey],
+                    label: Plugin.Instance.Translation.Pocket[0],
+                    suggested: UnityEngine.KeyCode.F,
+                    hintDescription: Plugin.Instance.Translation.Pocket[1],
+                    onChanged: Methods.ProcessUserInput
+                    ));
+            }
+            
+            if (Plugin.Instance.Config.PocketinFeature)
+            {
+                settings.Add(new KeybindSetting(
+                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketinKey],
+                    label: Plugin.Instance.Translation.PocketIn[0],
+                    suggested: UnityEngine.KeyCode.G,
+                    hintDescription: Plugin.Instance.Translation.PocketIn[1],
+                    onChanged: Methods.ProcessUserInput
+                    ));
+            }
 
             if (Plugin.Instance.Config.StalkFeature)
             {
                 settings.Add(new KeybindSetting(
                     id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkKey],
-                    label: Plugin.Instance.Translation.Stalk[0], 
-                    suggested: UnityEngine.KeyCode.H, 
-                    hintDescription: Plugin.Instance.Translation.Stalk[1]));
+                    label: Plugin.Instance.Translation.Stalk[0],
+                    suggested: UnityEngine.KeyCode.H,
+                    hintDescription: Plugin.Instance.Translation.Stalk[1],
+                    onChanged: Methods.ProcessUserInput
+                    ));
 
                 settings.Add(new TwoButtonsSetting(
                     id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode],
@@ -78,29 +99,21 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.Teleport[0],
                     buttonText: Plugin.Instance.Translation.Teleport[1],
                     hintDescription: Plugin.Instance.Translation.Teleport[2],
-                    holdTime: 2f));
+                    holdTime: 2f , 
+                    onChanged: Methods.ProcessUserInput
+                    ));
 
             }
 
             return [.. settings];
         }
+
         private static void AddFeatureDescription(bool isEnabled, string template, StringBuilder stringBuilder, string placeholder1, string value1, string placeholder2, string value2)
         {
             if (isEnabled)
             {
                 stringBuilder.AppendLine(template.Replace(placeholder1, value1).Replace(placeholder2, value2));
                 stringBuilder.AppendLine();
-            }
-        }
-        private static void AddKeybindSetting(List<SettingBase> settings, bool isEnabled, Methods.Features feature, string label, UnityEngine.KeyCode suggestedKey, string hint)
-        {
-            if (isEnabled) 
-            {
-                settings.Add(new KeybindSetting(
-                    id: Plugin.Instance.Config.AbilitySettingIds[feature],
-                    label: label,
-                    suggested: suggestedKey,
-                    hintDescription: hint));
             }
         }
     }

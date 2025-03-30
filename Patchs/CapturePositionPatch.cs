@@ -18,23 +18,25 @@ namespace BetterScp106
             Label Skip = generator.DefineLabel();
             NewCodes[0].labels.Add(Skip);
 
-            NewCodes.InsertRange(0, new List<CodeInstruction>
-            {
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(StatusEffectBase), nameof(StatusEffectBase.Hub))),
-                    new CodeInstruction(OpCodes.Ldc_I4_1),
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PlayerRolesUtils), nameof(PlayerRolesUtils.IsSCP))),
-                    new CodeInstruction(OpCodes.Stloc, IsScp.LocalIndex),
+            NewCodes.InsertRange(0,
+            [
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, AccessTools.PropertyGetter(typeof(StatusEffectBase), nameof(StatusEffectBase.Hub))),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Call, AccessTools.Method(typeof(PlayerRolesUtils), nameof(PlayerRolesUtils.IsSCP))),
+                    new(OpCodes.Stloc, IsScp.LocalIndex),
 
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin), nameof(Plugin.Config))),
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.PocketexitRandomZonemode))),
-                    new CodeInstruction(OpCodes.Ldloc, IsScp.LocalIndex),
-                    new CodeInstruction(OpCodes.Or),
-                    new CodeInstruction(OpCodes.Brfalse_S, Skip),
+                    new(OpCodes.Call, AccessTools.PropertyGetter(typeof(Plugin), nameof(Plugin.Instance))),
+                    new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin), nameof(Config))),
+                    new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.PocketexitRandomZonemode))),
 
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Methods), nameof(Methods.RandomZone))),
-                    new CodeInstruction(OpCodes.Ret),
-            });
+                    new(OpCodes.Ldloc, IsScp.LocalIndex),
+                    new(OpCodes.Or),
+                    new(OpCodes.Brfalse_S, Skip),
+
+                    new(OpCodes.Call, AccessTools.Method(typeof(Methods), nameof(Methods.RandomZone))),
+                    new(OpCodes.Ret),
+            ]);
 
             for (int z = 0; z < NewCodes.Count; z++)
                 yield return NewCodes[z];

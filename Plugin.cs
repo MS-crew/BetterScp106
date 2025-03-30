@@ -27,6 +27,7 @@
         public override void OnEnabled()
         {
             Instance = this;
+            eventHandlers = new EventHandlers();
 
             Scp106.Stalking += eventHandlers.OnStalk; 
             Scp106.Attacking += eventHandlers.On106Attack;
@@ -60,6 +61,7 @@
             ServerSpecificSettingsSync.ServerOnSettingValueReceived -= Methods.ProcessUserInput;
 
             harmony.UnpatchAll(harmonyID: "Better106RandomZoneMode");
+            eventHandlers = null;
             Instance = null;
             base.OnDisabled();
         }    

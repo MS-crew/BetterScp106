@@ -6,19 +6,25 @@
     using UserSettings.ServerSpecific;
     using Scp106 = Exiled.Events.Handlers.Scp106;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
+
     public class Plugin : Plugin<Config, Translation>
     {
         private Harmony harmony;
-        public static bool Using = false;
+        
         public static EventHandlers eventHandlers;
+
         public override string Author => "ZurnaSever";
+
         public override string Name => "BetterScp106";
+
         public override string Prefix => "BetterScp106"; 
+
         public static Plugin Instance {get; private set;}
-        public static Config C => Plugin.Instance?.Config;
-        public static Translation T => Plugin.Instance?.Translation;
-        public override Version Version { get; } = new Version(2, 5, 7);
+
+        public override Version Version { get; } = new Version(2, 5, 8);
+
         public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
+
         public override void OnEnabled()
         {
             Instance = this;
@@ -31,14 +37,16 @@
             PlayerHandlers.ChangingRole += eventHandlers.OnChangingRole;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
             ServerSpecificSettingsSync.ServerOnSettingValueReceived += Methods.ProcessUserInput;
-            
-            if (C.OneHitPocket) Scp106.Attacking += eventHandlers.On106Attack;
-            if (C.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
 
-            harmony = new Harmony("Better106RandomZoneMode");
+            if (Config.OneHitPocket) Scp106.Attacking += eventHandlers.On106Attack;
+            if (Config.RealisticPocket) PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
+
+            harmony = new Harmony("Better106RandomZoneMode"+ DateTime.Now.Ticks);
             harmony.PatchAll();
+
             base.OnEnabled();
         }
+
         public override void OnDisabled()
         {
             Scp106.Stalking -= eventHandlers.OnStalk;
@@ -49,13 +57,15 @@
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
             ServerSpecificSettingsSync.ServerOnSettingValueReceived -= Methods.ProcessUserInput;
 
-            if (C.OneHitPocket) Scp106.Attacking -= eventHandlers.On106Attack;
-            if (C.RealisticPocket) PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
+            if (Config.OneHitPocket) Scp106.Attacking -= eventHandlers.On106Attack;
+            if (Config.RealisticPocket) PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
 
             harmony.UnpatchAll(harmonyID: "Better106RandomZoneMode");
+
             eventHandlers = null;
             Instance = null;
+
             base.OnDisabled();
-        }
+        }    
     }
 }

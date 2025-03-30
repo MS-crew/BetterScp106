@@ -6,6 +6,7 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
+using Exiled.API.Features.Core.UserSettings;
 
 
 namespace BetterScp106
@@ -14,26 +15,32 @@ namespace BetterScp106
     {
         public readonly Plugin plugin;
 
-        public static int GetPocketScp;
+        public static bool SpecialFeatureUsing = false;
+
+        public static int ScpPullingtoPocket;
 
         public static bool GetScpPerm = false;
+
         public EventHandlers(Plugin plugin) => this.plugin = plugin;
+
         public void OnStalk(StalkingEventArgs ev)
         {
-            if (Plugin.Using)
+            if (EventHandlers.SpecialFeatureUsing)
                 ev.IsAllowed = false;
         }
+
         public void Alt(TogglingNoClipEventArgs ev)
         {
             if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
                 return;
 
-            if (ev.Player.Id == GetPocketScp)
+            if (ev.Player.Id == ScpPullingtoPocket)
             {
                 GetScpPerm = true;
                 return;
             }
         }
+
         public void On106Attack(AttackingEventArgs ev)
         {
             if (ev.Target.GetEffect<Traumatized>().IsEnabled)
@@ -42,11 +49,13 @@ namespace BetterScp106
             ev.Target.EnableEffect<PocketCorroding>();
             Log.Debug($"Scp106 drew the {ev.Target.Nickname} directly into the pocket");
         }
+
         public void OnTeleport(TeleportingEventArgs ev)
         {
-            if (Plugin.Using)
+            if (EventHandlers.SpecialFeatureUsing)
                 ev.IsAllowed = false;
         }
+
         public void Pd(EscapingPocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)
@@ -56,14 +65,16 @@ namespace BetterScp106
             Methods.EscapeFromDimension(ev.Player);
             Log.Debug("Scp exit the dimension with find right exit");
         }
+
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.NewRole == RoleTypeId.Scp106)
             {
-                Methods.Apply106Menu(ev.Player);
-                ev.Player.ShowHint(new Hint(Plugin.T.Scp106StartMessage, 10, true));
+                SettingBase.SendToPlayer(ev.Player, SettingsMenu.Better106Menu());
+                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
             }
         }
+
         public void Warheadkillinhibitor(HurtingEventArgs ev)
         {
             if (ev.DamageHandler.Type != DamageType.Warhead)
@@ -73,9 +84,9 @@ namespace BetterScp106
                 return;
 
             ev.IsAllowed = false;
-            FogControl fogControl = ev.Player.ReferenceHub.playerEffectsController.GetEffect<FogControl>();
-            fogControl?.SetFogType(FogType.Outside);
+            ev.Player.GetEffect<FogControl>()?.SetFogType(FogType.Outside);
         }
+
         public void OnFailingEscape(FailingEscapePocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)

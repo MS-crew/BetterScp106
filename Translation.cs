@@ -83,11 +83,13 @@ namespace BetterScp106
             "Pocket Dimension Key",
             "The button you'll use to go to the pocket"
         ];
+
         public List<string> PocketIn { get; set; } =
         [
             "Pocket In Key",
             "The button you use to bring your friend to the pocket"
         ];
+
         public List<string> Stalk { get; set; } =
         [
             "Stalk Key",
@@ -99,6 +101,7 @@ namespace BetterScp106
             "Stalk Distance",
             "The size of the local radius that can be stalked."
         ];
+
         public List<string> Teleport { get; set; } =
         [
             "Rooms",

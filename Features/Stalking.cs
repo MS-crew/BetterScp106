@@ -3,6 +3,7 @@ using UnityEngine;
 using CustomPlayerEffects;
 using Exiled.API.Features;
 using System.Collections.Generic;
+using Exiled.API.Features.Roles;
 
 namespace BetterScp106.Features
 {
@@ -10,16 +11,17 @@ namespace BetterScp106.Features
     {
         public static void StalkFeature(Player player)
         {
-            player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
+            player.Role.Is(out Scp106Role scp106);
+
             if (scp106.RemainingSinkholeCooldown > 0)
             {
-                player.Broadcast(Plugin.T.Cooldown,true);
+                player.Broadcast(Plugin.Instance.Translation.Cooldown,true);
                 return;
             }
 
-            if (Plugin.Using || scp106.Vigor < Mathf.Clamp01(Plugin.C.StalkCostVigor / 100f) || player.Health <= Plugin.C.StalkCostHealt)
+            if (EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || player.Health <= Plugin.Instance.Config.StalkCostHealt)
             {
-                player.Broadcast(Plugin.T.StalkCant, true);
+                player.Broadcast(Plugin.Instance.Translation.StalkCant, true);
                 return;
             }
 
@@ -27,7 +29,7 @@ namespace BetterScp106.Features
 
             if (target == null)
             {
-                player.Broadcast(Plugin.T.StalkNoTarget, true);
+                player.Broadcast(Plugin.Instance.Translation.StalkNoTarget, true);
                 return;
             }
 
@@ -35,26 +37,28 @@ namespace BetterScp106.Features
         }
         public static IEnumerator<float> StalkV3(Player player, Player target)
         {
-            if (Plugin.Using)
+            if (EventHandlers.SpecialFeatureUsing)
                 yield break;
 
-            Plugin.Using = true;
+            EventHandlers.SpecialFeatureUsing = true;
 
-            if (Plugin.C.StalkWarning) 
+            if (Plugin.Instance.Config.StalkWarning) 
             {
-                yield return Timing.WaitForSeconds(Plugin.C.StalkWarningBefore);
-                target.Broadcast(Plugin.T.StalkVictimWarn, shouldClearPrevious: true);
+                yield return Timing.WaitForSeconds(Plugin.Instance.Config.StalkWarningBefore);
+                target.Broadcast(Plugin.Instance.Translation.StalkVictimWarn, shouldClearPrevious: true);
             }
 
-            player.Role.Is(out Exiled.API.Features.Roles.Scp106Role scp106);
+            player.Role.Is(out Scp106Role scp106);
+
             if (!target.IsAlive)
             {
-                player.Broadcast(Plugin.T.StalkFailed, shouldClearPrevious: true);
+                player.Broadcast(Plugin.Instance.Translation.StalkFailed, shouldClearPrevious: true);
                 Log.Debug("Stalk victim die before stalk");
             }
+
             else
             {
-                player.Broadcast(Plugin.T.StalkSuccesfull, shouldClearPrevious: true);
+                player.Broadcast(Plugin.Instance.Translation.StalkSuccesfull, shouldClearPrevious: true);
                 Log.Debug("Stalk teleport starting");
 
                 Vector3 tp = target.Position;
@@ -73,13 +77,12 @@ namespace BetterScp106.Features
                 Log.Debug("SCP-106 exiting ground.");
 
                 player.DisableEffect<Ensnared>();
-                player.Health -= Plugin.C.StalkCostHealt;
-                scp106.RemainingSinkholeCooldown = (float)Plugin.C.AfterStalkCooldown;
-                scp106.Vigor -= Mathf.Clamp01(Plugin.C.StalkCostVigor / 100f);
-                Log.Debug("cooldown is added and health and vigor are reduced");
+                player.Health -= Plugin.Instance.Config.StalkCostHealt;
+                scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f); 
+                scp106.RemainingSinkholeCooldown = (float)Plugin.Instance.Config.AfterStalkCooldown;
             }
 
-            Plugin.Using = false;
+            EventHandlers.SpecialFeatureUsing = false;
         }
     }
 }

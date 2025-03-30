@@ -1,26 +1,23 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using PlayerRoles;
-using MapGeneration;
 using Exiled.API.Enums;
-using ProgressiveCulling;
 using Exiled.API.Features;
 using RelativePositioning;
 using BetterScp106.Features;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
+using Map = Exiled.API.Features.Map;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
-using Interactables.Interobjects.DoorUtils;
+using Player = Exiled.API.Features.Player;
+using Warhead = Exiled.API.Features.Warhead;
 
 namespace BetterScp106
 {
     public class Methods
     {
-        static RoomIdentifier syncroom;
-        public static float StalkDistance = Plugin.C.StalkDistance;
         public enum Features
         {
             PocketKey,
@@ -29,8 +26,10 @@ namespace BetterScp106
             StalkMode,
             StalkDistanceSlider,
             TeleportRooms,
-            TeleportRoomsList
+            TeleportRoomsList,
+            Description
         }
+
         public static RelativePosition RandomZone()
         {
             List<RoomType> randompos =
@@ -43,15 +42,13 @@ namespace BetterScp106
 
             if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
             {
-                randompos.RemoveAt(0);
-                randompos.RemoveAt(1);
-                randompos.RemoveAt(2);
+                randompos.Remove(RoomType.Lcz914);
+                randompos.Remove(RoomType.Hcz096);
+                randompos.Remove(RoomType.EzGateB);
             }
 
-            if (Map.IsLczDecontaminated || Map.DecontaminationState == DecontaminationState.Countdown) 
-            { 
+            if (Map.DecontaminationState == DecontaminationState.Countdown|| Map.DecontaminationState == DecontaminationState.Finish) 
                 randompos.Remove(RoomType.Lcz914);
-            }
                 
             if (randompos.Count == 0)
             {
@@ -69,24 +66,25 @@ namespace BetterScp106
             }
 
             RelativePosition Relaiveposition = new(position);
-            Log.Debug("Random Zones count: " + randompos.Count + " selected random position: " + position + " Random zone mode: " + Plugin.C.PocketexitRandomZonemode);
+            Log.Debug("Random Zones count: " + randompos.Count + " selected random position: " + position + " Random zone mode: " + Plugin.Instance.Config.PocketexitRandomZonemode);
 
             return Relaiveposition;
         }
+
         public static Player Findtarget(Player player)
         {
-            bool StalkMode = ServerSpecificSettingsSync.GetSettingOfUser<SSTwoButtonsSetting>(player.ReferenceHub, Plugin.C.AbilitySettingIds[Features.StalkMode]).SyncIsB;
-            float StalkDistance = ServerSpecificSettingsSync.GetSettingOfUser<SSSliderSetting>(player.ReferenceHub, Plugin.C.AbilitySettingIds[Features.StalkDistanceSlider]).SyncFloatValue;
+            bool StalkMode = ServerSpecificSettingsSync.GetSettingOfUser<SSTwoButtonsSetting>(player.ReferenceHub, Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode]).SyncIsB;
+            float StalkDistance = ServerSpecificSettingsSync.GetSettingOfUser<SSSliderSetting>(player.ReferenceHub, Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider]).SyncFloatValue;
 
             IEnumerable<Player> stalkablePlayers = Player.List.Where
             (
                 p =>
-                Plugin.C.StalkableRoles.Contains(p.Role) &&
-                p.Health < Plugin.C.StalkTargetmaxHealt &&
+                Plugin.Instance.Config.StalkableRoles.Contains(p.Role) &&
+                p.Health < Plugin.Instance.Config.StalkTargetmaxHealt &&
                 p.CurrentRoom?.Type != RoomType.Pocket
             );
 
-            if (!Plugin.C.StalkFromEverywhere)
+            if (!Plugin.Instance.Config.StalkFromEverywhere)
             {
                 stalkablePlayers = stalkablePlayers.Where
                 (
@@ -98,17 +96,13 @@ namespace BetterScp106
                     )
                 );
             }
+
             if (StalkMode)
-            {
-                Log.Debug("Stalk Mode: For Healt and Stalk Distance is " + StalkDistance);
                 return stalkablePlayers.OrderBy(p => p.Health).FirstOrDefault();
-            }
             else
-            {
-                Log.Debug("Stalk Mode: For Distance and Stalk Distance is" + StalkDistance);
                 return stalkablePlayers.OrderBy(p => Vector3.Distance(p.Position, player.Position)).FirstOrDefault();
-            }
         }
+
         public static Player FindFriend(Player player)
         {
             Player friend = Player.List.Where
@@ -122,86 +116,29 @@ namespace BetterScp106
                             .FirstOrDefault();
             return friend;
         }
+
         public static void EscapeFromDimension(Player player)
         {
-            if (player.ReferenceHub.roleManager.CurrentRole is not IFpcRole fpcRole)
-                return;
+            player.Teleport(Scp106PocketExitFinder.GetBestExitPosition(player.Role as IFpcRole), Vector3.zero);
 
-            player.DisableAllEffects();
-            fpcRole.FpcModule.ServerOverridePosition(Scp106PocketExitFinder.GetBestExitPosition(fpcRole), Vector3.zero);
-
-            if (player.Role == RoleTypeId.Scp106 && Plugin.C.Reminders)
+            if (player.Role == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
                 ShowRandomScp106Hint(player);
         }
+
         public static void ShowRandomScp106Hint(Player player)
         {
             int randomIndex = new System.Random().Next(0, 3);
             string hint = randomIndex switch
             {
-                0 => Plugin.T.Scp106PowersPocket.Replace("$pockethealt", Plugin.C.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.C.PocketdimensionCostVigor.ToString()),
-                1 => Plugin.T.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.C.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.C.PocketinCostVigor.ToString()),
-                2 => Plugin.T.Scp106PowersStalk.Replace("$stalkhealt", Plugin.C.StalkCostHealt.ToString()).Replace("$stalkvigor", Plugin.C.StalkCostVigor.ToString()),
-                _ => Plugin.T.Scp106StartMessage,
+                0 => Plugin.Instance.Translation.Scp106PowersPocket.Replace("$pockethealt", Plugin.Instance.Config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.Instance.Config.PocketdimensionCostVigor.ToString()),
+                1 => Plugin.Instance.Translation.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.Instance.Config.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.Instance.Config.PocketinCostVigor.ToString()),
+                2 => Plugin.Instance.Translation.Scp106PowersStalk.Replace("$stalkhealt", Plugin.Instance.Config.StalkCostHealt.ToString()).Replace("$stalkvigor", Plugin.Instance.Config.StalkCostVigor.ToString()),
+                _ => Plugin.Instance.Translation.Scp106StartMessage,
             };
+
             player.ShowHint(hint, 3);
         }
-        private static bool ValidateDestinationDoor(DoorVariant dv)
-        {
-            return dv is IScp106PassableDoor scp106PassableDoor && scp106PassableDoor.IsScp106Passable && dv.Rooms.Contains<RoomIdentifier>(syncroom);
-        }
-        public static void Apply106Menu(Player player)
-        {
-            ServerSpecificSettingsSync.DefinedSettings = SettingHandlers.Better106Menu();
-            ServerSpecificSettingsSync.SendToPlayer(player.ReferenceHub);
-        }
-        public static Vector3 GetSafePosition(Player scp106, Vector3 targetpos)
-        {
-            Vector3 safePosition = scp106.Position;
-            syncroom = Room.Get(targetpos).Identifier;
-            float num1 = float.MaxValue;
-            foreach (Pose location in SafeLocationFinder.GetLocations(new Predicate<RoomCullingConnection>(ValidateDestinationConnection), new Predicate<DoorVariant>(ValidateDestinationDoor)))
-            {
-                if ((double)Mathf.Abs(location.position.y - targetpos.y) <= 50.0)
-                {
-                    Vector3 vector3 = ClosestDoorPosition(location.position, targetpos);
-                    float num2 = (vector3 - targetpos).SqrMagnitudeIgnoreY();
-                    if ((double)num2 <= (double)num1)
-                    {
-                        num1 = num2;
-                        safePosition = vector3;
-                    }
-                }
-            }
-            return safePosition;
-        }
-        private static Vector3 ClosestDoorPosition(Vector3 doorPos, Vector3 targetpos)
-        {
-            Vector3 vector3 = targetpos - doorPos;
-            Vector3 dir = new(vector3.x, 0.0f, vector3.z);
-            float maxDis = dir.magnitude;
-            if ((double)maxDis > 0.0)
-                dir /= maxDis;
-            float radius = 0.3f;
-            float height = 0.5f;
-            Vector3 origin = doorPos + Vector3.up * (0.2f + radius);
-            Color debugColor = (double)Scp106HuntersAtlasAbility.DebugDuration > 0.0 ? UnityEngine.Random.ColorHSV(0.0f, 1f, 0.5f, 1f, 0.4f, 0.8f) : Color.clear;
-            Scp106HuntersAtlasAbility scp106HuntersAtlasAbility = new();
-            Vector3 pos;
-            while (!scp106HuntersAtlasAbility.TrySphereCast(debugColor, origin, dir, radius, height, maxDis, out pos))
-            {
-                maxDis = Mathf.Min(15f, maxDis - radius);
-                if ((double)maxDis < (double)radius)
-                    return doorPos + Vector3.up * height;
-            }
-            return pos;
-        }
-        private static bool ValidateDestinationConnection(RoomCullingConnection connection)
-        {
-            RoomCullingConnection.RoomLink link = connection.Link;
-            if (!link.Valid)
-                return false;
-            return syncroom == link.RoomA || syncroom == link.RoomB;
-        }
+
         internal static void ProcessUserInput(ReferenceHub sender, ServerSpecificSettingBase settingbase)
         {
             if (sender.roleManager.CurrentRole.RoleTypeId != RoleTypeId.Scp106)
@@ -209,47 +146,23 @@ namespace BetterScp106
 
             if (settingbase is SSButton teleportbuton)
             {
-                if (teleportbuton.SettingId == Plugin.C.AbilitySettingIds[Features.TeleportRooms])
-                {
+
+                if (teleportbuton.SettingId == Plugin.Instance.Config.AbilitySettingIds[Features.TeleportRooms])
                     TeleportRooms.TeleportFeature(Player.Get(sender));
-                }
             }
 
             if (settingbase is SSKeybindSetting keybindSetting && keybindSetting.SyncIsPressed)
             {
-                switch ((int)keybindSetting.SettingId)
-                {
-                    case int id when id == Plugin.C.AbilitySettingIds[Features.PocketKey]:
-                        Pocket.PocketFeature(Player.Get(sender));
-                        break;
 
-                    case int id when id == Plugin.C.AbilitySettingIds[Features.PocketinKey]:
-                        PocketIn.PocketInFeature(Player.Get(sender));
-                        break;
+                if (keybindSetting.SettingId == Plugin.Instance.Config.AbilitySettingIds[Features.PocketKey])
+                    GotoPocket.PocketFeature(Player.Get(sender));
 
-                    case int id when id == Plugin.C.AbilitySettingIds[Features.StalkKey]:
-                        Stalking.StalkFeature(Player.Get(sender));
-                        break;
-                    default:
-                        break;
-                }
-            }
+                else if (keybindSetting.SettingId == Plugin.Instance.Config.AbilitySettingIds[Features.PocketinKey])
+                    TakeScpsPocket.PocketInFeature(Player.Get(sender));
 
-            /*if (settingbase is SSKeybindSetting keybindSetting && keybindSetting.SyncIsPressed)
-            {
-                if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.PocketKey])
-                {
-                    Pocket.PocketFeature(Player.Get(sender));
-                }
-                else if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.PocketinKey])
-                {
-                    PocketIn.PocketInFeature(Player.Get(sender));
-                }
-                else if (keybindSetting.SettingId == Plugin.C.AbilitySettingIds[Features.StalkKey])
-                {
+                else if (keybindSetting.SettingId == Plugin.Instance.Config.AbilitySettingIds[Features.StalkKey])
                     Stalking.StalkFeature(Player.Get(sender));
-                }
-            }*/
+            }
         }
     }
 }

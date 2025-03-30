@@ -9,6 +9,7 @@ namespace BetterScp106
     public class Config : IConfig
     {
         public bool IsEnabled { get ; set ; } = true;
+
         public bool Debug { get; set; } = false;
 
         [Description("What features should be turned on??")]
@@ -28,6 +29,7 @@ namespace BetterScp106
             {Methods.Features.StalkDistanceSlider,110},
             {Methods.Features.TeleportRoomsList,  111},
             {Methods.Features.TeleportRooms,      112},
+            {Methods.Features.Description,        113},
         };
 
         [Description("Should players exit a random zone when they exit the pocket dimension?")]

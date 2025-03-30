@@ -11,41 +11,44 @@ namespace BetterScp106.Features
 {
     public class TeleportRooms
     {
+
         public static void TeleportFeature(Player player)
         {
             player.Role.Is(out Scp106Role scp106);
-            if (scp106.RemainingSinkholeCooldown > 0|| scp106.IsStalking || scp106.IsSubmerged)
+
+            if (scp106.RemainingSinkholeCooldown > 0 || scp106.IsStalking || scp106.IsSubmerged)
             {
-                player.Broadcast(Plugin.T.Cooldown, shouldClearPrevious: true);
+                player.Broadcast(Plugin.Instance.Translation.Cooldown, shouldClearPrevious: true);
                 return;
             }
 
-            if (scp106.Vigor < Mathf.Clamp01(Plugin.C.TeleportCostVigor / 100f) || player.Health <= Plugin.C.TeleportCostHealt)
+            if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f) || player.Health <= Plugin.Instance.Config.TeleportCostHealt)
             {
-                player.Broadcast(Plugin.T.TeleportCant);
+                player.Broadcast(Plugin.Instance.Translation.TeleportCant);
                 return;
             }
 
             if (AlphaWarheadController.Detonated)
             {
                 scp106.IsSubmerged = true;
-                player.Broadcast(Plugin.T.Afternuke, shouldClearPrevious: true);
+                player.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
                 return;
             }
 
             int TargetRoomIndex = ServerSpecificSettingsSync.GetSettingOfUser<SSDropdownSetting>
-                (player.ReferenceHub, Plugin.C.AbilitySettingIds[Methods.Features.TeleportRoomsList])
+                (player.ReferenceHub, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList])
                 .SyncSelectionIndexRaw;
 
-            Room targetRoom = Room.Get(Plugin.C.Rooms[TargetRoomIndex]);
-            if(targetRoom == null)
+            Room targetRoom = Room.Get(Plugin.Instance.Config.Rooms[TargetRoomIndex]);
+            if (targetRoom == null)
             {
-                player.Broadcast(Plugin.T.TeleportRoomNull, shouldClearPrevious: true);
+                player.Broadcast(Plugin.Instance.Translation.TeleportRoomNull, shouldClearPrevious: true);
                 return;
             }
-            if (Plugin.C.TeleportOnlySameZone && player.Zone != targetRoom.Zone) 
+
+            if (Plugin.Instance.Config.TeleportOnlySameZone && player.Zone != targetRoom.Zone)
             {
-                player.Broadcast(Plugin.T.TeleportCantforZone, shouldClearPrevious: true);
+                player.Broadcast(Plugin.Instance.Translation.TeleportCantforZone, shouldClearPrevious: true);
                 return;
             }
 
@@ -54,19 +57,21 @@ namespace BetterScp106.Features
 
             if (flaglcz || flagSite)
             {
-                player.Broadcast(Plugin.T.TeleportRoomDanger, shouldClearPrevious: true);
+                player.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
                 return;
             }
 
-            Vector3 TargetRoomPos = Methods.GetSafePosition(player, targetRoom.Position);
+            scp106.HuntersAtlasAbility._syncPos = targetRoom.Position;
+            Vector3 TargetRoomPos = scp106.HuntersAtlasAbility.GetSafePosition();
+
             Timing.RunCoroutine(TeleportRoom(player, TargetRoomPos));
         }
         private static IEnumerator<float> TeleportRoom(Player player, Vector3 TargetRoomPos)
         {
-            if (Plugin.Using)
+            if (EventHandlers.SpecialFeatureUsing)
                 yield break;
 
-            Plugin.Using = true;
+            EventHandlers.SpecialFeatureUsing = true;
 
             player.Role.Is(out Scp106Role scp106);
 
@@ -82,12 +87,11 @@ namespace BetterScp106.Features
             Log.Debug("SCP-106 exiting ground.");
 
             player.DisableEffect<Ensnared>();
+            player.Health -= Plugin.Instance.Config.TeleportCostHealt; 
+            scp106.RemainingSinkholeCooldown = Plugin.Instance.Config.TeleportCooldown;
+            scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f);
 
-            scp106.RemainingSinkholeCooldown = Plugin.C.TeleportCooldown;
-            player.Health -= Plugin.C.TeleportCostHealt;
-            scp106.Vigor -= Mathf.Clamp01(Plugin.C.TeleportCostVigor / 100f);
-
-            Plugin.Using = false;
+            EventHandlers.SpecialFeatureUsing = false;
         }
     }
 }

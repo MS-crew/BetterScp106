@@ -13,15 +13,12 @@ namespace BetterScp106
 {
     public class EventHandlers
     {
-        public readonly Plugin plugin;
 
         public static bool SpecialFeatureUsing = false;
 
         public static int ScpPullingtoPocket;
 
         public static bool GetScpPerm = false;
-
-        public EventHandlers(Plugin plugin) => this.plugin = plugin;
 
         public void OnStalk(StalkingEventArgs ev)
         {
@@ -43,6 +40,9 @@ namespace BetterScp106
 
         public void On106Attack(AttackingEventArgs ev)
         {
+            if (!Plugin.Instance.Config.OneHitPocket)
+                return;
+
             if (ev.Target.GetEffect<Traumatized>().IsEnabled)
                 return;
 
@@ -77,6 +77,9 @@ namespace BetterScp106
 
         public void Warheadkillinhibitor(HurtingEventArgs ev)
         {
+            if (!Plugin.Instance.Config.RealisticPocket)
+                return; 
+
             if (ev.DamageHandler.Type != DamageType.Warhead)
                 return;
 

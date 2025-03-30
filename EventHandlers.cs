@@ -71,7 +71,7 @@ namespace BetterScp106
             if (ev.NewRole == RoleTypeId.Scp106)
             {
                 SettingBase.SendToPlayer(ev.Player, SettingsMenu.Better106Menu());
-                ev.Player.ShowHint(new Hint(plugin.Translation.Scp106StartMessage, 10, true));
+                ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }
         }
 

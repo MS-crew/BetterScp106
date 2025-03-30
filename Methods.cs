@@ -18,6 +18,7 @@ namespace BetterScp106
 {
     public class Methods
     {
+
         public enum Features
         {
             PocketKey,
@@ -56,8 +57,7 @@ namespace BetterScp106
                 return new RelativePosition(Room.Get(RoomType.Surface).Position);
             }
 
-            int Randomzone = new System.Random().Next(randompos.Count);
-            Vector3 position = Room.Get(randompos[Randomzone]).Position;
+            Vector3 position = Room.Get(randompos.RandomItem()).Position;
 
             if (position == Vector3.zero)
             {
@@ -127,7 +127,7 @@ namespace BetterScp106
 
         public static void ShowRandomScp106Hint(Player player)
         {
-            int randomIndex = new System.Random().Next(0, 3);
+            int randomIndex = Random.Range(0, 3);
             string hint = randomIndex switch
             {
                 0 => Plugin.Instance.Translation.Scp106PowersPocket.Replace("$pockethealt", Plugin.Instance.Config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.Instance.Config.PocketdimensionCostVigor.ToString()),

@@ -116,7 +116,7 @@ namespace BetterScp106
                     holdTime: 2f,
                     onChanged: (player, setting) => 
                     {
-                        if(player.Role == RoleTypeId.Scp106)
+                        if(player.Role == RoleTypeId.Scp106 )
                             TeleportRooms.TeleportFeature(player);
                     }
                     ));

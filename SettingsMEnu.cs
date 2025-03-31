@@ -10,7 +10,7 @@ using Exiled.API.Features;
 
 namespace BetterScp106
 {
-    public class SettingsMenu
+    public class SettingsMEnu
     {
         public class ServerSettingsSyncer : Menu
         {

@@ -106,7 +106,7 @@
     <Compile Include="Patchs\CoolDownPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsMEnu.cs" />
+    <Compile Include="SettingsMenu.cs" />
     <Compile Include="Translation.cs" />
   </ItemGroup>
   <ItemGroup>

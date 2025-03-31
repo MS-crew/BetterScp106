@@ -70,8 +70,8 @@ namespace BetterScp106
             if (ev.NewRole == RoleTypeId.Scp106)
             {
                 SpecialFeatureUsing = false;
-                SettingBase.Register(SettingsMEnu.Better106Menu(), Player => Player.Role == RoleTypeId.Scp106);
-                SettingBase.SendToPlayer(ev.Player, SettingsMEnu.Better106Menu());
+                SettingBase.Register(SettingsMenu.Better106Menu(), Player => Player.Role == RoleTypeId.Scp106);
+                SettingBase.SendToPlayer(ev.Player, SettingsMenu.Better106Menu());
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }
         }

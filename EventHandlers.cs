@@ -4,7 +4,6 @@ using Exiled.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Scp106;
-using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Core.UserSettings;
 

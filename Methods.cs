@@ -4,7 +4,6 @@ using PlayerRoles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using RelativePositioning;
-using BetterScp106.Features;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
 using Map = Exiled.API.Features.Map;
@@ -142,30 +141,5 @@ namespace BetterScp106
             player.ShowHint(hint, 3);
         }
 
-        public static void ProcessUserInput(Player sender, SettingBase settingbase)
-        {
-            if (sender.Role.Type != RoleTypeId.Scp106 || EventHandlers.SpecialFeatureUsing)
-                return;
-
-            if (settingbase is ButtonSetting teleportbuton)
-            {
-
-                if (teleportbuton.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRooms])
-                    TeleportRooms.TeleportFeature(sender);
-            }
-
-            if (settingbase is KeybindSetting keybindSetting && keybindSetting.IsPressed)
-            {
-
-                if (keybindSetting.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketKey])
-                    GotoPocket.PocketFeature(sender);
-
-                else if (keybindSetting.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketinKey])
-                    TakeScpsPocket.PocketInFeature(sender);
-
-                else if (keybindSetting.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkKey])
-                    Stalking.StalkFeature(sender);
-            }
-        }
     }
 }

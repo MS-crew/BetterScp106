@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Linq;
+using PlayerRoles;
 using NorthwoodLib.Pools;
+using BetterScp106.Features;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Exiled.API.Features.Core.UserSettings;
@@ -44,7 +46,11 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.Pocket[0],
                     suggested: UnityEngine.KeyCode.F,
                     hintDescription: Plugin.Instance.Translation.Pocket[1],
-                    onChanged: Methods.ProcessUserInput
+                    onChanged: (player, setting) => 
+                    { 
+                        if (player.Role == RoleTypeId.Scp106) 
+                            GotoPocket.PocketFeature(player); 
+                    }
                     ));
             }
             
@@ -55,7 +61,11 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.PocketIn[0],
                     suggested: UnityEngine.KeyCode.G,
                     hintDescription: Plugin.Instance.Translation.PocketIn[1],
-                    onChanged: Methods.ProcessUserInput
+                    onChanged: (player, setting) =>
+                    {
+                        if (player.Role == RoleTypeId.Scp106)
+                            TakeScpsPocket.PocketInFeature(player);
+                    }
                     ));
             }
 
@@ -66,7 +76,11 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.Stalk[0],
                     suggested: UnityEngine.KeyCode.H,
                     hintDescription: Plugin.Instance.Translation.Stalk[1],
-                    onChanged: Methods.ProcessUserInput
+                    onChanged: (player, setting) =>
+                    {
+                        if (player.Role == RoleTypeId.Scp106)
+                            Stalking.StalkFeature(player);
+                    }
                     ));
 
                 settings.Add(new TwoButtonsSetting(
@@ -99,8 +113,12 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.Teleport[0],
                     buttonText: Plugin.Instance.Translation.Teleport[1],
                     hintDescription: Plugin.Instance.Translation.Teleport[2],
-                    holdTime: 2f , 
-                    onChanged: Methods.ProcessUserInput
+                    holdTime: 2f,
+                    onChanged: (player, setting) => 
+                    {
+                        if(player.Role == RoleTypeId.Scp106)
+                            TeleportRooms.TeleportFeature(player);
+                    }
                     ));
 
             }

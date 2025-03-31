@@ -16,6 +16,7 @@ namespace BetterScp106.Patchs
             List<CodeInstruction> NewCodes = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label Skip = generator.DefineLabel();
+
             int index = NewCodes.FindIndex(code => code.opcode == OpCodes.Callvirt && code.operand is MethodInfo method && method == AccessTools.Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)));
             NewCodes[index + 1].labels.Add(Skip);
 

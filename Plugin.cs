@@ -3,8 +3,6 @@ using HarmonyLib;
 using Exiled.API.Features;
 using Scp106 = Exiled.Events.Handlers.Scp106;
 using PlayerHandlers = Exiled.Events.Handlers.Player;
-using Exiled.API.Features.Core.UserSettings;
-using Exiled.Events.Features;
 
 namespace BetterScp106
 {   
@@ -13,6 +11,7 @@ namespace BetterScp106
         private Harmony harmony;
         
         public static EventHandlers eventHandlers;
+
         public override string Author => "ZurnaSever";
 
         public override string Name => "BetterScp106";
@@ -21,7 +20,7 @@ namespace BetterScp106
 
         public static Plugin Instance {get; private set;}
 
-        public override Version Version { get; } = new Version(2, 5, 8);
+        public override Version Version { get; } = new Version(2, 5, 9);
 
         public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
 

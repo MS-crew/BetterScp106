@@ -5,10 +5,8 @@ using CustomPlayerEffects;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Scp106;
 using PlayerRoles.FirstPersonControl;
-using BetterScp106.Features;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Core.UserSettings;
-using System.Runtime;
 
 namespace BetterScp106
 {
@@ -29,8 +27,8 @@ namespace BetterScp106
         }
 
         public void Alt(TogglingNoClipEventArgs ev)
-        {
-            if (FpcNoclip.IsPermitted(ev.Player.ReferenceHub))
+        {           
+            if (ev.Player.IsNoclipPermitted)
                 return;
 
             if (ev.Player.Id == ScpPullingtoPocket)
@@ -105,6 +103,5 @@ namespace BetterScp106
             Methods.EscapeFromDimension(ev.Player);
             Log.Debug("Escape failed but player is Scp and successful escape will be made");
         }
-
     }
 }

@@ -7,7 +7,6 @@ using RelativePositioning;
 using BetterScp106.Features;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
-using UserSettings.ServerSpecific;
 using Map = Exiled.API.Features.Map;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
@@ -120,7 +119,7 @@ namespace BetterScp106
 
         public static void EscapeFromDimension(Player player)
         {
-            if (player.ReferenceHub.roleManager.CurrentRole is not IFpcRole fpcRole)
+            if (player.Role is not IFpcRole fpcRole)
                 return;
 
             player.Teleport(Scp106PocketExitFinder.GetBestExitPosition(fpcRole), Vector3.zero);

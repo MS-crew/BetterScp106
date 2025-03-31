@@ -4,11 +4,7 @@ using Exiled.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Scp106;
-using PlayerRoles.FirstPersonControl;
 using Exiled.Events.EventArgs.Player;
-using Exiled.API.Features.Core.UserSettings;
-using SSMenuSystem.Features;
-using MEC;
 
 namespace BetterScp106
 {
@@ -72,7 +68,6 @@ namespace BetterScp106
             if (ev.Player.Role.Type == RoleTypeId.Scp106)
             {
                 SpecialFeatureUsing = false;
-                Menu.Register(new SettingsMenu.ServerSettingsSyncer());
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }
         }

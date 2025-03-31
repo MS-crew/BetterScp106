@@ -13,9 +13,6 @@ using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
 using Player = Exiled.API.Features.Player;
 using Warhead = Exiled.API.Features.Warhead;
-using Exiled.API.Features.Core.UserSettings;
-using System.Runtime;
-using SSMenuSystem.Features.Wrappers;
 
 namespace BetterScp106
 {
@@ -75,11 +72,8 @@ namespace BetterScp106
 
         public static Player Findtarget(Player player)
         {
-            bool Stalkmode = player.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, YesNoButton>(Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode]).SyncIsB;
-            int Stalkdistance = player.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, Slider>(Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider]).SyncIntValue;
-
-            if (!SettingBase.TryGetSetting<TwoButtonsSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode], out TwoButtonsSetting stalkmode) || !SettingBase.TryGetSetting<SliderSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider], out SliderSetting Slider))
-                return null;
+            bool Stalkmode = player.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSTwoButtonsSetting>(Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode]).SyncIsB;
+            int Stalkdistance = player.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSSliderSetting>(Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider]).SyncIntValue;
 
             IEnumerable<Player> stalkablePlayers = Player.List.Where
             (
@@ -124,10 +118,21 @@ namespace BetterScp106
 
         public static void EscapeFromDimension(Player player)
         {
-            if (player.Role is not IFpcRole fpcRole)
+            if (player.Role.Base is not IFpcRole fpcRole)
+            {
+                Log.Error($"Player {player.Nickname} has an invalid role: {player.Role}");
                 return;
+            }
 
-            player.Teleport(Scp106PocketExitFinder.GetBestExitPosition(fpcRole), Vector3.zero);
+            Vector3 exitPos = Scp106PocketExitFinder.GetBestExitPosition(fpcRole);
+
+            if (exitPos == Vector3.zero)
+            {
+                Log.Error($"EscapeFromDimension: Exit position is invalid for {player.Nickname}.");
+                return;
+            }
+            
+            player.Teleport(exitPos, Vector3.zero);
 
             if (player.Role == RoleTypeId.Scp106 && Plugin.Instance.Config.Reminders)
                 ShowRandomScp106Hint(player);

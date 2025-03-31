@@ -3,13 +3,14 @@ using HarmonyLib;
 using Exiled.API.Features;
 using Scp106 = Exiled.Events.Handlers.Scp106;
 using PlayerHandlers = Exiled.Events.Handlers.Player;
+using SSMenuSystem.Features;
 
 namespace BetterScp106
 {   
     public class Plugin : Plugin<Config, Translation>
     {
         private Harmony harmony;
-        
+
         public static EventHandlers eventHandlers;
 
         public override string Author => "ZurnaSever";
@@ -38,6 +39,8 @@ namespace BetterScp106
             PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd;
             PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
+
+            Menu.RegisterAll();
 
             harmony = new Harmony("Better106Patchs"+ DateTime.Now.Ticks);
             harmony.PatchAll();

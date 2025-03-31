@@ -6,7 +6,9 @@ using CustomPlayerEffects;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
-using Exiled.API.Features.Core.UserSettings;
+using SSMenuSystem.Features;
+using SSMenuSystem.Features.Wrappers;
+using Exiled.API.Interfaces;
 
 namespace BetterScp106.Features
 {
@@ -35,14 +37,7 @@ namespace BetterScp106.Features
                 player.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
                 return;
             }
-
-            if(!SettingBase.TryGetSetting<DropdownSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropdown))
-            {
-                player.Broadcast(Plugin.Instance.Translation.TeleportCant);
-                return;
-            }
-            
-            int TargetRoomIndex = dropdown.SelectedIndex;
+            int TargetRoomIndex = player.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer,SSDropdownSetting>((int)Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList]).SyncSelectionIndexRaw;
             Room targetRoom = Room.Get(Plugin.Instance.Config.Rooms[TargetRoomIndex]);
 
             if (targetRoom == null)

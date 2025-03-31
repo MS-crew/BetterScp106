@@ -4,11 +4,10 @@ using PlayerRoles;
 using NorthwoodLib.Pools;
 using Exiled.API.Features;
 using SSMenuSystem.Features;
+using BetterScp106.Features;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using SSMenuSystem.Features.Wrappers;
-using PlayerRoles.Spectating;
-using BetterScp106.Features;
 
 namespace BetterScp106
 {
@@ -20,7 +19,7 @@ namespace BetterScp106
 
             public override string Name { get; set; } = "Better 106";
 
-            public override bool CheckAccess(ReferenceHub hub) => hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106;
+            public override bool CheckAccess(ReferenceHub hub) => hub;
 
             public override ServerSpecificSettingBase[] Settings => [.. Better106Menu().Cast<ServerSpecificSettingBase>()];
 
@@ -59,7 +58,7 @@ namespace BetterScp106
                     suggestedKey: UnityEngine.KeyCode.F,
                     hint: Plugin.Instance.Translation.Pocket[1],
                     onUsed: (hub, ispressed) => { 
-                        if(ispressed)
+                        if(ispressed && hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
                             GotoPocket.PocketFeature(Player.Get(hub)); 
                     }
                     ));
@@ -73,7 +72,7 @@ namespace BetterScp106
                     suggestedKey: UnityEngine.KeyCode.G,
                     hint: Plugin.Instance.Translation.PocketIn[1],
                     onUsed: (hub, ispressed) => {
-                        if (ispressed)
+                        if (ispressed && hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
                             TakeScpsPocket.PocketInFeature(Player.Get(hub));
                     }
                     ));
@@ -87,12 +86,12 @@ namespace BetterScp106
                     suggestedKey: UnityEngine.KeyCode.H,
                     hint: Plugin.Instance.Translation.Stalk[1],
                     onUsed: (hub, ispressed) => { 
-                        if(ispressed)
+                        if(ispressed && hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
                             Stalking.StalkFeature(Player.Get(hub)); 
                     }
                     ));
 
-                settings.Add(new YesNoButton(
+                settings.Add(new SSTwoButtonsSetting(
                     id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode],
                     label: Plugin.Instance.Translation.Stalk[2],
                     optionA: Plugin.Instance.Translation.Stalk[3],
@@ -100,7 +99,7 @@ namespace BetterScp106
                     defaultIsB: true,
                     hint: Plugin.Instance.Translation.Stalk[5]));
 
-                settings.Add(new Slider(
+                settings.Add(new SSSliderSetting(
                     id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkDistanceSlider],
                     label: Plugin.Instance.Translation.Stalk[6],
                     minValue: 0.0f,
@@ -112,10 +111,10 @@ namespace BetterScp106
 
             if (Plugin.Instance.Config.TeleportRoomsFeature)
             {
-                settings.Add(new Dropdown(
+                settings.Add(new SSDropdownSetting(
                     id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList],
                     label: Plugin.Instance.Translation.Teleport[0],
-                    options: Plugin.Instance.Config.Rooms.Select(r => r.ToString()).ToArray()));
+                    options: [.. Plugin.Instance.Config.Rooms.Select(r => r.ToString())]));
 
                 settings.Add(new Button(
                     id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRooms],
@@ -123,7 +122,10 @@ namespace BetterScp106
                     buttonText: Plugin.Instance.Translation.Teleport[1],
                     hint: Plugin.Instance.Translation.Teleport[2],
                     holdTimeSeconds: 2f,
-                    onClick: (hub, setting) => TeleportRooms.TeleportFeature(Player.Get(hub))
+                    onClick: (hub, setting) => {
+                        if (hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
+                            TeleportRooms.TeleportFeature(Player.Get(hub)); 
+                    }
                     ));
 
             }

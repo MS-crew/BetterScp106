@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BetterScp106</RootNamespace>
-    <AssemblyName>BetterScp106</AssemblyName>
+    <AssemblyName>BetterScp106 - SSmenu</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -71,6 +71,9 @@
     </Reference>
     <Reference Include="SemanticVersioning">
       <HintPath>..\..\..\Desktop\EXILED\Plugins\dependencies\SemanticVersioning.dll</HintPath>
+    </Reference>
+    <Reference Include="SSMenuSystem-EXILED">
+      <HintPath>..\..\..\AppData\Roaming\EXILED\Plugins\SSMenuSystem-EXILED.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

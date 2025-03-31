@@ -4,21 +4,23 @@ using PlayerRoles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using RelativePositioning;
-using BetterScp106.Features;
+using SSMenuSystem.Features;
 using Exiled.API.Features.Doors;
 using System.Collections.Generic;
+using UserSettings.ServerSpecific;
 using Map = Exiled.API.Features.Map;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
 using Player = Exiled.API.Features.Player;
 using Warhead = Exiled.API.Features.Warhead;
 using Exiled.API.Features.Core.UserSettings;
+using System.Runtime;
+using SSMenuSystem.Features.Wrappers;
 
 namespace BetterScp106
 {
     public class Methods
     {
-
         public enum Features
         {
             PocketKey,
@@ -73,6 +75,9 @@ namespace BetterScp106
 
         public static Player Findtarget(Player player)
         {
+            bool Stalkmode = player.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, YesNoButton>(Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode]).SyncIsB;
+            int Stalkdistance = player.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, Slider>(Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider]).SyncIntValue;
+
             if (!SettingBase.TryGetSetting<TwoButtonsSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode], out TwoButtonsSetting stalkmode) || !SettingBase.TryGetSetting<SliderSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider], out SliderSetting Slider))
                 return null;
 
@@ -89,15 +94,15 @@ namespace BetterScp106
                 stalkablePlayers = stalkablePlayers.Where
                 (
                     p =>
-                    Vector3.Distance(p.Position, player.Position) <= Slider.SliderValue ||
+                    Vector3.Distance(p.Position, player.Position) <= Stalkdistance ||
                     (
                         p.CurrentRoom.Doors?.Any(door => door is ElevatorDoor) == true &&
-                        Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Slider.SliderValue
+                        Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Stalkdistance
                     )
                 );
             }
 
-            if (stalkmode.IsSecond)
+            if (Stalkmode)
                 return stalkablePlayers.OrderBy(p => p.Health).FirstOrDefault();
             else
                 return stalkablePlayers.OrderBy(p => Vector3.Distance(p.Position, player.Position)).FirstOrDefault();
@@ -141,31 +146,6 @@ namespace BetterScp106
 
             player.ShowHint(hint, 3);
         }
-
-        public static void ProcessUserInput(Player sender, SettingBase settingbase)
-        {
-            if (sender.Role.Type != RoleTypeId.Scp106 || EventHandlers.SpecialFeatureUsing)
-                return;
-
-            if (settingbase is ButtonSetting teleportbuton)
-            {
-
-                if (teleportbuton.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRooms])
-                    TeleportRooms.TeleportFeature(sender);
-            }
-
-            if (settingbase is KeybindSetting keybindSetting && keybindSetting.IsPressed)
-            {
-
-                if (keybindSetting.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketKey])
-                    GotoPocket.PocketFeature(sender);
-
-                else if (keybindSetting.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketinKey])
-                    TakeScpsPocket.PocketInFeature(sender);
-
-                else if (keybindSetting.Id == Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkKey])
-                    Stalking.StalkFeature(sender);
-            }
-        }
+ 
     }
 }

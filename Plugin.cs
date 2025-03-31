@@ -33,9 +33,9 @@ namespace BetterScp106
             Scp106.Attacking += eventHandlers.On106Attack;
             Scp106.Teleporting += eventHandlers.OnTeleport;
 
+            PlayerHandlers.Spawned += eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd;
-            PlayerHandlers.ChangingRole += eventHandlers.OnChangingRole; 
             PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
 
@@ -50,9 +50,9 @@ namespace BetterScp106
             Scp106.Attacking -= eventHandlers.On106Attack;
             Scp106.Teleporting -= eventHandlers.OnTeleport;
 
+            PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.Pd;
-            PlayerHandlers.ChangingRole -= eventHandlers.OnChangingRole;
             PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
 

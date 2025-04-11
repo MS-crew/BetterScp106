@@ -20,7 +20,7 @@ namespace BetterScp106
 
         public static Plugin Instance {get; private set;}
 
-        public override Version Version { get; } = new Version(2, 5, 9);
+        public override Version Version { get; } = new Version(2, 6, 0);
 
         public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
 
@@ -31,7 +31,6 @@ namespace BetterScp106
 
             Scp106.Stalking += eventHandlers.OnStalk; 
             Scp106.Attacking += eventHandlers.On106Attack;
-            Scp106.Teleporting += eventHandlers.OnTeleport;
 
             PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd;
@@ -48,7 +47,6 @@ namespace BetterScp106
         {
             Scp106.Stalking -= eventHandlers.OnStalk;
             Scp106.Attacking -= eventHandlers.On106Attack;
-            Scp106.Teleporting -= eventHandlers.OnTeleport;
 
             PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.Pd;

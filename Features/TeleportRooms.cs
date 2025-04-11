@@ -3,12 +3,11 @@ using UnityEngine;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using CustomPlayerEffects;
+using SSMenuSystem.Features;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
-using SSMenuSystem.Features;
-using SSMenuSystem.Features.Wrappers;
-using Exiled.API.Interfaces;
+using PlayerStatsSystem;
 
 namespace BetterScp106.Features
 {
@@ -60,36 +59,25 @@ namespace BetterScp106.Features
                 player.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
                 return;
             }
-            
-            scp106.HuntersAtlasAbility._syncPos = targetRoom.Position;
-            scp106.HuntersAtlasAbility._syncRoom = targetRoom.Identifier;
-            Vector3 TargetRoomPos = scp106.HuntersAtlasAbility.GetSafePosition();
 
-            Timing.RunCoroutine(TeleportRoom(player, TargetRoomPos));
+            Timing.RunCoroutine(TeleportRoom(scp106, targetRoom.Position));
+            
         }
-        private static IEnumerator<float> TeleportRoom(Player player, Vector3 TargetRoomPos)
+        private static IEnumerator<float> TeleportRoom(Scp106Role scp106, Vector3 TargetRoomPos)
         {
             if (EventHandlers.SpecialFeatureUsing)
                 yield break;
 
             EventHandlers.SpecialFeatureUsing = true;
 
-            player.Role.Is(out Scp106Role scp106);
+            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.TeleportCooldown;
 
-            scp106.IsSubmerged = true;
-            player.EnableEffect<Ensnared>();
+            scp106.UsePortal(TargetRoomPos, Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f));
+            scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.TeleportCostHealt, null));
 
             yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
 
-            scp106.Owner.Teleport(TargetRoomPos);
-            Log.Debug("SCP-106 is ground'.");
-
-            player.DisableEffect<Ensnared>();
-            player.Health -= Plugin.Instance.Config.TeleportCostHealt; 
-            scp106.RemainingSinkholeCooldown = Plugin.Instance.Config.TeleportCooldown;
-            scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f);
-
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.SubmergeProgress >= 1);
             EventHandlers.SpecialFeatureUsing = false;
         }
     }

@@ -16,15 +16,22 @@ namespace BetterScp106.Patchs
             List<CodeInstruction> NewCodes = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label Skip = generator.DefineLabel();
+            Label Continue = generator.DefineLabel();
 
             int index = NewCodes.FindIndex(code => code.opcode == OpCodes.Callvirt && code.operand is MethodInfo method && method == AccessTools.Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)));
-            NewCodes[index + 1].labels.Add(Skip);
+            NewCodes[index].labels.Add(Skip);
+            NewCodes[index- 1].labels.Add(Continue);
 
-            int insertindex = NewCodes.FindIndex(code => code.opcode == OpCodes.Brtrue_S);
-            NewCodes.InsertRange( insertindex + 1,
+            NewCodes.InsertRange( index - 1,
             [
-                    new(OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureUsing))),
-                    new(OpCodes.Brtrue_S, Skip),
+                //if (!SpecialFeatureUsing)
+                //_submergeCooldown.Trigger(5.0)
+                //else 
+                //_submergeCooldown.Trigger(SpecialFeatureCooldown)
+                new(OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureUsing))),
+                new(OpCodes.Brfalse_S, Continue),
+                new(OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureCooldown))),
+                new(OpCodes.Br , Skip),
             ]);
 
             foreach (CodeInstruction code in NewCodes)

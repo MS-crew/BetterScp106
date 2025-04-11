@@ -1,5 +1,6 @@
 ﻿using MEC;
 using UnityEngine;
+using PlayerStatsSystem;
 using CustomPlayerEffects;
 using Exiled.API.Features;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace BetterScp106.Features
                 yield break;
 
             EventHandlers.SpecialFeatureUsing = true;
+            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterStalkCooldown;
 
             if (Plugin.Instance.Config.StalkWarning) 
             {
@@ -53,6 +55,7 @@ namespace BetterScp106.Features
             if (!target.IsAlive)
             {
                 player.Broadcast(Plugin.Instance.Translation.StalkFailed, shouldClearPrevious: true);
+                EventHandlers.SpecialFeatureUsing = false;
                 Log.Debug("Stalk victim die before stalk");
             }
 
@@ -74,13 +77,12 @@ namespace BetterScp106.Features
                 scp106.Owner.Teleport(tp);
                 
                 player.DisableEffect<Ensnared>();
-                player.Health -= Plugin.Instance.Config.StalkCostHealt;
-                scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f); 
-                scp106.RemainingSinkholeCooldown = (float)Plugin.Instance.Config.AfterStalkCooldown;
-            }
+                scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f);
+                scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.StalkCostHealt, null));
 
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.SubmergeProgress >= 1);
-            EventHandlers.SpecialFeatureUsing = false;
+                yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
+                EventHandlers.SpecialFeatureUsing = false;
+            }    
         }
     }
 }

@@ -13,6 +13,8 @@ namespace BetterScp106
 
         public static bool SpecialFeatureUsing = false;
 
+        public static float SpecialFeatureCooldown = 0;
+
         public static int ScpPullingtoPocket;
 
         public static bool GetScpPerm = false;
@@ -44,13 +46,6 @@ namespace BetterScp106
 
             ev.Target.EnableEffect<PocketCorroding>();
             Log.Debug($"Scp106 drew the {ev.Target.Nickname} directly into the pocket");
-        }
-
-        public void OnTeleport(TeleportingEventArgs ev)
-        {
-            if (SpecialFeatureUsing)
-                ev.IsAllowed = false;
-
         }
 
         public void Pd(EscapingPocketDimensionEventArgs ev)

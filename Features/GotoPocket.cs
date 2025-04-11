@@ -5,6 +5,7 @@ using CustomPlayerEffects;
 using Exiled.API.Features;
 using Exiled.API.Features.Roles;
 using System.Collections.Generic;
+using PlayerStatsSystem;
 
 namespace BetterScp106.Features
 {
@@ -48,6 +49,8 @@ namespace BetterScp106.Features
                 yield break;
 
             EventHandlers.SpecialFeatureUsing = true;
+            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketdimensionCooldown;
+
             player.Role.Is(out Scp106Role scp106);
 
             scp106.IsSubmerged = true;
@@ -58,13 +61,12 @@ namespace BetterScp106.Features
             player.EnableEffect<PocketCorroding>();
             player.DisableAllEffects();
             
-            player.Health -= Plugin.Instance.Config.PocketdimensionCostHealt;
             scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketdimensionCostVigor / 100f);
-            scp106.RemainingSinkholeCooldown += Plugin.Instance.Config.AfterPocketdimensionCooldown;
+            scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.PocketdimensionCostHealt, null));
 
             player.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
 
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.SubmergeProgress >= 1);
+            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
             EventHandlers.SpecialFeatureUsing = false;
         }
     }

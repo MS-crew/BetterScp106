@@ -10,33 +10,31 @@ namespace BetterScp106.Features
 {
     public class Stalking
     {
-        public static void StalkFeature(Player player)
+        public static void StalkFeature(Scp106Role scp106)
         {
-            player.Role.Is(out Scp106Role scp106);
-
             if (scp106.RemainingSinkholeCooldown > 0)
             {
-                player.Broadcast(Plugin.Instance.Translation.Cooldown,true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Cooldown,true);
                 return;
             }
 
-            if (EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || player.Health <= Plugin.Instance.Config.StalkCostHealt)
+            if (EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.StalkCostHealt)
             {
-                player.Broadcast(Plugin.Instance.Translation.StalkCant, true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkCant, true);
                 return;
             }
 
-            Player target = Methods.Findtarget(player);
+            Player target = Methods.Findtarget(scp106.Owner);
 
             if (target == null)
             {
-                player.Broadcast(Plugin.Instance.Translation.StalkNoTarget, true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkNoTarget, true);
                 return;
             }
 
-            Timing.RunCoroutine(StalkV3(player, target));
+            Timing.RunCoroutine(StalkV3(scp106, target));
         }
-        public static IEnumerator<float> StalkV3(Player player, Player target)
+        public static IEnumerator<float> StalkV3(Scp106Role scp106, Player target)
         {
             if (EventHandlers.SpecialFeatureUsing)
                 yield break;
@@ -50,18 +48,16 @@ namespace BetterScp106.Features
                 target.Broadcast(Plugin.Instance.Translation.StalkVictimWarn, shouldClearPrevious: true);
             }
 
-            player.Role.Is(out Scp106Role scp106);
-
             if (!target.IsAlive)
             {
-                player.Broadcast(Plugin.Instance.Translation.StalkFailed, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkFailed, shouldClearPrevious: true);
                 EventHandlers.SpecialFeatureUsing = false;
                 Log.Debug("Stalk victim die before stalk");
             }
 
             else
             {
-                player.Broadcast(Plugin.Instance.Translation.StalkSuccesfull, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkSuccesfull, shouldClearPrevious: true);
                 Log.Debug("Stalk teleport starting");
 
                 Vector3 tp = target.Position;
@@ -69,14 +65,14 @@ namespace BetterScp106.Features
                     tp = target.CurrentRoom.Position;
 
                 scp106.IsSubmerged = true;
-                player.EnableEffect<Ensnared>();
+                scp106.Owner.EnableEffect<Ensnared>();
 
                 yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
                 Log.Debug("SCP-106 is ground'.");
 
                 scp106.Owner.Teleport(tp);
 
-                player.DisableEffect<Ensnared>();
+                scp106.Owner.DisableEffect<Ensnared>();
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f);
                 scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.StalkCostHealt, null));
 

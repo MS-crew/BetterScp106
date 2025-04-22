@@ -6,6 +6,7 @@ using BetterScp106.Features;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Exiled.API.Features.Core.UserSettings;
+using Exiled.API.Features.Roles;
 
 namespace BetterScp106
 {
@@ -48,8 +49,8 @@ namespace BetterScp106
                     hintDescription: Plugin.Instance.Translation.Pocket[1],
                     onChanged: (player, setting) => 
                     { 
-                        if (player.Role == RoleTypeId.Scp106) 
-                            GotoPocket.PocketFeature(player); 
+                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+                            GotoPocket.PocketFeature(scp106); 
                     }
                     ));
             }
@@ -63,8 +64,8 @@ namespace BetterScp106
                     hintDescription: Plugin.Instance.Translation.PocketIn[1],
                     onChanged: (player, setting) =>
                     {
-                        if (player.Role == RoleTypeId.Scp106)
-                            TakeScpsPocket.PocketInFeature(player);
+                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+                            TakeScpsPocket.PocketInFeature(scp106);
                     }
                     ));
             }
@@ -78,8 +79,8 @@ namespace BetterScp106
                     hintDescription: Plugin.Instance.Translation.Stalk[1],
                     onChanged: (player, setting) =>
                     {
-                        if (player.Role == RoleTypeId.Scp106)
-                            Stalking.StalkFeature(player);
+                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+                            Stalking.StalkFeature(scp106);
                     }
                     ));
 
@@ -116,8 +117,8 @@ namespace BetterScp106
                     holdTime: 2f,
                     onChanged: (player, setting) => 
                     {
-                        if(player.Role == RoleTypeId.Scp106 )
-                            TeleportRooms.TeleportFeature(player);
+                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+                            TeleportRooms.TeleportFeature(scp106);
                     }
                     ));
 

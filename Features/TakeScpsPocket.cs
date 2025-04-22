@@ -11,50 +11,47 @@ namespace BetterScp106.Features
 {
     public class TakeScpsPocket
     {
-        public static void PocketInFeature(Player player)
+        public static void PocketInFeature(Scp106Role scp106)
         {
-            player.Role.Is(out Scp106Role scp106);
             if (scp106.RemainingSinkholeCooldown > 0)
             {
-                player.Broadcast(Plugin.Instance.Translation.Cooldown, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Cooldown, shouldClearPrevious: true);
                 return;
             }
 
-            if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 100f) || player.Health <= Plugin.Instance.Config.PocketinCostHealt)
+            if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.PocketinCostHealt)
             {
-                player.Broadcast(Plugin.Instance.Translation.Scp106cantpocket);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106cantpocket);
                 return;
             }
 
             if (AlphaWarheadController.Detonated)
             {
                 scp106.IsSubmerged = true;
-                player.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
                 return;
             }
 
-            if (player.CurrentRoom.Type == RoomType.Pocket)
+            if (scp106.Owner.CurrentRoom.Type == RoomType.Pocket)
             {
-                player.Broadcast(Plugin.Instance.Translation.Scp106alreadypocket, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106alreadypocket, shouldClearPrevious: true);
                 return;
             }
 
-            Player friend = Methods.FindFriend(player);
+            Player friend = Methods.FindFriend(scp106.Owner);
 
             if (friend == null)
             {
-                player.Broadcast(Plugin.Instance.Translation.Scp106CantFindFriend, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106CantFindFriend, shouldClearPrevious: true);
                 return;
             }
 
-            Timing.RunCoroutine(GotoPocketInV3(player, friend));
+            Timing.RunCoroutine(GotoPocketInV3(scp106, friend));
         }
-        private static IEnumerator<float> GotoPocketInV3(Player player, Player friend)
+        private static IEnumerator<float> GotoPocketInV3(Scp106Role scp106, Player friend)
         {
             if (EventHandlers.SpecialFeatureUsing)
                 yield break;
-
-            player.Role.Is(out Scp106Role scp106);
 
             EventHandlers.SpecialFeatureUsing = true;
             EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketingScpCooldown;
@@ -62,7 +59,7 @@ namespace BetterScp106.Features
             friend.Broadcast(Plugin.Instance.Translation.Scp106ReqFriendinpocket, shouldClearPrevious: true);
             friend.EnableEffect<Flashed>();
             friend.EnableEffect<Ensnared>();
-            player.EnableEffect<Ensnared>();
+            scp106.Owner.EnableEffect<Ensnared>();
 
             EventHandlers.ScpPullingtoPocket = friend.Id;
 
@@ -76,31 +73,31 @@ namespace BetterScp106.Features
 
                 friend.DisableEffect<Flashed>();
                 friend.DisableEffect<Ensnared>();
-                player.DisableEffect<Ensnared>();
-                player.Broadcast(Plugin.Instance.Translation.Scp106friendrefusedlpocketin, true);
+                scp106.Owner.DisableEffect<Ensnared>();
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106friendrefusedlpocketin, true);
 
                 EventHandlers.GetScpPerm = false;
                 EventHandlers.ScpPullingtoPocket = -1;
 
-                player.DisableEffect<Ensnared>();
+                scp106.Owner.DisableEffect<Ensnared>();
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 200f);
             }
 
             else
             {
-                player.EnableEffect<PocketCorroding>();
+                scp106.Owner.EnableEffect<PocketCorroding>();
                 friend.EnableEffect<PocketCorroding>();
 
-                player.DisableAllEffects();
+                scp106.Owner.DisableAllEffects();
 
                 friend.DisableEffect<Ensnared>();
                 friend.DisableEffect<Flashed>();
 
-                player.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
                 friend.Broadcast(Plugin.Instance.Translation.Scp106Friendinpocket, shouldClearPrevious: true);
 
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 100f);
-                player.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.PocketinCostHealt, null));
+                scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.PocketinCostHealt, null));
             }
 
             yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);

@@ -12,32 +12,30 @@ namespace BetterScp106.Features
     public class TeleportRooms
     {
 
-        public static void TeleportFeature(Player player)
+        public static void TeleportFeature(Scp106Role scp106)
         {
-            player.Role.Is(out Scp106Role scp106);
-
             if (scp106.RemainingSinkholeCooldown > 0 || scp106.IsStalking || scp106.IsSubmerged)
             {
-                player.Broadcast(Plugin.Instance.Translation.Cooldown, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Cooldown, shouldClearPrevious: true);
                 return;
             }
 
-            if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f) || player.Health <= Plugin.Instance.Config.TeleportCostHealt)
+            if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.TeleportCostHealt)
             {
-                player.Broadcast(Plugin.Instance.Translation.TeleportCant);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant);
                 return;
             }
 
             if (AlphaWarheadController.Detonated)
             {
                 scp106.IsSubmerged = true;
-                player.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
                 return;
             }
 
-            if(!SettingBase.TryGetSetting<DropdownSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropdown))
+            if(!SettingBase.TryGetSetting<DropdownSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropdown))
             {
-                player.Broadcast(Plugin.Instance.Translation.TeleportCant);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant);
                 return;
             }
             
@@ -46,13 +44,13 @@ namespace BetterScp106.Features
 
             if (targetRoom == null)
             {
-                player.Broadcast(Plugin.Instance.Translation.TeleportRoomNull, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportRoomNull, shouldClearPrevious: true);
                 return;
             }
 
-            if (Plugin.Instance.Config.TeleportOnlySameZone && player.Zone != targetRoom.Zone)
+            if (Plugin.Instance.Config.TeleportOnlySameZone && scp106.Owner.Zone != targetRoom.Zone)
             {
-                player.Broadcast(Plugin.Instance.Translation.TeleportCantforZone, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCantforZone, shouldClearPrevious: true);
                 return;
             }
 
@@ -61,7 +59,7 @@ namespace BetterScp106.Features
 
             if (flaglcz || flagSite)
             {
-                player.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
                 return;
             }
 

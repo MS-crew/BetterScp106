@@ -20,7 +20,7 @@ namespace BetterScp106
 
             NewCodes.InsertRange(0,
             [
-                    // IsScp = this.Hub.IsScp();
+                    // this.Hub.IsScp();
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, AccessTools.PropertyGetter(typeof(StatusEffectBase), nameof(StatusEffectBase.Hub))),
                     new(OpCodes.Ldc_I4_1),

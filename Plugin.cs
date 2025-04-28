@@ -15,9 +15,9 @@ namespace BetterScp106
 
         public override string Author => "ZurnaSever";
 
-        public override string Name => "BetterScp106 - SSmenu";
+        public override string Name => "BetterScp106-SSmenu";
 
-        public override string Prefix => "BetterScp106 - SSmenu"; 
+        public override string Prefix => "BetterScp106-SSmenu"; 
 
         public static Plugin Instance {get; private set;}
 

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BetterScp106</RootNamespace>
-    <AssemblyName>BetterScp106 - SSmenu</AssemblyName>
+    <AssemblyName>BetterScp106-SSmenu</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

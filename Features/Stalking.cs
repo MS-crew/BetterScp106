@@ -3,8 +3,9 @@ using UnityEngine;
 using PlayerStatsSystem;
 using CustomPlayerEffects;
 using Exiled.API.Features;
-using System.Collections.Generic;
 using Exiled.API.Features.Roles;
+using System.Collections.Generic;
+using CommandSystem.Commands.RemoteAdmin;
 
 namespace BetterScp106.Features
 {
@@ -70,7 +71,10 @@ namespace BetterScp106.Features
                 yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
                 Log.Debug("SCP-106 is ground'.");
 
-                scp106.Owner.Teleport(tp);
+                if(target.Lift == null)
+                    scp106.Owner.Teleport(tp);
+                else
+                    scp106.Owner.Teleport(target.Lift.Position + Vector3.up * ElevatorTeleportCommand.PositionOffset);
 
                 scp106.Owner.DisableEffect<Ensnared>();
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f);

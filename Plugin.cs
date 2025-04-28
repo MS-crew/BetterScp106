@@ -1,9 +1,9 @@
 ﻿using System;
 using HarmonyLib;
 using Exiled.API.Features;
+using SSMenuSystem.Features;
 using Scp106 = Exiled.Events.Handlers.Scp106;
 using PlayerHandlers = Exiled.Events.Handlers.Player;
-using SSMenuSystem.Features;
 
 namespace BetterScp106
 {   
@@ -21,7 +21,7 @@ namespace BetterScp106
 
         public static Plugin Instance {get; private set;}
 
-        public override Version Version { get; } = new Version(2, 6, 0);
+        public override Version Version { get; } = new Version(2, 6, 1);
 
         public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
 

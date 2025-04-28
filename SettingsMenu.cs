@@ -8,6 +8,7 @@ using BetterScp106.Features;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using SSMenuSystem.Features.Wrappers;
+using Exiled.API.Features.Roles;
 
 namespace BetterScp106
 {
@@ -58,8 +59,8 @@ namespace BetterScp106
                     suggestedKey: UnityEngine.KeyCode.F,
                     hint: Plugin.Instance.Translation.Pocket[1],
                     onUsed: (hub, ispressed) => { 
-                        if(ispressed && hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
-                            GotoPocket.PocketFeature(Player.Get(hub)); 
+                        if(ispressed && Player.Get(hub).Role.Is<Scp106Role>(out Scp106Role scp106))
+                            GotoPocket.PocketFeature(scp106); 
                     }
                     ));
             }
@@ -72,8 +73,8 @@ namespace BetterScp106
                     suggestedKey: UnityEngine.KeyCode.G,
                     hint: Plugin.Instance.Translation.PocketIn[1],
                     onUsed: (hub, ispressed) => {
-                        if (ispressed && hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
-                            TakeScpsPocket.PocketInFeature(Player.Get(hub));
+                        if (ispressed && Player.Get(hub).Role.Is<Scp106Role>(out Scp106Role scp106))
+                            TakeScpsPocket.PocketInFeature(scp106);
                     }
                     ));
             }
@@ -86,8 +87,8 @@ namespace BetterScp106
                     suggestedKey: UnityEngine.KeyCode.H,
                     hint: Plugin.Instance.Translation.Stalk[1],
                     onUsed: (hub, ispressed) => { 
-                        if(ispressed && hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
-                            Stalking.StalkFeature(Player.Get(hub)); 
+                        if(ispressed && Player.Get(hub).Role.Is<Scp106Role>(out Scp106Role scp106))
+                            Stalking.StalkFeature(scp106); 
                     }
                     ));
 
@@ -123,8 +124,8 @@ namespace BetterScp106
                     hint: Plugin.Instance.Translation.Teleport[2],
                     holdTimeSeconds: 2f,
                     onClick: (hub, setting) => {
-                        if (hub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Scp106)
-                            TeleportRooms.TeleportFeature(Player.Get(hub)); 
+                        if (Player.Get(hub).Role.Is<Scp106Role>(out Scp106Role scp106))
+                            TeleportRooms.TeleportFeature(scp106); 
                     }
                     ));
 

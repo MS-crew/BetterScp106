@@ -68,8 +68,8 @@ namespace BetterScp106.Features
 
             if (EventHandlers.GetScpPerm == true)
             {
-                scp106.IsSubmerged = false;
                 EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.CanceledPocketingScpCooldown;
+                scp106.IsSubmerged = false;
 
                 friend.DisableEffects([EffectType.Flashed, EffectType.Ensnared]);
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106friendrefusedlpocketin, true);

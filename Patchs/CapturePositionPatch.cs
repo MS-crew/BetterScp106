@@ -40,8 +40,8 @@ namespace BetterScp106
                     new(OpCodes.Ret),
             ]);
 
-            foreach (CodeInstruction code in NewCodes)
-                yield return code;
+            for (int i = 0; i < NewCodes.Count; i++)
+                yield return NewCodes[i];
 
             ListPool<CodeInstruction>.Pool.Return(NewCodes);
         }

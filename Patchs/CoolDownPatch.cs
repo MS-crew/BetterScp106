@@ -24,18 +24,14 @@ namespace BetterScp106.Patchs
 
             NewCodes.InsertRange( index - 1,
             [
-                //if (!SpecialFeatureUsing)
-                //_submergeCooldown.Trigger(5.0)
-                //else 
-                //_submergeCooldown.Trigger(SpecialFeatureCooldown)
                 new(OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureUsing))),
                 new(OpCodes.Brfalse_S, Continue),
                 new(OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureCooldown))),
                 new(OpCodes.Br , Skip),
             ]);
 
-            foreach (CodeInstruction code in NewCodes)
-                yield return code;
+            for (int i = 0; i < NewCodes.Count; i++)
+                yield return NewCodes[i];
 
             ListPool<CodeInstruction>.Pool.Return(NewCodes);
         }

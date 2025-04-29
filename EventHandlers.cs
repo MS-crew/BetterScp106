@@ -31,9 +31,10 @@ namespace BetterScp106
             if (ev.Player.IsNoclipPermitted)
                 return;
 
-            if (ev.Player.Id == ScpPullingtoPocket)
-                GetScpPerm = true;
+            if (ev.Player.Id != ScpPullingtoPocket)
+                return;
 
+            GetScpPerm = true;
         }
 
         public void On106Attack(AttackingEventArgs ev)
@@ -67,19 +68,14 @@ namespace BetterScp106
             }
         }
 
-        public void Warheadkillinhibitor(HurtingEventArgs ev)
+        public void WarheadFogDisabler()
         {
             if (!Plugin.Instance.Config.RealisticPocket)
-                return; 
-
-            if (ev.DamageHandler.Type != DamageType.Warhead)
                 return;
 
-            if (ev.Player.CurrentRoom.Type != RoomType.Pocket)
-                return;
-
-            ev.IsAllowed = false;
-            ev.Player.GetEffect<FogControl>()?.SetFogType(FogType.Outside);
+            foreach (Player ply in Player.List)
+                if (ply.CurrentRoom?.Type == RoomType.Pocket)
+                ply.GetEffect<FogControl>()?.SetFogType(FogType.Outside);
         }
 
         public void OnFailingEscape(FailingEscapePocketDimensionEventArgs ev)

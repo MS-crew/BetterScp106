@@ -57,8 +57,7 @@ namespace BetterScp106.Features
             EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketingScpCooldown;
 
             friend.Broadcast(Plugin.Instance.Translation.Scp106ReqFriendinpocket, shouldClearPrevious: true);
-            friend.EnableEffect<Flashed>();
-            friend.EnableEffect<Ensnared>();
+            friend.EnableEffects([EffectType.Flashed, EffectType.Ensnared]);
             scp106.Owner.EnableEffect<Ensnared>();
 
             EventHandlers.ScpPullingtoPocket = friend.Id;
@@ -70,10 +69,9 @@ namespace BetterScp106.Features
             if (EventHandlers.GetScpPerm == true)
             {
                 EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.CanceledPocketingScpCooldown;
+                scp106.IsSubmerged = false;
 
-                friend.DisableEffect<Flashed>();
-                friend.DisableEffect<Ensnared>();
-                scp106.Owner.DisableEffect<Ensnared>();
+                friend.DisableEffects([EffectType.Flashed, EffectType.Ensnared]);
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106friendrefusedlpocketin, true);
 
                 EventHandlers.GetScpPerm = false;
@@ -85,13 +83,13 @@ namespace BetterScp106.Features
 
             else
             {
+                scp106.IsSubmerged = false;
+
                 scp106.Owner.EnableEffect<PocketCorroding>();
                 friend.EnableEffect<PocketCorroding>();
 
-                scp106.Owner.DisableAllEffects();
-
-                friend.DisableEffect<Ensnared>();
-                friend.DisableEffect<Flashed>();
+                scp106.Owner.DisableEffects([EffectType.Ensnared, EffectType.Corroding]);
+                friend.DisableEffects([EffectType.Flashed, EffectType.Ensnared]);
 
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
                 friend.Broadcast(Plugin.Instance.Translation.Scp106Friendinpocket, shouldClearPrevious: true);

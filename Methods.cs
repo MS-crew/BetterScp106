@@ -11,7 +11,6 @@ using PlayerRoles.FirstPersonControl;
 using PlayerRoles.PlayableScps.Scp106;
 using Player = Exiled.API.Features.Player;
 using Warhead = Exiled.API.Features.Warhead;
-using Exiled.API.Features.Core.UserSettings;
 
 namespace BetterScp106
 {
@@ -70,11 +69,8 @@ namespace BetterScp106
             return Relaiveposition;
         }
 
-        public static Player Findtarget(Player player)
+        public static Player Findtarget(bool StalkbyHealt, float Distance, Player player)
         {
-            if (!SettingBase.TryGetSetting<TwoButtonsSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode], out TwoButtonsSetting stalkmode) || !SettingBase.TryGetSetting<SliderSetting>(player, Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider], out SliderSetting Slider))
-                return null;
-
             IEnumerable<Player> stalkablePlayers = Player.List.Where
             (
                 p =>
@@ -88,15 +84,15 @@ namespace BetterScp106
                 stalkablePlayers = stalkablePlayers.Where
                 (
                     p =>
-                    Vector3.Distance(p.Position, player.Position) <= Slider.SliderValue ||
+                    Vector3.Distance(p.Position, player.Position) <= Distance ||
                     (
                         p.CurrentRoom.Doors?.Any(door => door is ElevatorDoor) == true &&
-                        Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Slider.SliderValue
+                        Vector3.Distance(p.CurrentRoom.Position, player.Position) <= Distance
                     )
                 );
             }
 
-            if (stalkmode.IsSecond)
+            if (StalkbyHealt)
                 return stalkablePlayers.OrderBy(p => p.Health).FirstOrDefault();
             else
                 return stalkablePlayers.OrderBy(p => Vector3.Distance(p.Position, player.Position)).FirstOrDefault();

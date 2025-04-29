@@ -92,6 +92,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\GotoPocketCommand.cs" />
+    <Compile Include="Commands\StalkCommand.cs" />
+    <Compile Include="Commands\TakeScpsPocketCommand.cs" />
+    <Compile Include="Commands\TeleportRoomCommand.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Features\GotoPocket.cs" />

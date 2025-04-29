@@ -48,7 +48,7 @@ namespace BetterScp106
         public int PocketdimensionCostVigor { get; set; } = 25;
 
         [Description("How much cooldown should be after the Pocketdim?")]
-        public int AfterPocketdimensionCooldown { get; set; } = 30;
+        public double AfterPocketdimensionCooldown { get; set; } = 30;
 
         [Description("How much health does it cost pocketing a scp?")]
         public int PocketinCostHealt { get; set; } = 150;
@@ -57,10 +57,10 @@ namespace BetterScp106
         public int PocketinCostVigor { get; set; } = 100;
 
         [Description("How much cooldown should be after Pocketing a scp?")]
-        public int AfterPocketingScpCooldown { get; set; } = 60;
+        public double AfterPocketingScpCooldown { get; set; } = 60;
 
         [Description("How much cooldown should be after canceling Pocketing a scp?")]
-        public int CanceledPocketingScpCooldown { get; set; } = 15;
+        public double CanceledPocketingScpCooldown { get; set; } = 15;
 
         [Description("How much healt would a successful stalk cost?")]
         public int StalkCostHealt { get; set; } = 150;
@@ -69,7 +69,7 @@ namespace BetterScp106
         public int StalkCostVigor { get; set; } = 25;
 
         [Description("How much cooldown should be after Stalk?")]
-        public int AfterStalkCooldown { get; set; } = 90;
+        public double AfterStalkCooldown { get; set; } = 90;
 
         [Description("How far can you go to victims with Stalk.")]
         public int StalkDistance { get; set; } = 200;
@@ -112,7 +112,7 @@ namespace BetterScp106
         public int TeleportCostVigor { get; set; } = 25;
 
         [Description("How much cooldown should be after Teleport?")]
-        public int TeleportCooldown { get; set; } = 50;
+        public double TeleportCooldown { get; set; } = 50;
 
         [Description("Rooms to teleport to?")]
         public RoomType[] Rooms { get; set; } =

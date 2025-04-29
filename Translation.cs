@@ -4,8 +4,6 @@ using Exiled.API.Interfaces;
 namespace BetterScp106
 {
     using Exiled.API.Features;
-    using System.Collections.Generic;
-
     public class Translation : ITranslation
     {
         [Description("The broadcast when Scp 106 goes to the pocket dimension")]
@@ -45,7 +43,7 @@ namespace BetterScp106
         public Broadcast StalkCant { get; set; } = new Broadcast("<color=red>You can't stalk right now, you don't have enough energy or health, or you try to do it too often.</color>", 3);
 
         [Description("There is not enough health or vigor to Teleport")]
-        public Broadcast TeleportCant { get; set; } = new Broadcast("<color=red>You cant't Teleport right now, you don't have enough energy or health.</color>", 3);
+        public Broadcast TeleportCant { get; set; } = new Broadcast("<color=red>You can't Teleport right now, you don't have enough energy or health.</color>", 3);
 
         [Description("The room to be teleported was destroyed or Danger")]
         public Broadcast TeleportRoomDanger { get; set; } = new Broadcast("<color=red>You can't teleport to this room, it's being destroyed or terminated.</color>", 3);
@@ -78,19 +76,19 @@ namespace BetterScp106
         public string Scp106PowersTeleport { get; set; } = "Teleport : You can get teleport in the room you want . It will cost: $teleporthealt healt & $teleportvigor vigor";
 
         [Description("Server Specific Settings Translates")]
-        public List<string> Pocket { get; set; } =
+        public string[] Pocket { get; set; } =
         [
             "Pocket Dimension Key",
             "The button you'll use to go to the pocket"
         ];
 
-        public List<string> PocketIn { get; set; } =
+        public string[] PocketIn { get; set; } =
         [
             "Pocket In Key",
             "The button you use to bring your friend to the pocket"
         ];
 
-        public List<string> Stalk { get; set; } =
+        public string[] Stalk { get; set; } =
         [
             "Stalk Key",
             "The button you want to stalk",
@@ -102,12 +100,48 @@ namespace BetterScp106
             "The size of the local radius that can be stalked."
         ];
 
-        public List<string> Teleport { get; set; } =
+        public string[] Teleport { get; set; } =
         [
             "Rooms",
             "Teleport Room",
             "Teleport"
         ];
 
+        [Description("Go to Pocket Command Translations")]
+        public string GotoPocketCommand { get; set; } = "GotoPocket";
+        public string[] GotoPocketCommandAliases { get; set; } =
+        [ 
+            "gopd",
+            "gopocket"
+        ];
+        public string GotoPocketCommandDescription { get; set; } = "Go to pocket dimension";
+
+        [Description("Stalk Command Translations")]
+        public string StalkCommand { get; set; } = "Stalk";
+        public string[] StalkCommandAliases { get; set; } =
+        [
+            "sk",
+            "stalking"
+        ];
+        public string StalkCommandDescription { get; set; } = "Stalk the closest victim";
+
+        [Description("Take Scps Pocket Command Translations")]
+        public string TakeScpsPocketCommand { get; set; } = "Pocketin";
+        public string[] TakeScpsPocketCommandAliases { get; set; } =
+        [
+            "takescp",
+            "takepocket",
+            "takescpinpocket"
+        ];
+        public string TakeScpsPocketCommandDescription { get; set; } = "Take one Scp to pocket dimension with you";
+
+        [Description("Teleport Room Command Translations")]
+        public string TeleportRoomCommand { get; set; } = "TeleportRoom";
+        public string[] TeleportRoomCommandAliases { get; set; } =
+        [
+            "tr",
+            "tproom",
+        ];
+        public string TeleportRoomCommandDescription { get; set; } = "Teleport to the room you want";
     }
 }

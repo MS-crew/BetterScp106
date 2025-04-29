@@ -2,6 +2,7 @@
 using HarmonyLib;
 using Exiled.API.Features;
 using Scp106 = Exiled.Events.Handlers.Scp106;
+using Warhead = Exiled.Events.Handlers.Warhead;
 using PlayerHandlers = Exiled.Events.Handlers.Player;
 
 namespace BetterScp106
@@ -20,9 +21,9 @@ namespace BetterScp106
 
         public static Plugin Instance {get; private set;}
 
-        public override Version Version { get; } = new Version(2, 6, 2);
+        public override Version Version { get; } = new Version(2, 6, 3);
 
-        public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 6, 0);
 
         public override void OnEnabled()
         {
@@ -32,10 +33,11 @@ namespace BetterScp106
             Scp106.Stalking += eventHandlers.OnStalk; 
             Scp106.Attacking += eventHandlers.On106Attack;
 
+            Warhead.Detonated += eventHandlers.WarheadFogDisabler;
+
+            PlayerHandlers.Spawned += eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd;
-            PlayerHandlers.ChangingRole += eventHandlers.OnChangingRole; 
-            PlayerHandlers.Hurting += eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
 
             harmony = new Harmony("Better106Patchs"+ DateTime.Now.Ticks);
@@ -48,10 +50,11 @@ namespace BetterScp106
             Scp106.Stalking -= eventHandlers.OnStalk;
             Scp106.Attacking -= eventHandlers.On106Attack;
 
+            Warhead.Detonated -= eventHandlers.WarheadFogDisabler;
+
+            PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
             PlayerHandlers.EscapingPocketDimension -= eventHandlers.Pd;
-            PlayerHandlers.ChangingRole -= eventHandlers.OnChangingRole;
-            PlayerHandlers.Hurting -= eventHandlers.Warheadkillinhibitor;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
 
             harmony.UnpatchAll(harmonyID: "Better106Patchs");

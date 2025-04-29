@@ -13,7 +13,7 @@ namespace BetterScp106
 
         public static bool SpecialFeatureUsing = false;
 
-        public static float SpecialFeatureCooldown = 0;
+        public static double SpecialFeatureCooldown = 0;
 
         public static int ScpPullingtoPocket;
 

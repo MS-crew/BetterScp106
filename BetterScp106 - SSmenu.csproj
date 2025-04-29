@@ -95,6 +95,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\GotoPocketCommand.cs" />
+    <Compile Include="Commands\StalkCommand.cs" />
+    <Compile Include="Commands\TakeScpsPocketCommand.cs" />
+    <Compile Include="Commands\TeleportRoomCommand.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Features\GotoPocket.cs" />
@@ -111,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.5.1</Version>
+      <Version>9.6.0-beta8</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.2.2</Version>

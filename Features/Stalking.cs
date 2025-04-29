@@ -3,9 +3,11 @@ using UnityEngine;
 using PlayerStatsSystem;
 using CustomPlayerEffects;
 using Exiled.API.Features;
+using SSMenuSystem.Features;
 using System.Collections.Generic;
 using Exiled.API.Features.Roles;
 using CommandSystem.Commands.RemoteAdmin;
+using UserSettings.ServerSpecific;
 
 namespace BetterScp106.Features
 {
@@ -24,8 +26,9 @@ namespace BetterScp106.Features
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkCant, true);
                 return;
             }
-
-            Player target = Methods.Findtarget(scp106.Owner);
+            bool Stalkmode = scp106.Owner.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSTwoButtonsSetting>(Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode]).SyncIsB;
+            int Stalkdistance = scp106.Owner.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSSliderSetting>(Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkDistanceSlider]).SyncIntValue;
+            Player target = Methods.Findtarget(Stalkmode, Stalkdistance, scp106.Owner);
 
             if (target == null)
             {
@@ -69,6 +72,7 @@ namespace BetterScp106.Features
                 scp106.Owner.EnableEffect<Ensnared>();
 
                 yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
+                scp106.IsSubmerged = false;
                 Log.Debug("SCP-106 is ground'.");
 
                 if (target.Lift == null)

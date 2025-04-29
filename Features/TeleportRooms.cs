@@ -58,9 +58,9 @@ namespace BetterScp106.Features
             }
 
             Timing.RunCoroutine(TeleportRoom(scp106, targetRoom.Position));
-            
         }
-        private static IEnumerator<float> TeleportRoom(Scp106Role scp106, Vector3 TargetRoomPos)
+
+        public static IEnumerator<float> TeleportRoom(Scp106Role scp106, Vector3 TargetRoomPos)
         {
             if (EventHandlers.SpecialFeatureUsing)
                 yield break;

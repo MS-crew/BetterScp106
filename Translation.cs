@@ -45,7 +45,7 @@ namespace BetterScp106
         public Broadcast StalkCant { get; set; } = new Broadcast("<color=red>You can't stalk right now, you don't have enough energy or health, or you try to do it too often.</color>", 3);
 
         [Description("There is not enough health or vigor to Teleport")]
-        public Broadcast TeleportCant { get; set; } = new Broadcast("<color=red>You cant't Teleport right now, you don't have enough energy or health.</color>", 3);
+        public Broadcast TeleportCant { get; set; } = new Broadcast("<color=red>You can't Teleport right now, you don't have enough energy or health.</color>", 3);
 
         [Description("The room to be teleported was destroyed or Danger")]
         public Broadcast TeleportRoomDanger { get; set; } = new Broadcast("<color=red>You can't teleport to this room, it's being destroyed or terminated.</color>", 3);
@@ -109,5 +109,41 @@ namespace BetterScp106
             "Teleport"
         ];
 
+        [Description("Go to Pocket Command Translations")]
+        public string GotoPocketCommand { get; set; } = "GotoPocket";
+        public string[] GotoPocketCommandAliases { get; set; } =
+        [
+            "gopd",
+            "gopocket"
+        ];
+        public string GotoPocketCommandDescription { get; set; } = "Go to pocket dimension";
+
+        [Description("Stalk Command Translations")]
+        public string StalkCommand { get; set; } = "Stalk";
+        public string[] StalkCommandAliases { get; set; } =
+        [
+            "sk",
+            "stalking"
+        ];
+        public string StalkCommandDescription { get; set; } = "Stalk the closest victim";
+
+        [Description("Take Scps Pocket Command Translations")]
+        public string TakeScpsPocketCommand { get; set; } = "Pocketin";
+        public string[] TakeScpsPocketCommandAliases { get; set; } =
+        [
+            "takescp",
+            "takepocket",
+            "takescpinpocket"
+        ];
+        public string TakeScpsPocketCommandDescription { get; set; } = "Take one Scp to pocket dimension with you";
+
+        [Description("Teleport Room Command Translations")]
+        public string TeleportRoomCommand { get; set; } = "TeleportRoom";
+        public string[] TeleportRoomCommandAliases { get; set; } =
+        [
+            "tr",
+            "tproom",
+        ];
+        public string TeleportRoomCommandDescription { get; set; } = "Teleport to the room you want";
     }
 }

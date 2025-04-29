@@ -4,7 +4,6 @@ using Exiled.API.Interfaces;
 namespace BetterScp106
 {
     using Exiled.API.Features;
-    using System.Collections.Generic;
 
     public class Translation : ITranslation
     {
@@ -78,19 +77,19 @@ namespace BetterScp106
         public string Scp106PowersTeleport { get; set; } = "Teleport : You can get teleport in the room you want . It will cost: $teleporthealt healt & $teleportvigor vigor";
 
         [Description("Server Specific Settings Translates")]
-        public List<string> Pocket { get; set; } =
+        public string[] Pocket { get; set; } =
         [
             "Pocket Dimension Key",
             "The button you'll use to go to the pocket"
         ];
 
-        public List<string> PocketIn { get; set; } =
+        public string[] PocketIn { get; set; } =
         [
             "Pocket In Key",
             "The button you use to bring your friend to the pocket"
         ];
 
-        public List<string> Stalk { get; set; } =
+        public string[] Stalk { get; set; } =
         [
             "Stalk Key",
             "The button you want to stalk",
@@ -102,7 +101,7 @@ namespace BetterScp106
             "The size of the local radius that can be stalked."
         ];
 
-        public List<string> Teleport { get; set; } =
+        public string[] Teleport { get; set; } =
         [
             "Rooms",
             "Teleport Room",

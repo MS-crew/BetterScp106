@@ -34,11 +34,11 @@ namespace BetterScp106
             Scp106.Stalking += eventHandlers.OnStalk; 
             Scp106.Attacking += eventHandlers.On106Attack;
 
-            Warhead.Detonated += eventHandlers.WarheadFogDisabler;
+            Warhead.Detonated += eventHandlers.OnDetonatedWarhead;
 
             PlayerHandlers.Spawned += eventHandlers.OnSpawned;
-            PlayerHandlers.TogglingNoClip += eventHandlers.Alt;
-            PlayerHandlers.EscapingPocketDimension += eventHandlers.Pd;
+            PlayerHandlers.TogglingNoClip += eventHandlers.OnTogglingNoClip;
+            PlayerHandlers.EscapingPocketDimension += eventHandlers.OnEscapingPocketDim;
             PlayerHandlers.FailingEscapePocketDimension += eventHandlers.OnFailingEscape;
 
             Menu.RegisterAll();
@@ -53,11 +53,11 @@ namespace BetterScp106
             Scp106.Stalking -= eventHandlers.OnStalk;
             Scp106.Attacking -= eventHandlers.On106Attack;
 
-            Warhead.Detonated -= eventHandlers.WarheadFogDisabler;
+            Warhead.Detonated -= eventHandlers.OnDetonatedWarhead;
 
             PlayerHandlers.Spawned -= eventHandlers.OnSpawned;
-            PlayerHandlers.TogglingNoClip -= eventHandlers.Alt;
-            PlayerHandlers.EscapingPocketDimension -= eventHandlers.Pd;
+            PlayerHandlers.TogglingNoClip -= eventHandlers.OnTogglingNoClip;
+            PlayerHandlers.EscapingPocketDimension -= eventHandlers.OnEscapingPocketDim;
             PlayerHandlers.FailingEscapePocketDimension -= eventHandlers.OnFailingEscape;
 
             harmony.UnpatchAll(harmonyID: "Better106Patchs");

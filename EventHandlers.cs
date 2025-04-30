@@ -26,7 +26,7 @@ namespace BetterScp106
 
         }
 
-        public void Alt(TogglingNoClipEventArgs ev)
+        public void OnTogglingNoClip(TogglingNoClipEventArgs ev)
         {           
             if (ev.Player.IsNoclipPermitted)
                 return;
@@ -49,7 +49,7 @@ namespace BetterScp106
             Log.Debug($"Scp106 drew the {ev.Target.Nickname} directly into the pocket");
         }
 
-        public void Pd(EscapingPocketDimensionEventArgs ev)
+        public void OnEscapingPocketDim(EscapingPocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)
                 return;
@@ -68,7 +68,7 @@ namespace BetterScp106
             }
         }
 
-        public void WarheadFogDisabler()
+        public void OnDetonatedWarhead()
         {
             if (!Plugin.Instance.Config.RealisticPocket)
                 return;

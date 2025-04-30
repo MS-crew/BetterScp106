@@ -26,7 +26,7 @@ namespace BetterScp106
                 ev.IsAllowed = false;
         }
 
-        public void Alt(TogglingNoClipEventArgs ev)
+        public void OnTogglingNoClip(TogglingNoClipEventArgs ev)
         {           
             if (ev.Player.IsNoclipPermitted)
                 return;
@@ -49,7 +49,7 @@ namespace BetterScp106
             Log.Debug($"Scp106 drew the {ev.Target.Nickname} directly into the pocket");
         }
 
-        public void Pd(EscapingPocketDimensionEventArgs ev)
+        public void OnEscapingPocketDim(EscapingPocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)
                 return;
@@ -64,13 +64,13 @@ namespace BetterScp106
             if (ev.Player.Role == RoleTypeId.Scp106)
             {
                 SpecialFeatureUsing = false;
-                SettingBase.Register(SettingsMenu.Better106Menu(), Player => Player.Role == RoleTypeId.Scp106);
+                SettingBase.Register(SettingsMenu.Better106Menu(), Player => Player == ev.Player);
                 SettingBase.SendToPlayer(ev.Player, SettingsMenu.Better106Menu());
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }
         }
 
-        public void WarheadFogDisabler()
+        public void OnDetonatedWarhead()
         {
             if (!Plugin.Instance.Config.RealisticPocket)
                 return;

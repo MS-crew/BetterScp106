@@ -1,8 +1,10 @@
-﻿using PlayerRoles;
+﻿using System.Linq;
+using PlayerRoles;
 using CustomRendering;
 using Exiled.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
+using SSMenuSystem.Features;
 using Exiled.Events.EventArgs.Scp106;
 using Exiled.Events.EventArgs.Player;
 
@@ -61,9 +63,14 @@ namespace BetterScp106
 
         public void OnSpawned(SpawnedEventArgs ev)
         {
+            if (ev.OldRole == RoleTypeId.Scp106)
+            {
+                Menu.Menus.Where(x => x.Id == -106).FirstOrDefault().Reload(ev.Player.ReferenceHub);
+            }
             if (ev.Player.Role.Type == RoleTypeId.Scp106)
             {
                 SpecialFeatureUsing = false;
+                Menu.Menus.Where(x => x.Id == -106).FirstOrDefault().Reload(ev.Player.ReferenceHub);
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }
         }

@@ -1,14 +1,14 @@
 ﻿using System.Text;
 using System.Linq;
-using PlayerRoles;
 using NorthwoodLib.Pools;
 using Exiled.API.Features;
 using SSMenuSystem.Features;
 using BetterScp106.Features;
+using Exiled.API.Features.Roles;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using SSMenuSystem.Features.Wrappers;
-using Exiled.API.Features.Roles;
+using PlayerRoles;
 
 namespace BetterScp106
 {
@@ -20,7 +20,7 @@ namespace BetterScp106
 
             public override string Name { get; set; } = "Better 106";
 
-            public override bool CheckAccess(ReferenceHub hub) => hub;
+            public override bool CheckAccess(ReferenceHub hub) => hub.GetRoleId() == RoleTypeId.Scp106;
 
             public override ServerSpecificSettingBase[] Settings => [.. Better106Menu().Cast<ServerSpecificSettingBase>()];
 

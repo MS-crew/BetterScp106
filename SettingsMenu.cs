@@ -1,18 +1,17 @@
 ﻿using System.Text;
 using System.Linq;
-using PlayerRoles;
 using NorthwoodLib.Pools;
 using BetterScp106.Features;
+using Exiled.API.Features.Roles;
 using System.Collections.Generic;
 using UserSettings.ServerSpecific;
 using Exiled.API.Features.Core.UserSettings;
-using Exiled.API.Features.Roles;
 
 namespace BetterScp106
 {
     public class SettingsMenu
     {
-        public static SettingBase[] Better106Menu()
+        public static List<SettingBase> Better106Menu()
         {
             List<SettingBase> settings = [];
             StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
@@ -124,7 +123,7 @@ namespace BetterScp106
 
             }
 
-            return [.. settings];
+            return settings;
         }
 
         private static void AddFeatureDescription(bool isEnabled, string template, StringBuilder stringBuilder, string placeholder1, string value1, string placeholder2, string value2)

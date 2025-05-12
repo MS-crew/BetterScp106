@@ -21,7 +21,7 @@ namespace BetterScp106
 
         public static Plugin Instance {get; private set;}
 
-        public override Version Version { get; } = new Version(2, 6, 3);
+        public override Version Version { get; } = new Version(2, 6, 4);
 
         public override Version RequiredExiledVersion { get; } = new Version(9, 6, 0);
 

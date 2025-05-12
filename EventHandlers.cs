@@ -3,6 +3,7 @@ using CustomRendering;
 using Exiled.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
+using System.Collections.Generic;
 using Exiled.Events.EventArgs.Scp106;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Core.UserSettings;
@@ -18,7 +19,9 @@ namespace BetterScp106
 
         public static int ScpPullingtoPocket;
 
-        public static bool GetScpPerm = false;
+        public static bool GetScpPerm = false; 
+        
+        private static readonly List<SettingBase> Better106MenuCache = SettingsMenu.Better106Menu();
 
         public void OnStalk(StalkingEventArgs ev)
         {
@@ -61,12 +64,18 @@ namespace BetterScp106
 
         public void OnSpawned(SpawnedEventArgs ev)
         {
+            if (ev.OldRole == RoleTypeId.Scp106)
+            {
+                SettingBase.Unregister(ev.Player, Better106MenuCache);
+                Log.Debug($"Player {ev.Player.Nickname} is no longer SCP-106, removing menu from the list.");
+            }
+
             if (ev.Player.Role == RoleTypeId.Scp106)
             {
                 SpecialFeatureUsing = false;
-                SettingBase.Register(SettingsMenu.Better106Menu(), Player => Player == ev.Player);
-                SettingBase.SendToPlayer(ev.Player, SettingsMenu.Better106Menu());
+                SettingBase.Register(ev.Player, Better106MenuCache);
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
+                Log.Debug($"Player {ev.Player.Nickname} is now SCP-106, adding menu to the list.");
             }
         }
 

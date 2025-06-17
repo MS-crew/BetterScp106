@@ -38,7 +38,7 @@ namespace BetterScp106
             0,
             new List<CodeInstruction>
             {
-                    // this.Hub.IsScp();
+                // this.Hub.IsScp();
                 new (OpCodes.Ldarg_0),
                 new (OpCodes.Call, AccessTools.PropertyGetter(typeof(StatusEffectBase), nameof(StatusEffectBase.Hub))),
                 new (OpCodes.Ldc_I4_1),

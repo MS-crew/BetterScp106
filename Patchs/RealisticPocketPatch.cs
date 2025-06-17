@@ -43,22 +43,22 @@ namespace BetterScp106.Patchs
             0,
             new List<CodeInstruction>
             {
-                   // Check if the realistic pocket mode is enabled and the current room is of type Pocket.
-                   new (OpCodes.Call, AccessTools.PropertyGetter(typeof(Plugin), nameof(Plugin.Instance))),
-                   new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin), nameof(Config))),
-                   new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.RealisticPocket))),
-                   new (OpCodes.Brfalse_S, @continue),
+                // Check if the realistic pocket mode is enabled and the current room is of type Pocket.
+                new (OpCodes.Call, AccessTools.PropertyGetter(typeof(Plugin), nameof(Plugin.Instance))),
+                new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin), nameof(Config))),
+                new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.RealisticPocket))),
+                new (OpCodes.Brfalse_S, @continue),
 
-                   new (OpCodes.Ldarg_0),
-                   new (OpCodes.Call, AccessTools.Method(typeof(Room), nameof(Room.Get), new[] { typeof(Vector3) })),
-                   new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Room), nameof(Room.Type))),
-                   new (OpCodes.Ldc_I4_S, (int)RoomType.Pocket),
-                   new (OpCodes.Ceq),
-                   new (OpCodes.Brfalse_S, @continue),
+                new (OpCodes.Ldarg_0),
+                new (OpCodes.Call, AccessTools.Method(typeof(Room), nameof(Room.Get), new[] { typeof(Vector3) })),
+                new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Room), nameof(Room.Type))),
+                new (OpCodes.Ldc_I4_S, (int)RoomType.Pocket),
+                new (OpCodes.Ceq),
+                new (OpCodes.Brfalse_S, @continue),
 
-                   // Return false to prevent detonation.
-                   new (OpCodes.Ldc_I4_0),
-                   new (OpCodes.Ret),
+                // Return false to prevent detonation.
+                new (OpCodes.Ldc_I4_0),
+                new (OpCodes.Ret),
             });
 
             // Yield the modified instructions.

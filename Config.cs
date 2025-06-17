@@ -62,16 +62,16 @@ namespace BetterScp106
         /// </summary>
         [Description("Button setting ids of features")]
         public Dictionary<Methods.Features, int> AbilitySettingIds { get; set; } = new Dictionary<Methods.Features, int>
-            {
-                { Methods.Features.PocketKey, 106 },
-                { Methods.Features.PocketinKey, 107 },
-                { Methods.Features.StalkKey, 108 },
-                { Methods.Features.StalkMode, 109 },
-                { Methods.Features.StalkDistanceSlider, 110 },
-                { Methods.Features.TeleportRoomsList, 111 },
-                { Methods.Features.TeleportRooms, 112 },
-                { Methods.Features.Description, 113 },
-            };
+        {
+            { Methods.Features.PocketKey, 106 },
+            { Methods.Features.PocketinKey, 107 },
+            { Methods.Features.StalkKey, 108 },
+            { Methods.Features.StalkMode, 109 },
+            { Methods.Features.StalkDistanceSlider, 110 },
+            { Methods.Features.TeleportRoomsList, 111 },
+            { Methods.Features.TeleportRooms, 112 },
+            { Methods.Features.Description, 113 },
+        };
 
         /// <summary>
         /// Gets or sets a value indicating whether players exit a random zone when leaving the pocket dimension.
@@ -188,16 +188,16 @@ namespace BetterScp106
         public RoleTypeId[] StalkableRoles { get; set; } =
         [
             RoleTypeId.ClassD,
-                RoleTypeId.Scientist,
-                RoleTypeId.FacilityGuard,
-                RoleTypeId.ChaosConscript,
-                RoleTypeId.ChaosMarauder,
-                RoleTypeId.ChaosRepressor,
-                RoleTypeId.ChaosRifleman,
-                RoleTypeId.NtfCaptain,
-                RoleTypeId.NtfPrivate,
-                RoleTypeId.NtfSergeant,
-                RoleTypeId.NtfSpecialist
+            RoleTypeId.Scientist,
+            RoleTypeId.FacilityGuard,
+            RoleTypeId.ChaosConscript,
+            RoleTypeId.ChaosMarauder,
+            RoleTypeId.ChaosRepressor,
+            RoleTypeId.ChaosRifleman,
+            RoleTypeId.NtfCaptain,
+            RoleTypeId.NtfPrivate,
+            RoleTypeId.NtfSergeant,
+            RoleTypeId.NtfSpecialist
         ];
 
         /// <summary>
@@ -231,40 +231,40 @@ namespace BetterScp106
         public RoomType[] Rooms { get; set; } =
         [
             RoomType.LczArmory,
-                RoomType.Lcz914,
-                RoomType.LczCafe,
-                RoomType.LczPlants,
-                RoomType.LczToilets,
-                RoomType.Lcz173,
-                RoomType.LczClassDSpawn,
-                RoomType.LczGlassBox,
-                RoomType.Lcz330,
-                RoomType.LczCheckpointB,
-                RoomType.LczCheckpointA,
-                RoomType.Hcz079,
-                RoomType.HczEzCheckpointA,
-                RoomType.HczEzCheckpointB,
-                RoomType.HczArmory,
-                RoomType.Hcz939,
-                RoomType.HczHid,
-                RoomType.Hcz049,
-                RoomType.Hcz106,
-                RoomType.HczNuke,
-                RoomType.Hcz096,
-                RoomType.HczTestRoom,
-                RoomType.HczElevatorA,
-                RoomType.HczElevatorB,
-                RoomType.HczCrossRoomWater,
-                RoomType.EzIntercom,
-                RoomType.EzGateA,
-                RoomType.EzGateB,
-                RoomType.EzDownstairsPcs,
-                RoomType.EzPcs,
-                RoomType.EzConference,
-                RoomType.EzChef,
-                RoomType.EzCafeteria,
-                RoomType.EzUpstairsPcs,
-                RoomType.Surface
+            RoomType.Lcz914,
+            RoomType.LczCafe,
+            RoomType.LczPlants,
+            RoomType.LczToilets,
+            RoomType.Lcz173,
+            RoomType.LczClassDSpawn,
+            RoomType.LczGlassBox,
+            RoomType.Lcz330,
+            RoomType.LczCheckpointB,
+            RoomType.LczCheckpointA,
+            RoomType.Hcz079,
+            RoomType.HczEzCheckpointA,
+            RoomType.HczEzCheckpointB,
+            RoomType.HczArmory,
+            RoomType.Hcz939,
+            RoomType.HczHid,
+            RoomType.Hcz049,
+            RoomType.Hcz106,
+            RoomType.HczNuke,
+            RoomType.Hcz096,
+            RoomType.HczTestRoom,
+            RoomType.HczElevatorA,
+            RoomType.HczElevatorB,
+            RoomType.HczCrossRoomWater,
+            RoomType.EzIntercom,
+            RoomType.EzGateA,
+            RoomType.EzGateB,
+            RoomType.EzDownstairsPcs,
+            RoomType.EzPcs,
+            RoomType.EzConference,
+            RoomType.EzChef,
+            RoomType.EzCafeteria,
+            RoomType.EzUpstairsPcs,
+            RoomType.Surface
         ];
     }
 }

@@ -89,7 +89,7 @@ namespace BetterScp106
                 return;
             }
 
-            ev.Target.EnableEffect<PocketCorroding>();
+            ev.Scp106.CapturePlayer(ev.Target);
             Log.Debug($"Scp106 drew the {ev.Target.Nickname} directly into the pocket");
         }
 

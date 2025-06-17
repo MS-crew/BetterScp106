@@ -1,52 +1,67 @@
 <h1 align="center">Better Scp-106</h1>
 <div align="center">
 <a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/github/downloads/MS-crew/BetterScp106/total?style=for-the-badge&logo=githubactions&label=Downloads" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Release Download"></a>
-<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-2.5.9-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
+<a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-2.6.4-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>
 <a href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE"><img src="https://img.shields.io/badge/Licence-GNU_3.0-blue?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/blob/master/LICENSE" alt="General Public License v3.0"></a>
-<a href="https://github.com/ExMod-Team/EXILED"><img src="https://img.shields.io/badge/Exiled-9.4.0-red?style=for-the-badge&logo=gitbook" href="https://github.com/ExMod-Team/EXILED" alt="GitHub Exiled"></a>
+<a href="https://github.com/ExMod-Team/EXILED"><img src="https://img.shields.io/badge/Exiled-9.6.0-green?style=for-the-badge&logo=gitbook" href="https://github.com/ExMod-Team/EXILED" alt="GitHub Exiled"></a>
 
 
-This add-on for SCP: Secret Laboratory brings new features closer to the lore for the existing SCP-106. The plugin provides a number of customizable features to enhance your server's gaming or RP experience.
+This add-on for SCP: Secret Laboratory introduces new features and enhancements for the existing SCP-106 character, aligning them more closely with the game's core lore. Better SCP-106 offers a range of customizable functionalities designed to elevate your server's gaming or role-playing (RP) experience.
 </div>
 
 ## Features
+Empower SCP-106 with exciting new abilities using Better SCP-106:
+- **Pocket Dimension (Pocket):** SCP-106 can return to its own pocket dimension. This feature is disabled when the warhead has detonated, ensuring it doesn't spoil the game experience.
+- **Pocket-in:** SCP-106 can pull an SCP in its vicinity into its pocket dimension. The targeted SCP can reject being pulled by pressing the [ALT] key.
+- **Stalk:** If there's an injured victim, SCP-106 can teleport to their location using the stalk feature. The victim is default warned 1 second in advance. This is a critical feature for strategic hunting and surprise attacks.
+- **Teleport Room:** SCP-106 can teleport to any desired room. If the "same zone only" setting is enabled in the configuration, teleportation is restricted to rooms within the current zone.
+- **Flexible management:** Through the provided configuration file (config.yml), you can precisely determine the cost (health or SCP-106 energy) and cooldown for each feature. Additionally, certain features can be optionally enabled or disabled, providing full control to suit your server's specific needs.
 
-- **Pocket:** 106 can return to her own pocket dimension (unless the warhead has exploded in order not to spoil the game experience).
-- **Pocket in:** 106 can pull a scp he goes near to his pocket dimension (Scp trying to be taken to pocket can reject it by pressing the [ALT] key).
-- **Stalk:** The most important feature is that if there is an injured victim, you can teleport to a place where he is with the stalk feature (the victim is warned 1 second in advance).
-- **Teleport :** You can teleport to any room you want (you can only go to rooms in the same zone if only the same zone setting in the config is on).
-- **Flexible management:** With the config file, you can determine which feature will cost how much vigor or healt, how many meters away the victim can be teleported to the nearby victim with Stalk, or how long the cooldown time will be given to Scp-106 by which feature. Additionally, some features can be turned on or off optionally.
+## Features Commands 
+- **Pocket:** `.GotoPocket`
+- **Pocket in:** `.Pocketin`
+- **Stalk:** `.Stalk`
+- **Teleport Room:**
+ - To see available rooms: .TeleportRoom rooms
+ - To teleport to a specific room: .TeleportRoom {RoomName} (Example: .TeleportRoom Lcz914)
 
 ## Experimental feature
+These features are currently under development and provided for testing purposes. Your feedback is highly valuable!
 
-- **Pocket exit random zone mode:** When players successfully exit the pocket dimension, they exit from a random zone depending on chance instead of the same zone.
-- **Realistic Pocket mode:** Pocket dimension is not affected by warhead explosion and effect.
-- **One Hit Pocket:** 106 sends its victims directly to the pocket in one hit.
+- **Pocket Exit Random Zone Mode:** When players successfully exit the pocket dimension, they will exit from a random zone based on chance, instead of always the same zone.
+- **Realistic Pocket Mode:**  The pocket dimension is unaffected by warhead explosions and their effects. This allows SCP-106 to retreat to a safer zone with its victims.
+- **One Hit Pocket:** SCP-106 sends its victims directly to the pocket dimension with a single hit. Ideal for a more aggressive playstyle.
 
 ## Installation
 
 1. Download the release file from the GitHub page [here](https://github.com/MS-crew/BetterScp106/releases).
 2. Extract the contents into your `\AppData\Roaming\EXILED\Plugins` directory.
-3. Configure the plugin according to your server’s needs using the provided settings.
-4. Restart your server to apply the changes.
+3. Restart your server to generate the configuration and translation files.
+4. Configure the plugin according to your server's needs using the provided settings in the config.yml file located at AppData\Roaming\EXILED\Plugins\BetterScp106.
+5. Restart your server once more to apply all changes.
 
 ## Feedback and Issues
 
-This is the initial release of the plugin. We welcome any feedback, bug reports, or suggestions for improvements.
+This is the initial release of the plugin. We welcome any feedback, bug reports, or suggestions for improvements. Your contributions help us make the plugin even better!
 
 - **Report Issues:** [Issues Page](https://github.com/MS-crew/BetterScp106/issues)
 - **Contact:** [discerrahidenetim@gmail.com](mailto:discerrahidenetim@gmail.com)
 
 Thank you for using our plugin and helping us improve it!
 ## Default Config
+Below is an example of the plugin's default config.yml file. You can modify these values to suit your server's specific requirements.
 ```yml
 is_enabled: true
 debug: false
 # What features should be turned on??
 pocket_feature: true
+# Pocket-in feature enabled
 pocketin_feature: true
+# Stalk feature enabled
 stalk_feature: true
+# Teleport rooms feature enabled
 teleport_rooms_feature: true
+# One-hit pocket feature enabled
 one_hit_pocket: false
 # Button setting ids of features
 ability_setting_ids:
@@ -57,6 +72,7 @@ ability_setting_ids:
   StalkDistanceSlider: 110
   TeleportRoomsList: 111
   TeleportRooms: 112
+  Description: 113
 # Should players exit a random zone when they exit the pocket dimension?
 pocketexit_random_zonemode: true
 # Pocket dimension is not affected by warhead explosion and effect
@@ -69,7 +85,7 @@ pocketdimension_cost_healt: 50
 pocketdimension_cost_vigor: 25
 # How much cooldown should be after the Pocketdim?
 after_pocketdimension_cooldown: 30
-# How much health does it cost pocketing a scp?
+# How much healt does it cost pocketing a scp?
 pocketin_cost_healt: 150
 # How much Vigor/106 energy does it cost pocketing a scp?
 pocketin_cost_vigor: 100
@@ -113,7 +129,7 @@ teleport_cost_healt: 25
 # How much Vigor/106 energy would a successful Teleport cost?
 teleport_cost_vigor: 25
 # How much cooldown should be after Teleport?
-teleport_cooldown: 5
+teleport_cooldown: 50
 # Rooms to teleport to?
 rooms:
 - LczArmory

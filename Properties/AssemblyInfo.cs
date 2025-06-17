@@ -1,5 +1,8 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿// <copyright file="AssemblyInfo.cs" company="Ms-crew">
+// Copyright (c) Ms-crew. All rights reserved.
+// </copyright>
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // Bir bütünleştirilmiş koda ilişkin Genel Bilgiler aşağıdaki öznitelikler kümesiyle
@@ -25,7 +28,7 @@ using System.Runtime.InteropServices;
 // Bir derlemenin sürüm bilgileri aşağıdaki dört değerden oluşur:
 //
 //      Ana Sürüm
-//      İkincil Sürüm 
+//      İkincil Sürüm
 //      Yapı Numarası
 //      Düzeltme
 //

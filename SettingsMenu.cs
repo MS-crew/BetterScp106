@@ -53,7 +53,7 @@ namespace BetterScp106
                     hintDescription: Plugin.Instance.Translation.Pocket[1],
                     onChanged: (player, setting) =>
                     {
-                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106) && setting.As<KeybindSetting>().IsPressed)
                         {
                             GotoPocket.PocketFeature(scp106);
                         }
@@ -69,7 +69,7 @@ namespace BetterScp106
                     hintDescription: Plugin.Instance.Translation.PocketIn[1],
                     onChanged: (player, setting) =>
                     {
-                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106) && setting.As<KeybindSetting>().IsPressed)
                         {
                             TakeScpsPocket.PocketInFeature(scp106);
                         }
@@ -85,7 +85,7 @@ namespace BetterScp106
                     hintDescription: Plugin.Instance.Translation.Stalk[1],
                     onChanged: (player, setting) =>
                     {
-                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+                        if (player.Role.Is<Scp106Role>(out Scp106Role scp106) && setting.As<KeybindSetting>().IsPressed)
                         {
                             Stalking.StalkFeature(scp106);
                         }

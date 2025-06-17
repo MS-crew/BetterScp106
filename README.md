@@ -22,8 +22,8 @@ Empower SCP-106 with exciting new abilities using Better SCP-106:
 - **Pocket in:** `.Pocketin`
 - **Stalk:** `.Stalk`
 - **Teleport Room:**
- - To see available rooms: .TeleportRoom rooms
- - To teleport to a specific room: .TeleportRoom {RoomName} (Example: .TeleportRoom Lcz914)
+   - To see available rooms: .TeleportRoom rooms
+   - To teleport to a specific room: .TeleportRoom {RoomName} (Example: .TeleportRoom Lcz914)
 
 ## Experimental feature
 These features are currently under development and provided for testing purposes. Your feedback is highly valuable!

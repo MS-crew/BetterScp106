@@ -1,4 +1,4 @@
-<h1 align="center">Better Scp-106</h1>
+<h1 align="center">Better Scp-106 SSMenu Version</h1>
 <div align="center">
 <a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/github/downloads/MS-crew/BetterScp106/total?style=for-the-badge&logo=githubactions&label=Downloads" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Release Download"></a>
 <a href="https://github.com/MS-crew/BetterScp106/releases"><img src="https://img.shields.io/badge/Build-2.6.4-brightgreen?style=for-the-badge&logo=gitbook" href="https://github.com/MS-crew/BetterScp106/releases" alt="GitHub Releases"></a>

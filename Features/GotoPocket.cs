@@ -1,15 +1,28 @@
-﻿using MEC;
-using UnityEngine;
-using Exiled.API.Enums;
-using PlayerStatsSystem;
-using CustomPlayerEffects;
-using Exiled.API.Features.Roles;
-using System.Collections.Generic;
+﻿// -----------------------------------------------------------------------
+// <copyright file="GotoPocket.cs" company="Ms-crew">
+// Copyright (c) Ms-crew. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace BetterScp106.Features
 {
+    using System.Collections.Generic;
+    using CustomPlayerEffects;
+    using Exiled.API.Enums;
+    using Exiled.API.Features.Roles;
+    using MEC;
+    using PlayerStatsSystem;
+    using UnityEngine;
+
+    /// <summary>
+    /// Provides functionality for SCP-106 to teleport to the Pocket Dimension.
+    /// </summary>
     public class GotoPocket
     {
+        /// <summary>
+        /// Handles the teleportation of SCP-106 to the Pocket Dimension.
+        /// </summary>
+        /// <param name="scp106">The SCP-106 role instance.</param>
         public static void PocketFeature(Scp106Role scp106)
         {
             if (scp106.RemainingSinkholeCooldown > 0)
@@ -40,10 +53,17 @@ namespace BetterScp106.Features
             Timing.RunCoroutine(GoPocketV3(scp106));
         }
 
+        /// <summary>
+        /// Coroutine that handles the teleportation process to the Pocket Dimension.
+        /// </summary>
+        /// <param name="scp106">The SCP-106 role instance.</param>
+        /// <returns>An enumerator for the coroutine.</returns>
         private static IEnumerator<float> GoPocketV3(Scp106Role scp106)
         {
             if (EventHandlers.SpecialFeatureUsing)
+            {
                 yield break;
+            }
 
             EventHandlers.SpecialFeatureUsing = true;
             EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketdimensionCooldown;
@@ -52,7 +72,7 @@ namespace BetterScp106.Features
 
             scp106.Owner.EnableEffect<Ensnared>();
 
-            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden); 
+            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
 
             scp106.IsSubmerged = false;
 

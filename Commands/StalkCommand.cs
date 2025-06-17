@@ -1,19 +1,47 @@
-﻿using MEC;
-using System;
-using UnityEngine;
-using CommandSystem;
-using Exiled.API.Features;
-using BetterScp106.Features;
-using Exiled.API.Features.Roles;
+﻿// -----------------------------------------------------------------------
+// <copyright file="StalkCommand.cs" company="Ms-crew">
+// Copyright (c) Ms-crew. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace BetterScp106.Commands
 {
+    using System;
+    using BetterScp106.Features;
+    using CommandSystem;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
+    using MEC;
+    using UnityEngine;
+
+    /// <summary>
+    /// Represents the command used by SCP-106 to stalk a target.
+    /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
     public class StalkCommand : ICommand
     {
+        /// <summary>
+        /// Gets the command name.
+        /// </summary>
         public string Command => Plugin.Instance.Translation.StalkCommand;
+
+        /// <summary>
+        /// Gets the aliases for the command.
+        /// </summary>
         public string[] Aliases => Plugin.Instance.Translation.StalkCommandAliases;
+
+        /// <summary>
+        /// Gets the description of the command.
+        /// </summary>
         public string Description => Plugin.Instance.Translation.StalkCommandDescription;
+
+        /// <summary>
+        /// Executes the stalk command.
+        /// </summary>
+        /// <param name="arguments">The arguments passed to the command.</param>
+        /// <param name="sender">The sender of the command.</param>
+        /// <param name="response">The response message to be sent back to the sender.</param>
+        /// <returns>True if the command executed successfully; otherwise, false.</returns>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!Plugin.Instance.Config.StalkFeature)

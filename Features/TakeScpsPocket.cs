@@ -1,16 +1,28 @@
-﻿using MEC;
-using UnityEngine;
-using Exiled.API.Enums;
-using PlayerStatsSystem;
-using CustomPlayerEffects;
-using Exiled.API.Features;
-using Exiled.API.Features.Roles;
-using System.Collections.Generic;
-
+﻿// -----------------------------------------------------------------------
+// <copyright file="TakeScpsPocket.cs" company="Ms-crew">
+// Copyright (c) Ms-crew. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------using MEC;
 namespace BetterScp106.Features
 {
+    using System.Collections.Generic;
+    using CustomPlayerEffects;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
+    using MEC;
+    using PlayerStatsSystem;
+    using UnityEngine;
+
+    /// <summary>
+    /// Provides functionality for SCP-106 to interact with the Pocket Dimension.
+    /// </summary>
     public class TakeScpsPocket
     {
+        /// <summary>
+        /// Handles the logic for SCP-106 entering the Pocket Dimension with a friend.
+        /// </summary>
+        /// <param name="scp106">The SCP-106 role instance.</param>
         public static void PocketInFeature(Scp106Role scp106)
         {
             if (scp106.RemainingSinkholeCooldown > 0)
@@ -48,10 +60,19 @@ namespace BetterScp106.Features
 
             Timing.RunCoroutine(GotoPocketInV3(scp106, friend));
         }
+
+        /// <summary>
+        /// Coroutine for handling SCP-106 pulling a friend into the Pocket Dimension.
+        /// </summary>
+        /// <param name="scp106">The SCP-106 role instance.</param>
+        /// <param name="friend">The friend player to pull into the Pocket Dimension.</param>
+        /// <returns>An enumerator for the coroutine.</returns>
         private static IEnumerator<float> GotoPocketInV3(Scp106Role scp106, Player friend)
         {
             if (EventHandlers.SpecialFeatureUsing)
+            {
                 yield break;
+            }
 
             EventHandlers.SpecialFeatureUsing = true;
             EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketingScpCooldown;
@@ -80,7 +101,6 @@ namespace BetterScp106.Features
                 scp106.Owner.DisableEffect<Ensnared>();
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 200f);
             }
-
             else
             {
                 scp106.IsSubmerged = false;

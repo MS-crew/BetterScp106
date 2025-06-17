@@ -1,20 +1,48 @@
-﻿using MEC;
-using System;
-using UnityEngine;
-using CommandSystem;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using BetterScp106.Features;
-using Exiled.API.Features.Roles;
+﻿// -----------------------------------------------------------------------
+// <copyright file="TeleportRoomCommand.cs" company="Ms-crew">
+// Copyright (c) Ms-crew. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace BetterScp106.Commands
 {
+    using System;
+    using BetterScp106.Features;
+    using CommandSystem;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
+    using MEC;
+    using UnityEngine;
+
+    /// <summary>
+    /// Represents the command used to teleport SCP-106 to a specific room.
+    /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
     public class TeleportRoomCommand : ICommand
     {
+        /// <summary>
+        /// Gets the command name.
+        /// </summary>
         public string Command => Plugin.Instance.Translation.TeleportRoomCommand;
+
+        /// <summary>
+        /// Gets the command aliases.
+        /// </summary>
         public string[] Aliases => Plugin.Instance.Translation.TeleportRoomCommandAliases;
+
+        /// <summary>
+        /// Gets the command description.
+        /// </summary>
         public string Description => Plugin.Instance.Translation.TeleportRoomCommandDescription;
+
+        /// <summary>
+        /// Executes the teleport room command.
+        /// </summary>
+        /// <param name="arguments">The arguments provided with the command.</param>
+        /// <param name="sender">The sender of the command.</param>
+        /// <param name="response">The response message to be sent back to the sender.</param>
+        /// <returns>True if the command executed successfully; otherwise, false.</returns>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!Plugin.Instance.Config.TeleportRoomsFeature)

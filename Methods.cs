@@ -49,10 +49,10 @@ namespace BetterScp106
             List<RoomType> randompos =
             [
                 RoomType.Lcz914,
-                   RoomType.Hcz096,
-                   RoomType.EzGateB,
-                   RoomType.Surface,
-               ];
+                RoomType.Hcz096,
+                RoomType.EzGateB,
+                RoomType.Surface,
+            ];
 
             if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
             {

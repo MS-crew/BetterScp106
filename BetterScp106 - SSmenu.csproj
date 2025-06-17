@@ -42,19 +42,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath> $(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Mirror">
-      <HintPath>..\..\..\EXILED_REFERENCES\Mirror.dll</HintPath>
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath> $(EXILED_REFERENCES)\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="Pooling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath> $(EXILED_REFERENCES)\Pooling.dll</HintPath>
     </Reference>
-    <Reference Include="SemanticVersioning, Version=2.0.2.0, Culture=neutral, PublicKeyToken=a89bb7dc6f7a145c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath> $(EXILED_REFERENCES)\SemanticVersioning.dll</HintPath>
-    </Reference>
     <Reference Include="SSMenuSystem-EXILED-publicized">
-      <HintPath>..\..\..\EXILED_REFERENCES\SSMenuSystem-EXILED-publicized.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath> $(EXILED_REFERENCES)\SSMenuSystem-EXILED-publicized.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -65,11 +63,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\..\EXILED_REFERENCES\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\EXILED_REFERENCES\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath> $(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

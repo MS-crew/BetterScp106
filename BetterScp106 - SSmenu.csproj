@@ -50,9 +50,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath> $(EXILED_REFERENCES)\Pooling.dll</HintPath>
     </Reference>
-    <Reference Include="SSMenuSystem-EXILED-publicized">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath> $(EXILED_REFERENCES)\SSMenuSystem-EXILED-publicized.dll</HintPath>
+    <Reference Include="SSMenuSystem-EXILED">
+      <HintPath>..\..\..\AppData\Roaming\EXILED\Plugins\SSMenuSystem-EXILED.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

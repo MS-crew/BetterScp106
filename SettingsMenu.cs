@@ -52,6 +52,7 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.Pocket[0],
                     suggestedKey: UnityEngine.KeyCode.F,
                     hint: Plugin.Instance.Translation.Pocket[1],
+                    allowSpectatorTrigger: false,
                     onUsed: (hub, ispressed) =>
                     {
                         if (ispressed && Player.Get(hub).Role.Is<Scp106Role>(out Scp106Role scp106))
@@ -68,6 +69,7 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.PocketIn[0],
                     suggestedKey: UnityEngine.KeyCode.G,
                     hint: Plugin.Instance.Translation.PocketIn[1],
+                    allowSpectatorTrigger: false,
                     onUsed: (hub, ispressed) =>
                     {
                         if (ispressed && Player.Get(hub).Role.Is<Scp106Role>(out Scp106Role scp106))
@@ -84,6 +86,7 @@ namespace BetterScp106
                     label: Plugin.Instance.Translation.Stalk[0],
                     suggestedKey: UnityEngine.KeyCode.H,
                     hint: Plugin.Instance.Translation.Stalk[1],
+                    allowSpectatorTrigger: false,
                     onUsed: (hub, ispressed) =>
                     {
                         if (ispressed && Player.Get(hub).Role.Is<Scp106Role>(out Scp106Role scp106))

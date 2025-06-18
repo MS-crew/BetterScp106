@@ -117,13 +117,13 @@ namespace BetterScp106
         {
             if (ev.OldRole == RoleTypeId.Scp106)
             {
-                Menu.LoadForPlayer(ev.Player.ReferenceHub, null);
+                Menu.ReloadPlayer(ev.Player.ReferenceHub);
             }
 
             if (ev.Player.Role.Type == RoleTypeId.Scp106)
             {
                 SpecialFeatureUsing = false;
-                Menu.LoadForPlayer(ev.Player.ReferenceHub, Menu.GetMenu(typeof(ServerSettingsSyncer)));
+                Menu.ReloadPlayer(ev.Player.ReferenceHub);
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }
         }

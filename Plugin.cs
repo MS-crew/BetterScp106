@@ -93,7 +93,7 @@ namespace BetterScp106
             PlayerHandlers.EscapingPocketDimension -= EventHandlers.OnEscapingPocketDim;
             PlayerHandlers.FailingEscapePocketDimension -= EventHandlers.OnFailingEscape;
 
-            this.harmony.UnpatchAll(harmonyID: "Better106Patchs");
+            this.harmony.UnpatchAll();
             EventHandlers = null;
             Instance = null;
             base.OnDisabled();

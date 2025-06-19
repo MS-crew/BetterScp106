@@ -43,6 +43,8 @@ namespace BetterScp106.Patchs
             index - 1,
             new List<CodeInstruction>
             {
+                // if (EventHandlers.SpecialFeatureUsing)
+                // _submergeCooldown = EventHandlers.SpecialFeatureCooldown;
                 new (OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureUsing))),
                 new (OpCodes.Brfalse_S, @continue),
                 new (OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureCooldown))),

@@ -29,26 +29,27 @@ namespace BetterScp106.Patchs
         /// <returns>The modified IL instructions.</returns>
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            // Retrieve the original instructions and prepare for modification.
             List<CodeInstruction> newCodes = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            // Define a label for branching logic.
             Label @continue = generator.DefineLabel();
 
-            // Add the label to the first instruction.
             newCodes[0].labels.Add(@continue);
 
-            // Insert custom logic at the beginning of the instruction list.
             newCodes.InsertRange(
             0,
             new List<CodeInstruction>
             {
-                // Check if the realistic pocket mode is enabled and the current room is of type Pocket.
+                // if (!Plugin.Instance.Config.RealisticPocket)
+                // continue base method
                 new (OpCodes.Call, AccessTools.PropertyGetter(typeof(Plugin), nameof(Plugin.Instance))),
                 new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin), nameof(Config))),
                 new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.RealisticPocket))),
                 new (OpCodes.Brfalse_S, @continue),
 
+                // if (Room.Get(this.pos).Type == RoomType.Pocket)
+                // return false;
+                // else
+                // continue base method
                 new (OpCodes.Ldarg_0),
                 new (OpCodes.Call, AccessTools.Method(typeof(Room), nameof(Room.Get), new[] { typeof(Vector3) })),
                 new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Room), nameof(Room.Type))),
@@ -56,18 +57,15 @@ namespace BetterScp106.Patchs
                 new (OpCodes.Ceq),
                 new (OpCodes.Brfalse_S, @continue),
 
-                // Return false to prevent detonation.
                 new (OpCodes.Ldc_I4_0),
                 new (OpCodes.Ret),
             });
 
-            // Yield the modified instructions.
             for (int i = 0; i < newCodes.Count; i++)
             {
                 yield return newCodes[i];
             }
 
-            // Return the instruction list to the pool.
             ListPool<CodeInstruction>.Pool.Return(newCodes);
         }
     }

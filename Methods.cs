@@ -41,7 +41,7 @@ namespace BetterScp106
         }
 
         /// <summary>
-        /// Selects a random zone for SCP-106 to teleport to, considering game conditions.
+        /// Selects a random zone for Player to teleport to out of Pocket Dimension, considering game conditions.
         /// </summary>
         /// <returns>A <see cref="RelativePosition"/> representing the selected zone.</returns>
         public static RelativePosition RandomZone()
@@ -132,9 +132,9 @@ namespace BetterScp106
         }
 
         /// <summary>
-        /// Teleports SCP-106 out of the pocket dimension.
+        /// Teleports Player out of the pocket dimension.
         /// </summary>
-        /// <param name="player">The SCP-106 player.</param>
+        /// <param name="player">The escaping player.</param>
         public static void EscapeFromDimension(Player player)
         {
             if (player.Role.Base is not IFpcRole fpcRole)

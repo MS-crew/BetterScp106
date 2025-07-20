@@ -127,7 +127,7 @@ namespace BetterScp106
                 descriptionBuilder.AppendLine(string.Format(Plugin.Instance.Translation.Scp106PowersTeleport, Plugin.Instance.Config.TeleportCostHealt, Plugin.Instance.Config.TeleportCostVigor));
             }
 
-            settings.Insert(0, new TextInputSetting(
+            settings.Insert(1, new TextInputSetting(
                 id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.Description],
                 label: StringBuilderPool.Shared.ToStringReturn(descriptionBuilder),
                 foldoutMode: SSTextArea.FoldoutMode.ExtendedByDefault));

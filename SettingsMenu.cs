@@ -30,20 +30,7 @@ namespace BetterScp106
         public static ServerSpecificSettingBase[] Better106Menu()
         {
             List<ServerSpecificSettingBase> settings = new ();
-            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
-
-            AddFeatureDescription(Plugin.Instance.Config.PocketFeature, Plugin.Instance.Translation.Scp106PowersPocket, stringBuilder, "$pockethealt", Plugin.Instance.Config.PocketdimensionCostHealt.ToString(), "$pocketvigor", Plugin.Instance.Config.PocketdimensionCostVigor.ToString());
-
-            AddFeatureDescription(Plugin.Instance.Config.PocketinFeature, Plugin.Instance.Translation.Scp106PowersPocketin, stringBuilder, "$pocketinhealt", Plugin.Instance.Config.PocketinCostHealt.ToString(), "$pocketinvigor", Plugin.Instance.Config.PocketinCostVigor.ToString());
-
-            AddFeatureDescription(Plugin.Instance.Config.StalkFeature, Plugin.Instance.Translation.Scp106PowersStalk, stringBuilder, "$stalkhealt", Plugin.Instance.Config.StalkCostHealt.ToString(), "$stalkvigor", Plugin.Instance.Config.StalkCostVigor.ToString());
-
-            AddFeatureDescription(Plugin.Instance.Config.TeleportRoomsFeature, Plugin.Instance.Translation.Scp106PowersTeleport, stringBuilder, "$teleporthealt", Plugin.Instance.Config.TeleportCostHealt.ToString(), "$teleportvigor", Plugin.Instance.Config.TeleportCostVigor.ToString());
-
-            settings.Add(new SSTextArea(
-                id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.Description],
-                content: StringBuilderPool.Shared.ToStringReturn(stringBuilder),
-                foldoutMode: SSTextArea.FoldoutMode.ExtendedByDefault));
+            StringBuilder descriptionBuilder = StringBuilderPool.Shared.Rent();
 
             if (Plugin.Instance.Config.PocketFeature)
             {
@@ -60,6 +47,8 @@ namespace BetterScp106
                             GotoPocket.PocketFeature(scp106);
                         }
                     }));
+
+                descriptionBuilder.AppendLine(string.Format(Plugin.Instance.Translation.Scp106PowersPocket, Plugin.Instance.Config.PocketdimensionCostHealt, Plugin.Instance.Config.PocketdimensionCostVigor));
             }
 
             if (Plugin.Instance.Config.PocketinFeature)
@@ -77,6 +66,8 @@ namespace BetterScp106
                             TakeScpsPocket.PocketInFeature(scp106);
                         }
                     }));
+
+                descriptionBuilder.AppendLine(string.Format(Plugin.Instance.Translation.Scp106PowersPocketin, Plugin.Instance.Config.PocketinCostHealt, Plugin.Instance.Config.PocketinCostVigor));
             }
 
             if (Plugin.Instance.Config.StalkFeature)
@@ -111,6 +102,8 @@ namespace BetterScp106
                     defaultValue: Plugin.Instance.Config.StalkFromEverywhere ? 20000 : Plugin.Instance.Config.StalkDistance,
                     integer: true,
                     hint: Plugin.Instance.Translation.Stalk[7]));
+
+                descriptionBuilder.AppendLine(string.Format(Plugin.Instance.Translation.Scp106PowersStalk, Plugin.Instance.Config.StalkCostHealt, Plugin.Instance.Config.StalkCostVigor));
             }
 
             if (Plugin.Instance.Config.TeleportRoomsFeature)
@@ -133,28 +126,16 @@ namespace BetterScp106
                             TeleportRooms.TeleportFeature(scp106);
                         }
                     }));
+
+                descriptionBuilder.AppendLine(string.Format(Plugin.Instance.Translation.Scp106PowersTeleport, Plugin.Instance.Config.TeleportCostHealt, Plugin.Instance.Config.TeleportCostVigor));
             }
+
+            settings.Insert(0, new SSTextArea(
+               id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.Description],
+               content: StringBuilderPool.Shared.ToStringReturn(descriptionBuilder),
+               foldoutMode: SSTextArea.FoldoutMode.ExtendedByDefault));
 
             return settings.ToArray();
-        }
-
-        /// <summary>
-        /// Adds a feature description to the settings menu.
-        /// </summary>
-        /// <param name="isEnabled">Indicates whether the feature is enabled.</param>
-        /// <param name="template">The template string for the feature description.</param>
-        /// <param name="stringBuilder">The <see cref="StringBuilder"/> to append the description to.</param>
-        /// <param name="placeholder1">The first placeholder in the template.</param>
-        /// <param name="value1">The value to replace the first placeholder with.</param>
-        /// <param name="placeholder2">The second placeholder in the template.</param>
-        /// <param name="value2">The value to replace the second placeholder with.</param>
-        private static void AddFeatureDescription(bool isEnabled, string template, StringBuilder stringBuilder, string placeholder1, string value1, string placeholder2, string value2)
-        {
-            if (isEnabled)
-            {
-                stringBuilder.AppendLine(template.Replace(placeholder1, value1).Replace(placeholder2, value2));
-                stringBuilder.AppendLine();
-            }
         }
 
         /// <summary>

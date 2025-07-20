@@ -81,7 +81,7 @@ namespace BetterScp106.Commands
                 return false;
             }
 
-            Timing.RunCoroutine(Stalking.StalkV3(scp106, target));
+            Timing.RunCoroutine(Stalking.Stalk(scp106, target));
             response = "Stalk Ability used";
             return true;
         }

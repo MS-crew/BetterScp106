@@ -71,8 +71,8 @@ namespace BetterScp106
 
             PlayerHandlers.Spawned += EventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip += EventHandlers.OnTogglingNoClip;
-            PlayerHandlers.EscapingPocketDimension += EventHandlers.OnEscapingPocketDim;
             PlayerHandlers.FailingEscapePocketDimension += EventHandlers.OnFailingEscape;
+            PlayerHandlers.EscapingPocketDimension += EventHandlers.OnEscapingPocketDimension;
 
             Menu.RegisterAll();
 
@@ -93,8 +93,8 @@ namespace BetterScp106
 
             PlayerHandlers.Spawned -= EventHandlers.OnSpawned;
             PlayerHandlers.TogglingNoClip -= EventHandlers.OnTogglingNoClip;
-            PlayerHandlers.EscapingPocketDimension -= EventHandlers.OnEscapingPocketDim;
             PlayerHandlers.FailingEscapePocketDimension -= EventHandlers.OnFailingEscape;
+            PlayerHandlers.EscapingPocketDimension -= EventHandlers.OnEscapingPocketDimension;
 
             this.harmony.UnpatchAll();
             EventHandlers = null;

@@ -50,15 +50,15 @@ namespace BetterScp106.Commands
 
             Player player = Player.Get(sender);
 
-            if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+            if (!player.Role.Is<Scp106Role>(out Scp106Role scp106))
             {
-                GotoPocket.PocketFeature(scp106);
-                response = "Pocket Ability used";
-                return true;
+                response = "You can`t use this command";
+                return false;
             }
 
-            response = "You can`t use this command";
-            return false;
+													GotoPocket.PocketFeature(scp106);
+            response = "Pocket Ability used";
+            return true;
         }
     }
 }

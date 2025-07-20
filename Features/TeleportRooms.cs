@@ -61,10 +61,10 @@ namespace BetterScp106.Features
                 return;
             }
 
-            bool flaglcz = Map.IsLczDecontaminated && targetRoom.Zone == ZoneType.LightContainment;
+            bool flagLcz = Map.IsLczDecontaminated && targetRoom.Zone == ZoneType.LightContainment;
             bool flagSite = Warhead.IsDetonated && targetRoom.Zone != ZoneType.Surface;
 
-            if (flaglcz || flagSite)
+            if (flagLcz || flagSite)
             {
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
                 return;

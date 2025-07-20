@@ -14,7 +14,6 @@ namespace BetterScp106
     using Exiled.Events.EventArgs.Scp106;
     using PlayerRoles;
     using SSMenuSystem.Features;
-    using static BetterScp106.SettingsMenu;
     using Log = Exiled.API.Features.Log;
 
     /// <summary>
@@ -35,7 +34,7 @@ namespace BetterScp106
         /// <summary>
         /// Stores the ID of the player being pulled into the pocket dimension.
         /// </summary>
-        public static int ScpPullingtoPocket;
+        public static int ScpPullingToPocket;
 
         /// <summary>
         /// Indicates whether SCP permission has been granted.
@@ -65,7 +64,7 @@ namespace BetterScp106
                 return;
             }
 
-            if (ev.Player.Id != ScpPullingtoPocket)
+            if (ev.Player.Id != ScpPullingToPocket)
             {
                 return;
             }
@@ -97,7 +96,7 @@ namespace BetterScp106
         /// Handles the event when a player escapes the pocket dimension.
         /// </summary>
         /// <param name="ev">The event arguments for escaping the pocket dimension.</param>
-        public void OnEscapingPocketDim(EscapingPocketDimensionEventArgs ev)
+        public void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
         {
             if (!ev.Player.IsScp)
             {

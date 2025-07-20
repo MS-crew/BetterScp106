@@ -40,9 +40,9 @@ namespace BetterScp106.Features
                 return;
             }
 
-            bool stalkmode = scp106.Owner.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSTwoButtonsSetting>(Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode]).SyncIsB;
-            int stalkdistance = scp106.Owner.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSSliderSetting>(Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkDistanceSlider]).SyncIntValue;
-            Player target = Methods.Findtarget(stalkmode, stalkdistance, scp106.Owner);
+            bool stalkMode = scp106.Owner.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSTwoButtonsSetting>(Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode]).SyncIsB;
+            int stalkDistance = scp106.Owner.ReferenceHub.GetParameter<SettingsMenu.ServerSettingsSyncer, SSSliderSetting>(Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkDistanceSlider]).SyncIntValue;
+            Player target = Methods.FindTarget(stalkMode, stalkDistance, scp106.Owner);
 
             if (target == null)
             {
@@ -50,7 +50,7 @@ namespace BetterScp106.Features
                 return;
             }
 
-            Timing.RunCoroutine(StalkV3(scp106, target));
+            Timing.RunCoroutine(Stalk(scp106, target));
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace BetterScp106.Features
         /// <param name="scp106">The SCP-106 role instance.</param>
         /// <param name="target">The target player to stalk.</param>
         /// <returns>An enumerator for the coroutine.</returns>
-        public static IEnumerator<float> StalkV3(Scp106Role scp106, Player target)
+        public static IEnumerator<float> Stalk(Scp106Role scp106, Player target)
         {
             if (EventHandlers.SpecialFeatureUsing)
             {

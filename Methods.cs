@@ -46,7 +46,7 @@ namespace BetterScp106
         /// <returns>A <see cref="RelativePosition"/> representing the selected zone.</returns>
         public static RelativePosition RandomZone()
         {
-            List<RoomType> randompos =
+            List<RoomType> randomPos =
             [
                 RoomType.Lcz914,
                 RoomType.Hcz096,
@@ -56,23 +56,23 @@ namespace BetterScp106
 
             if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
             {
-                randompos.Remove(RoomType.Lcz914);
-                randompos.Remove(RoomType.Hcz096);
-                randompos.Remove(RoomType.EzGateB);
+                randomPos.Remove(RoomType.Lcz914);
+                randomPos.Remove(RoomType.Hcz096);
+                randomPos.Remove(RoomType.EzGateB);
             }
 
             if (Map.DecontaminationState == DecontaminationState.Countdown || Map.DecontaminationState == DecontaminationState.Finish)
             {
-                randompos.Remove(RoomType.Lcz914);
+                randomPos.Remove(RoomType.Lcz914);
             }
 
-            if (randompos.Count == 0)
+            if (randomPos.Count == 0)
             {
                 Log.Error("Somethings gone wrong,No valid random zones found, defaulting to Surface.");
                 return new RelativePosition(Room.Get(RoomType.Surface).Position);
             }
 
-            Vector3 position = Room.Get(randompos.RandomItem()).Position;
+            Vector3 position = Room.Get(randomPos.RandomItem()).Position;
 
             if (position == Vector3.zero)
             {
@@ -80,10 +80,10 @@ namespace BetterScp106
                 position = Room.Get(RoomType.Surface).Position;
             }
 
-            RelativePosition relaiveposition = new (position);
-            Log.Debug("Random Zones count: " + randompos.Count + " selected random position: " + position + " Random zone mode: " + Plugin.Instance.Config.PocketexitRandomZonemode);
+            RelativePosition relaivePosition = new (position);
+            Log.Debug("Random Zones count: " + randomPos.Count + " selected random position: " + position + " Random zone mode: " + Plugin.Instance.Config.PocketexitRandomZonemode);
 
-            return relaiveposition;
+            return relaivePosition;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace BetterScp106
         /// <param name="distance">The maximum distance to consider for stalking.</param>
         /// <param name="player">The SCP-106 player.</param>
         /// <returns>The target <see cref="Player"/> to stalk, or null if no valid target is found.</returns>
-        public static Player Findtarget(bool stalkbyHealt, float distance, Player player)
+        public static Player FindTarget(bool stalkbyHealt, float distance, Player player)
         {
             IEnumerable<Player> stalkablePlayers = Player.List.Where(
                 p =>
@@ -168,9 +168,9 @@ namespace BetterScp106
             int randomIndex = Random.Range(0, 3);
             string hint = randomIndex switch
             {
-                0 => Plugin.Instance.Translation.Scp106PowersPocket.Replace("$pockethealt", Plugin.Instance.Config.PocketdimensionCostHealt.ToString()).Replace("$pocketvigor", Plugin.Instance.Config.PocketdimensionCostVigor.ToString()),
-                1 => Plugin.Instance.Translation.Scp106PowersPocketin.Replace("$pocketinhealt", Plugin.Instance.Config.PocketinCostHealt.ToString()).Replace("$pocketinvigor", Plugin.Instance.Config.PocketinCostVigor.ToString()),
-                2 => Plugin.Instance.Translation.Scp106PowersStalk.Replace("$stalkhealt", Plugin.Instance.Config.StalkCostHealt.ToString()).Replace("$stalkvigor", Plugin.Instance.Config.StalkCostVigor.ToString()),
+                0 => string.Format(Plugin.Instance.Translation.Scp106PowersPocket, Plugin.Instance.Config.PocketdimensionCostHealt, Plugin.Instance.Config.PocketdimensionCostVigor),
+                1 => string.Format(Plugin.Instance.Translation.Scp106PowersPocketin, Plugin.Instance.Config.PocketinCostHealt, Plugin.Instance.Config.PocketinCostVigor),
+                2 => string.Format(Plugin.Instance.Translation.Scp106PowersStalk, Plugin.Instance.Config.StalkCostHealt, Plugin.Instance.Config.StalkCostVigor),
                 _ => Plugin.Instance.Translation.Scp106StartMessage,
             };
 

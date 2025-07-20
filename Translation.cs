@@ -132,26 +132,26 @@ namespace BetterScp106
         /// <summary>
         /// Gets or sets the description of the pocket feature.
         /// </summary>
-        [Description("Pocket feature description")]
-        public string Scp106PowersPocket { get; set; } = "Pocket : You can go to pocket dimension. It will cost: $pockethealt healt & $pocketvigor vigor";
+        [Description("Pocket feature description. ({0} = Healt , {1} = vigor)")]
+        public string Scp106PowersPocket { get; set; } = "Pocket : You can go to pocket dimension. It will cost: {0} healt & {1} vigor";
 
         /// <summary>
         /// Gets or sets the description of the pocket-in feature.
         /// </summary>
-        [Description("Pocket in feature description")]
-        public string Scp106PowersPocketin { get; set; } = "Pocket in : You can put a SCP in your pocket dimension. It will cost: $pocketinhealt healt & $pocketinvigor vigor";
+        [Description("Pocket in feature description. ({0} = Healt , {1} = vigor)")]
+        public string Scp106PowersPocketin { get; set; } = "Pocket in : You can put a SCP in your pocket dimension. It will cost: {0} healt & {1} vigor";
 
         /// <summary>
         /// Gets or sets the description of the stalk feature.
         /// </summary>
-        [Description("Stalk feature description")]
-        public string Scp106PowersStalk { get; set; } = "Stalk : You can teleport to a suffering victim. It will cost: $stalkhealt healt & $stalkvigor vigor";
+        [Description("Stalk feature description. ({0} = Healt , {1} = vigor)")]
+        public string Scp106PowersStalk { get; set; } = "Stalk : You can teleport to a suffering victim. It will cost: {0} healt & {1} vigor";
 
         /// <summary>
         /// Gets or sets the description of the teleport feature.
         /// </summary>
-        [Description("Teleport feature description")]
-        public string Scp106PowersTeleport { get; set; } = "Teleport : You can get teleport in the room you want . It will cost: $teleporthealt healt & $teleportvigor vigor";
+        [Description("Teleport feature description. ({0} = Healt , {1} = vigor)")]
+        public string Scp106PowersTeleport { get; set; } = "Teleport : You can get teleport in the room you want . It will cost: {0} healt & {1} vigor";
 
         /// <summary>
         /// Gets or sets the server-specific settings for the pocket feature.

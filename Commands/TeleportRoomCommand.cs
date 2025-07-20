@@ -53,76 +53,81 @@ namespace BetterScp106.Commands
 
             Player player = Player.Get(sender);
 
-            if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+            if (!player.Role.Is<Scp106Role>(out Scp106Role scp106))
             {
-                response = string.Empty;
-
-                if (arguments.Count == 0)
-                {
-                    response = $"Usage: .{Plugin.Instance.Translation.TeleportRoomCommand} <RoomType> for roomtypes .{Plugin.Instance.Translation.TeleportRoomCommand} rooms";
-                    return false;
-                }
-
-                if (arguments.Array[1].ToLower() == "rooms")
-                {
-                    response = "Rooms:\n" + string.Join("\n", Plugin.Instance.Config.Rooms);
-                    return false;
-                }
-
-                if (!Enum.TryParse(arguments.Array[1], true, out RoomType roomType) || !Plugin.Instance.Config.Rooms.Contains(roomType))
-                {
-                    response = $"'{arguments.Array[1]}' is not a valid RoomType, for roomtypes .{Plugin.Instance.Translation.TeleportRoomCommand} rooms";
-                    return false;
-                }
-
-                if (scp106.RemainingSinkholeCooldown > 0 || scp106.IsStalking || scp106.IsSubmerged)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.Cooldown, shouldClearPrevious: true);
-                    return false;
-                }
-
-                if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.TeleportCostHealt)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant);
-                    return false;
-                }
-
-                if (AlphaWarheadController.Detonated)
-                {
-                    scp106.IsSubmerged = true;
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
-                    return false;
-                }
-
-                Room targetRoom = Room.Get(roomType);
-
-                if (targetRoom == null)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportRoomNull, shouldClearPrevious: true);
-                    return false;
-                }
-
-                if (Plugin.Instance.Config.TeleportOnlySameZone && scp106.Owner.Zone != targetRoom.Zone)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCantforZone, shouldClearPrevious: true);
-                    return false;
-                }
-
-                bool flaglcz = Map.IsLczDecontaminated && targetRoom.Zone == ZoneType.LightContainment;
-                bool flagSite = Warhead.IsDetonated && targetRoom.Zone != ZoneType.Surface;
-
-                if (flaglcz || flagSite)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
-                    return false;
-                }
-
-                Timing.RunCoroutine(TeleportRooms.TeleportRoom(scp106, targetRoom.Position));
-                return true;
+                response = "You can`t use this command";
+                return false;
             }
 
-            response = "You can`t use this command";
-            return false;
+            if (arguments.Count == 0)
+            {
+                response = $"Usage: .{Plugin.Instance.Translation.TeleportRoomCommand} <RoomType> for roomtypes .{Plugin.Instance.Translation.TeleportRoomCommand} rooms";
+                return false;
+            }
+
+            if (arguments.Array[1].ToLower() == "rooms")
+            {
+                response = "Rooms:\n" + string.Join("\n", Plugin.Instance.Config.Rooms);
+                return false;
+            }
+
+            if (!Enum.TryParse(arguments.Array[1], true, out RoomType roomType) || !Plugin.Instance.Config.Rooms.Contains(roomType))
+            {
+                response = $"'{arguments.Array[1]}' is not a valid RoomType, for roomtypes .{Plugin.Instance.Translation.TeleportRoomCommand} rooms";
+                return false;
+            }
+
+            if (scp106.RemainingSinkholeCooldown > 0 || scp106.IsStalking || scp106.IsSubmerged)
+            {
+                player.Broadcast(Plugin.Instance.Translation.Cooldown, shouldClearPrevious: true);
+                response = Plugin.Instance.Translation.Cooldown.Content;
+                return false;
+            }
+
+            if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f) || player.Health <= Plugin.Instance.Config.TeleportCostHealt)
+            {
+                player.Broadcast(Plugin.Instance.Translation.TeleportCant, shouldClearPrevious: true);
+                response = Plugin.Instance.Translation.TeleportCant.Content;
+                return false;
+            }
+
+            if (AlphaWarheadController.Detonated)
+            {
+                scp106.IsSubmerged = true;
+                player.Broadcast(Plugin.Instance.Translation.Afternuke, shouldClearPrevious: true);
+                response = Plugin.Instance.Translation.Afternuke.Content;
+                return false;
+            }
+
+            Room targetRoom = Room.Get(roomType);
+
+            if (targetRoom == null)
+            {
+                player.Broadcast(Plugin.Instance.Translation.TeleportRoomNull, shouldClearPrevious: true);
+                response = Plugin.Instance.Translation.TeleportRoomNull.Content;
+                return false;
+            }
+
+            if (Plugin.Instance.Config.TeleportOnlySameZone && player.Zone != targetRoom.Zone)
+            {
+                player.Broadcast(Plugin.Instance.Translation.TeleportCantforZone, shouldClearPrevious: true);
+                response = Plugin.Instance.Translation.TeleportCantforZone.Content;
+                return false;
+            }
+
+            bool flagLcz = Map.IsLczDecontaminated && targetRoom.Zone == ZoneType.LightContainment;
+            bool flagSite = Warhead.IsDetonated && targetRoom.Zone != ZoneType.Surface;
+
+            if (flagLcz || flagSite)
+            {
+                player.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
+                response = Plugin.Instance.Translation.TeleportRoomDanger.Content;
+                return false;
+            }
+
+            Timing.RunCoroutine(TeleportRooms.TeleportRoom(scp106, targetRoom.Position));
+            response = "Teleport-Room Ability used";
+            return true;
         }
     }
 }

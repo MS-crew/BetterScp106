@@ -34,7 +34,7 @@ namespace BetterScp106.Patchs
             Label skip = generator.DefineLabel();
             Label @continue = generator.DefineLabel();
 
-            int index = newCodes.FindIndex(code => code.opcode == OpCodes.Callvirt && code.operand is MethodInfo method && method == AccessTools.Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)));
+            int index = newCodes.FindIndex(code => code.opcode == OpCodes.Callvirt && (object)code.operand == AccessTools.Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)));
 
             newCodes[index].labels.Add(skip);
             newCodes[index - 1].labels.Add(@continue);

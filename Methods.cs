@@ -54,16 +54,17 @@ namespace BetterScp106
                 RoomType.Surface,
             ];
 
-            if (Warhead.RealDetonationTimer < 15 || Warhead.IsDetonated)
+            bool siteFlag = Warhead.IsDetonated || Warhead.RealDetonationTimer < 15;
+
+            if (Map.DecontaminationState >= DecontaminationState.Countdown || siteFlag)
             {
                 randomPos.Remove(RoomType.Lcz914);
-                randomPos.Remove(RoomType.Hcz096);
-                randomPos.Remove(RoomType.EzGateB);
             }
 
-            if (Map.DecontaminationState == DecontaminationState.Countdown || Map.DecontaminationState == DecontaminationState.Finish)
+            if (siteFlag)
             {
-                randomPos.Remove(RoomType.Lcz914);
+                randomPos.Remove(RoomType.Hcz096);
+                randomPos.Remove(RoomType.EzGateB);
             }
 
             if (randomPos.Count == 0)

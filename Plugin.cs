@@ -48,7 +48,7 @@ namespace BetterScp106
         /// <summary>
         /// Gets the version of the plugin.
         /// </summary>
-        public override Version Version { get; } = new Version(2, 6, 4);
+        public override Version Version { get; } = new Version(2, 6, 5);
 
         /// <summary>
         /// Gets the required Exiled version for the plugin.

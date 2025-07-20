@@ -52,35 +52,38 @@ namespace BetterScp106.Commands
 
             Player player = Player.Get(sender);
 
-            if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
+            if (!player.Role.Is<Scp106Role>(out Scp106Role scp106))
             {
-                response = string.Empty;
-                if (scp106.RemainingSinkholeCooldown > 0)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.Cooldown, true);
-                    return false;
-                }
-
-                if (EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.StalkCostHealt)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkCant, true);
-                    return false;
-                }
-
-                Player target = Methods.Findtarget(true, Plugin.Instance.Config.StalkDistance, scp106.Owner);
-
-                if (target == null)
-                {
-                    scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkNoTarget, true);
-                    return false;
-                }
-
-                Timing.RunCoroutine(Stalking.StalkV3(scp106, target));
-                return true;
+                response = "You can`t use this command";
+                return false;
             }
 
-            response = "You can`t use this command";
-            return false;
+            if (scp106.RemainingSinkholeCooldown > 0)
+            {
+                player.Broadcast(Plugin.Instance.Translation.Cooldown, true);
+                response = Plugin.Instance.Translation.Cooldown.Content;
+                return false;
+            }
+
+            if (EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.StalkCostHealt)
+            {
+                player.Broadcast(Plugin.Instance.Translation.StalkCant, true);
+                response = Plugin.Instance.Translation.StalkCant.Content;
+                return false;
+            }
+
+            Player target = Methods.FindTarget(true, Plugin.Instance.Config.StalkDistance, scp106.Owner);
+
+            if (target == null)
+            {
+                player.Broadcast(Plugin.Instance.Translation.StalkNoTarget, true);
+                response = Plugin.Instance.Translation.StalkNoTarget.Content;
+                return false;
+            }
+
+            Timing.RunCoroutine(Stalking.StalkV3(scp106, target));
+            response = "Stalk Ability used";
+            return true;
         }
     }
 }

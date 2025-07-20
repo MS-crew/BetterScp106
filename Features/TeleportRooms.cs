@@ -45,13 +45,13 @@ namespace BetterScp106.Features
                 return;
             }
 
-            if (!SettingBase.TryGetSetting<DropdownSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropdown))
+            if (!SettingBase.TryGetSetting<DropdownSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropDown))
             {
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant);
                 return;
             }
 
-            int targetRoomIndex = dropdown.SelectedIndex;
+            int targetRoomIndex = dropDown.SelectedIndex;
             Room targetRoom = Room.Get(Plugin.Instance.Config.Rooms[targetRoomIndex]);
 
             if (targetRoom == null)
@@ -66,10 +66,10 @@ namespace BetterScp106.Features
                 return;
             }
 
-            bool flaglcz = Map.IsLczDecontaminated && targetRoom.Zone == ZoneType.LightContainment;
+            bool flagLcz = Map.IsLczDecontaminated && targetRoom.Zone == ZoneType.LightContainment;
             bool flagSite = Warhead.IsDetonated && targetRoom.Zone != ZoneType.Surface;
 
-            if (flaglcz || flagSite)
+            if (flagLcz || flagSite)
             {
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportRoomDanger, shouldClearPrevious: true);
                 return;

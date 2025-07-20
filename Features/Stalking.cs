@@ -39,13 +39,13 @@ namespace BetterScp106.Features
                 return;
             }
 
-            if (!SettingBase.TryGetSetting<TwoButtonsSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode], out TwoButtonsSetting stalkmode) || !SettingBase.TryGetSetting<SliderSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkDistanceSlider], out SliderSetting slider))
+            if (!SettingBase.TryGetSetting<TwoButtonsSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode], out TwoButtonsSetting stalkMode) || !SettingBase.TryGetSetting<SliderSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkDistanceSlider], out SliderSetting slider))
             {
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkNoTarget, true);
                 return;
             }
 
-            Player target = Methods.Findtarget(stalkmode.IsSecond, slider.SliderValue, scp106.Owner);
+            Player target = Methods.FindTarget(stalkMode.IsSecond, slider.SliderValue, scp106.Owner);
 
             if (target == null)
             {
@@ -53,7 +53,7 @@ namespace BetterScp106.Features
                 return;
             }
 
-            Timing.RunCoroutine(StalkV3(scp106, target));
+            Timing.RunCoroutine(Stalk(scp106, target));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace BetterScp106.Features
         /// <param name="scp106">The SCP-106 role instance.</param>
         /// <param name="target">The target player to stalk.</param>
         /// <returns>An enumerator for the coroutine.</returns>
-        public static IEnumerator<float> StalkV3(Scp106Role scp106, Player target)
+        public static IEnumerator<float> Stalk(Scp106Role scp106, Player target)
         {
             if (EventHandlers.SpecialFeatureUsing)
             {

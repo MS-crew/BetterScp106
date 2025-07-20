@@ -50,7 +50,7 @@ namespace BetterScp106.Features
                 return;
             }
 
-            Timing.RunCoroutine(GoPocketV3(scp106));
+            Timing.RunCoroutine(GoPocket(scp106));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace BetterScp106.Features
         /// </summary>
         /// <param name="scp106">The SCP-106 role instance.</param>
         /// <returns>An enumerator for the coroutine.</returns>
-        private static IEnumerator<float> GoPocketV3(Scp106Role scp106)
+        private static IEnumerator<float> GoPocket(Scp106Role scp106)
         {
             if (EventHandlers.SpecialFeatureUsing)
             {

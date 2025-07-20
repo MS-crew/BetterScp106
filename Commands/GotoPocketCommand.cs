@@ -53,8 +53,8 @@ namespace BetterScp106.Commands
             if (player.Role.Is<Scp106Role>(out Scp106Role scp106))
             {
                 GotoPocket.PocketFeature(scp106);
-                response = string.Empty;
-                return false;
+                response = "Pocket Ability used";
+                return true;
             }
 
             response = "You can`t use this command";

@@ -59,7 +59,7 @@ namespace BetterScp106.Features
                 return;
             }
 
-            Timing.RunCoroutine(GotoPocketInV3(scp106, friend));
+            Timing.RunCoroutine(GotoPocketIn(scp106, friend));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace BetterScp106.Features
         /// <param name="scp106">The SCP-106 role instance.</param>
         /// <param name="friend">The friend player to pull into the Pocket Dimension.</param>
         /// <returns>An enumerator for the coroutine.</returns>
-        private static IEnumerator<float> GotoPocketInV3(Scp106Role scp106, Player friend)
+        private static IEnumerator<float> GotoPocketIn(Scp106Role scp106, Player friend)
         {
             if (EventHandlers.SpecialFeatureUsing)
             {
@@ -82,7 +82,7 @@ namespace BetterScp106.Features
             friend.EnableEffects([EffectType.Flashed, EffectType.Ensnared]);
             scp106.Owner.EnableEffect<Ensnared>();
 
-            EventHandlers.ScpPullingtoPocket = friend.Id;
+            EventHandlers.ScpPullingToPocket = friend.Id;
 
             scp106.IsSubmerged = true;
 
@@ -97,7 +97,7 @@ namespace BetterScp106.Features
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106friendrefusedlpocketin, true);
 
                 EventHandlers.GetScpPerm = false;
-                EventHandlers.ScpPullingtoPocket = -1;
+                EventHandlers.ScpPullingToPocket = -1;
 
                 scp106.Owner.DisableEffect<Ensnared>();
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 200f);

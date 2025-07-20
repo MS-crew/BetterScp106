@@ -56,7 +56,7 @@ namespace BetterScp106.Commands
                 return false;
             }
 
-													GotoPocket.PocketFeature(scp106);
+            GotoPocket.PocketFeature(scp106);
             response = "Pocket Ability used";
             return true;
         }

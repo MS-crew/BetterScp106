@@ -34,7 +34,7 @@ namespace BetterScp106.Features
 
             if (scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.TeleportCostHealt)
             {
-                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant, shouldClearPrevious: true);
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace BetterScp106.Features
 
             if (!SettingBase.TryGetSetting<DropdownSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropDown))
             {
-                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant);
+                scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant, shouldClearPrevious: true);
                 return;
             }
 

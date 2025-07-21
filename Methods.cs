@@ -11,8 +11,8 @@ namespace BetterScp106
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
+    using Exiled.API.Features.Roles;
     using PlayerRoles;
-    using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp106;
     using RelativePositioning;
     using UnityEngine;
@@ -141,13 +141,13 @@ namespace BetterScp106
         {
             if (!exitPos.HasValue)
             {
-                if (player.Role.Base is not IFpcRole fpcRole)
+                if (player.Role is not FpcRole fpcRole)
                 {
                     Log.Error($"Player {player.Nickname} has an invalid role: {player.Role}");
                     return;
                 }
 
-                exitPos = Scp106PocketExitFinder.GetBestExitPosition(fpcRole);
+                exitPos = Scp106PocketExitFinder.GetBestExitPosition(fpcRole.FirstPersonController);
             }
 
             player.Teleport(exitPos, Vector3.zero);

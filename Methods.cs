@@ -11,7 +11,6 @@ namespace BetterScp106
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
-    using Exiled.API.Features.Roles;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp106;

@@ -87,7 +87,6 @@ namespace BetterScp106.Features
             }
 
             EventHandlers.SpecialFeatureUsing = true;
-
             EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.TeleportCooldown;
 
             scp106.UsePortal(targetRoomPos, Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f));

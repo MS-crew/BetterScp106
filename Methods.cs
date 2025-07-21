@@ -11,6 +11,7 @@ namespace BetterScp106
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
+    using Exiled.API.Features.Roles;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp106;
@@ -136,20 +137,18 @@ namespace BetterScp106
         /// Teleports Player out of the pocket dimension.
         /// </summary>
         /// <param name="player">The escaping player.</param>
-        public static void EscapeFromDimension(Player player)
+        /// <param name="exitPos">The optional exit position to teleport the player to. If null, a suitable exit position will be determined automatically.</param>
+        public static void EscapeFromDimension(Player player, Vector3? exitPos = null)
         {
-            if (player.Role.Base is not IFpcRole fpcRole)
+            if (!exitPos.HasValue)
             {
-                Log.Error($"Player {player.Nickname} has an invalid role: {player.Role}");
-                return;
-            }
+                if (player.Role.Base is not IFpcRole fpcRole)
+                {
+                    Log.Error($"Player {player.Nickname} has an invalid role: {player.Role}");
+                    return;
+                }
 
-            Vector3 exitPos = Scp106PocketExitFinder.GetBestExitPosition(fpcRole);
-
-            if (exitPos == Vector3.zero)
-            {
-                Log.Error($"EscapeFromDimension: Exit position is invalid for {player.Nickname}.");
-                return;
+                exitPos = Scp106PocketExitFinder.GetBestExitPosition(fpcRole);
             }
 
             player.Teleport(exitPos, Vector3.zero);

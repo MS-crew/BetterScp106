@@ -109,7 +109,7 @@ namespace BetterScp106
             }
 
             ev.IsAllowed = false;
-            Methods.EscapeFromDimension(ev.Player);
+            Methods.EscapeFromDimension(ev.Player, ev.TeleportPosition);
             Log.Debug("Scp exit the dimension with find right exit");
         }
 

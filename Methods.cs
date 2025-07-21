@@ -81,10 +81,10 @@ namespace BetterScp106
                 position = Room.Get(RoomType.Surface).Position;
             }
 
-            RelativePosition relaivePosition = new (position);
+            RelativePosition relativePosition = new (position);
             Log.Debug("Random Zones count: " + randomPos.Count + " selected random position: " + position + " Random zone mode: " + Plugin.Instance.Config.PocketexitRandomZonemode);
 
-            return relaivePosition;
+            return relativePosition;
         }
 
         /// <summary>

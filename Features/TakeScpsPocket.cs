@@ -82,7 +82,7 @@ namespace BetterScp106.Features
             friend.EnableEffects([EffectType.Flashed, EffectType.Ensnared]);
             scp106.Owner.EnableEffect<Ensnared>();
 
-            EventHandlers.ScpPullingToPocket = friend.Id;
+            EventHandlers.ScpPullingToPocket = friend;
 
             scp106.IsSubmerged = true;
 
@@ -97,7 +97,7 @@ namespace BetterScp106.Features
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106friendrefusedlpocketin, true);
 
                 EventHandlers.GetScpPerm = false;
-                EventHandlers.ScpPullingToPocket = -1;
+                EventHandlers.ScpPullingToPocket = null;
 
                 scp106.Owner.DisableEffect<Ensnared>();
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 200f);

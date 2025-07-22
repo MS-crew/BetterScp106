@@ -22,29 +22,29 @@ namespace BetterScp106
     public class EventHandlers
     {
         /// <summary>
-        /// Indicates whether the special feature is currently being used.
-        /// </summary>
-        public static bool SpecialFeatureUsing = false;
-
-        /// <summary>
-        /// Represents the cooldown duration for the special feature.
-        /// </summary>
-        public static double SpecialFeatureCooldown = 0;
-
-        /// <summary>
-        /// Stores the ID of the player being pulled into the pocket dimension.
-        /// </summary>
-        public static int ScpPullingToPocket;
-
-        /// <summary>
-        /// Indicates whether SCP permission has been granted.
-        /// </summary>
-        public static bool GetScpPerm = false;
-
-        /// <summary>
         /// Cache for the Better SCP-106 menu settings.
         /// </summary>
-        private static readonly List<SettingBase> Better106MenuCache = SettingsMenu.Better106Menu();
+        private readonly List<SettingBase> better106MenuCache = SettingsMenu.Better106Menu();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether indicates whether the special feature is currently being used.
+        /// </summary>
+        public static bool SpecialFeatureUsing { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets represents the cooldown duration for the special feature.
+        /// </summary>
+        public static double SpecialFeatureCooldown { get; set; }
+
+        /// <summary>
+        /// Gets or sets stores the ID of the player being pulled into the pocket dimension.
+        /// </summary>
+        public static Player ScpPullingToPocket { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether indicates whether SCP permission has been granted.
+        /// </summary>
+        public static bool GetScpPerm { get; set; } = false;
 
         /// <summary>
         /// Handles the stalking event for SCP-106.
@@ -69,7 +69,7 @@ namespace BetterScp106
                 return;
             }
 
-            if (ev.Player.Id != ScpPullingToPocket)
+            if (ev.Player != ScpPullingToPocket)
             {
                 return;
             }
@@ -121,14 +121,14 @@ namespace BetterScp106
         {
             if (ev.OldRole == RoleTypeId.Scp106)
             {
-                SettingBase.Unregister(ev.Player, Better106MenuCache);
+                SettingBase.Unregister(ev.Player, this.better106MenuCache);
                 Log.Debug($"Player {ev.Player.Nickname} is no longer SCP-106, removing menu from the list.");
             }
 
             if (ev.Player.Role == RoleTypeId.Scp106)
             {
                 SpecialFeatureUsing = false;
-                SettingBase.Register(ev.Player, Better106MenuCache);
+                SettingBase.Register(ev.Player, this.better106MenuCache);
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
                 Log.Debug($"Player {ev.Player.Nickname} is now SCP-106, adding menu to the list.");
             }

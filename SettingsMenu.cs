@@ -24,6 +24,21 @@ namespace BetterScp106
     public class SettingsMenu
     {
         /// <summary>
+        /// Enum representing various SCP-106 menu elements.
+        /// </summary>
+        public enum Features
+        {
+            PocketKey,
+            PocketinKey,
+            StalkKey,
+            StalkMode,
+            StalkDistanceSlider,
+            TeleportRooms,
+            TeleportRoomsList,
+            Description,
+        }
+
+        /// <summary>
         /// Generates a list of settings for the Better SCP-106 menu.
         /// </summary>
         /// <returns>A list of <see cref="ServerSpecificSettingBase"/> objects representing the menu settings.</returns>
@@ -35,7 +50,7 @@ namespace BetterScp106
             if (Plugin.Instance.Config.PocketFeature)
             {
                 settings.Add(new Keybind(
-                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketKey],
+                    id: Plugin.Instance.Config.AbilitySettingIds[Features.PocketKey],
                     label: Plugin.Instance.Translation.Pocket[0],
                     suggestedKey: UnityEngine.KeyCode.F,
                     hint: Plugin.Instance.Translation.Pocket[1],
@@ -54,7 +69,7 @@ namespace BetterScp106
             if (Plugin.Instance.Config.PocketinFeature)
             {
                 settings.Add(new Keybind(
-                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.PocketinKey],
+                    id: Plugin.Instance.Config.AbilitySettingIds[Features.PocketinKey],
                     label: Plugin.Instance.Translation.PocketIn[0],
                     suggestedKey: UnityEngine.KeyCode.G,
                     hint: Plugin.Instance.Translation.PocketIn[1],
@@ -73,7 +88,7 @@ namespace BetterScp106
             if (Plugin.Instance.Config.StalkFeature)
             {
                 settings.Add(new Keybind(
-                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkKey],
+                    id: Plugin.Instance.Config.AbilitySettingIds[Features.StalkKey],
                     label: Plugin.Instance.Translation.Stalk[0],
                     suggestedKey: UnityEngine.KeyCode.H,
                     hint: Plugin.Instance.Translation.Stalk[1],
@@ -87,7 +102,7 @@ namespace BetterScp106
                     }));
 
                 settings.Add(new SSTwoButtonsSetting(
-                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkMode],
+                    id: Plugin.Instance.Config.AbilitySettingIds[Features.StalkMode],
                     label: Plugin.Instance.Translation.Stalk[2],
                     optionA: Plugin.Instance.Translation.Stalk[3],
                     optionB: Plugin.Instance.Translation.Stalk[4],
@@ -95,7 +110,7 @@ namespace BetterScp106
                     hint: Plugin.Instance.Translation.Stalk[5]));
 
                 settings.Add(new SSSliderSetting(
-                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.StalkDistanceSlider],
+                    id: Plugin.Instance.Config.AbilitySettingIds[Features.StalkDistanceSlider],
                     label: Plugin.Instance.Translation.Stalk[6],
                     minValue: 0.0f,
                     maxValue: Plugin.Instance.Config.StalkFromEverywhere ? 20000 : Plugin.Instance.Config.StalkDistance,
@@ -109,12 +124,12 @@ namespace BetterScp106
             if (Plugin.Instance.Config.TeleportRoomsFeature)
             {
                 settings.Add(new SSDropdownSetting(
-                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList],
+                    id: Plugin.Instance.Config.AbilitySettingIds[Features.TeleportRoomsList],
                     label: Plugin.Instance.Translation.Teleport[0],
                     options: Plugin.Instance.Config.Rooms.Select(r => r.ToString()).ToArray()));
 
                 settings.Add(new Button(
-                    id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRooms],
+                    id: Plugin.Instance.Config.AbilitySettingIds[Features.TeleportRooms],
                     label: Plugin.Instance.Translation.Teleport[0],
                     buttonText: Plugin.Instance.Translation.Teleport[1],
                     hint: Plugin.Instance.Translation.Teleport[2],
@@ -131,7 +146,7 @@ namespace BetterScp106
             }
 
             settings.Insert(0, new SSTextArea(
-               id: Plugin.Instance.Config.AbilitySettingIds[Methods.Features.Description],
+               id: Plugin.Instance.Config.AbilitySettingIds[Features.Description],
                content: StringBuilderPool.Shared.ToStringReturn(descriptionBuilder),
                foldoutMode: SSTextArea.FoldoutMode.ExtendedByDefault));
 

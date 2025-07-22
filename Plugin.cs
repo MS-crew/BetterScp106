@@ -19,17 +19,17 @@ namespace BetterScp106
     /// </summary>
     public class Plugin : Plugin<Config, Translation>
     {
-        /// <summary>
-        /// Gets or sets the event handlers for the plugin.
-        /// </summary>
-        public static EventHandlers EventHandlers;
-
         private Harmony harmony;
 
         /// <summary>
         /// Gets the singleton instance of the plugin.
         /// </summary>
         public static Plugin Instance { get; private set; }
+
+        /// <summary>
+        /// Gets the event handlers for the plugin.
+        /// </summary>
+        public EventHandlers EventHandlers { get; private set; }
 
         /// <summary>
         /// Gets the author of the plugin.
@@ -76,8 +76,8 @@ namespace BetterScp106
 
             Menu.RegisterAll();
 
-            this.harmony = new Harmony("Better106Patchs" + DateTime.Now.Ticks);
-            this.harmony.PatchAll();
+            harmony = new Harmony("Better106Patchs" + DateTime.Now.Ticks);
+            harmony.PatchAll();
             base.OnEnabled();
         }
 
@@ -96,7 +96,7 @@ namespace BetterScp106
             PlayerHandlers.FailingEscapePocketDimension -= EventHandlers.OnFailingEscape;
             PlayerHandlers.EscapingPocketDimension -= EventHandlers.OnEscapingPocketDimension;
 
-            this.harmony.UnpatchAll();
+            harmony.UnpatchAll();
             EventHandlers = null;
             Instance = null;
             base.OnDisabled();

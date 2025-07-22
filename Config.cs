@@ -57,16 +57,16 @@ namespace BetterScp106
         /// Gets or sets the button setting IDs for various features.
         /// </summary>
         [Description("Button setting ids of features")]
-        public Dictionary<Methods.Features, int> AbilitySettingIds { get; set; } = new Dictionary<Methods.Features, int>
+        public Dictionary<SettingsMenu.Features, int> AbilitySettingIds { get; set; } = new Dictionary<SettingsMenu.Features, int>
         {
-            { Methods.Features.PocketKey, 106 },
-            { Methods.Features.PocketinKey, 107 },
-            { Methods.Features.StalkKey, 108 },
-            { Methods.Features.StalkMode, 109 },
-            { Methods.Features.StalkDistanceSlider, 110 },
-            { Methods.Features.TeleportRoomsList, 111 },
-            { Methods.Features.TeleportRooms, 112 },
-            { Methods.Features.Description, 113 },
+            { SettingsMenu.Features.PocketKey, 106 },
+            { SettingsMenu.Features.PocketinKey, 107 },
+            { SettingsMenu.Features.StalkKey, 108 },
+            { SettingsMenu.Features.StalkMode, 109 },
+            { SettingsMenu.Features.StalkDistanceSlider, 110 },
+            { SettingsMenu.Features.TeleportRoomsList, 111 },
+            { SettingsMenu.Features.TeleportRooms, 112 },
+            { SettingsMenu.Features.Description, 113 },
         };
 
         /// <summary>

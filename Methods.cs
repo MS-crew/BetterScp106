@@ -26,21 +26,6 @@ namespace BetterScp106
     public class Methods
     {
         /// <summary>
-        /// Enum representing various SCP-106 menu elements.
-        /// </summary>
-        public enum Features
-        {
-            PocketKey,
-            PocketinKey,
-            StalkKey,
-            StalkMode,
-            StalkDistanceSlider,
-            TeleportRooms,
-            TeleportRoomsList,
-            Description,
-        }
-
-        /// <summary>
         /// Selects a random zone for Player to teleport to out of Pocket Dimension, considering game conditions
         /// </summary>
         /// <returns>A <see cref="RelativePosition"/> representing the selected zone.</returns>

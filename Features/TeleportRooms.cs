@@ -86,13 +86,13 @@ namespace BetterScp106.Features
         /// <returns>An enumerator for the teleportation coroutine.</returns>
         public static IEnumerator<float> TeleportRoom(Scp106Role scp106, Vector3 targetRoomPos)
         {
-            if (EventHandlers.SpecialFeatureUsing)
+            if (Plugin.EventHandlers.SpecialFeatureUsing)
             {
                 yield break;
             }
 
-            EventHandlers.SpecialFeatureUsing = true;
-            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.TeleportCooldown;
+            Plugin.EventHandlers.SpecialFeatureUsing = true;
+            Plugin.EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.TeleportCooldown;
 
             scp106.UsePortal(targetRoomPos, Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f));
             scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.TeleportCostHealt, null));
@@ -100,7 +100,7 @@ namespace BetterScp106.Features
             yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
             yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
 
-            EventHandlers.SpecialFeatureUsing = false;
+            Plugin.EventHandlers.SpecialFeatureUsing = false;
         }
     }
 }

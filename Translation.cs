@@ -52,6 +52,18 @@ namespace BetterScp106
         public Broadcast Scp106Friendinpocket { get; set; } = new Broadcast("<color=red>Welcome to my home friend...</color>", 4);
 
         /// <summary>
+        /// Gets or sets the broadcast shown to the **targeted SCP** when they **refuse** SCP-106's pull into the Pocket Dimension.
+        /// </summary>
+        [Description("The broadcast shown to the SCP when they explicitly refuse SCP-106's pull into the Pocket Dimension.")]
+        public Broadcast Scp106FriendRejected { get; set; } = new Broadcast("<color=red>You refuse to enter the Pocket Dimension.</color>", 4);
+
+        /// <summary>
+        /// Gets or sets the broadcast shown to the **targeted SCP** when they **re-accept** SCP-106's pull after previously refusing it.
+        /// </summary>
+        [Description("The broadcast shown to the SCP when they re-accept SCP-106's pull after having previously refused it.")]
+        public Broadcast Scp106FriendAccepted { get; set; } = new Broadcast("<color=red>You agree to enter the Pocket Dimension.</color>", 4);
+
+        /// <summary>
         /// Gets or sets the broadcast shown when another SCP refuses to enter the pocket dimension.
         /// </summary>
         [Description("If the scp that scp106 is trying to throw into the pocket dimension refuses to enter the pocket dimension, the message that will appear to 106")]

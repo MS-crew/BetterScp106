@@ -65,7 +65,7 @@ namespace BetterScp106.Commands
                 return false;
             }
 
-            if (Plugin.EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.StalkCostHealt)
+            if (EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.StalkCostHealt)
             {
                 player.Broadcast(Plugin.Instance.Translation.StalkCant, true);
                 response = Plugin.Instance.Translation.StalkCant.Content;

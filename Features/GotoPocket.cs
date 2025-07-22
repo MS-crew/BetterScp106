@@ -60,32 +60,27 @@ namespace BetterScp106.Features
         /// <returns>An enumerator for the coroutine.</returns>
         private static IEnumerator<float> GoPocket(Scp106Role scp106)
         {
-            if (Plugin.EventHandlers.SpecialFeatureUsing)
+            if (EventHandlers.SpecialFeatureUsing)
             {
                 yield break;
             }
 
-            Plugin.EventHandlers.SpecialFeatureUsing = true;
-            Plugin.EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketdimensionCooldown;
+            EventHandlers.SpecialFeatureUsing = true;
+            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketdimensionCooldown;
 
             scp106.IsSubmerged = true;
 
-            scp106.Owner.EnableEffect<Ensnared>();
-
-            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
-
-            scp106.IsSubmerged = false;
+            yield return Timing.WaitUntilTrue(() => scp106.IsSinkholeHidden);
 
             scp106.Owner.EnableEffect<PocketCorroding>();
-            scp106.Owner.DisableEffects([EffectType.Ensnared, EffectType.Corroding]);
+            scp106.Owner.DisableEffect(EffectType.Corroding);
 
             scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketdimensionCostVigor / 100f);
             scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.PocketdimensionCostHealt, null));
-
             scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
 
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-            Plugin.EventHandlers.SpecialFeatureUsing = false;
+            yield return Timing.WaitUntilFalse(() => scp106.IsSinkholeHidden);
+            EventHandlers.SpecialFeatureUsing = false;
         }
     }
 }

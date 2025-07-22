@@ -22,6 +22,9 @@ csharp_style_expression_bodied_indexers = true:silent
 csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:silent
 
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
 [*.{cs,vb}]
 #### Naming styles ####
 

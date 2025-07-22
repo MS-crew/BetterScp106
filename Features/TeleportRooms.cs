@@ -45,7 +45,7 @@ namespace BetterScp106.Features
                 return;
             }
 
-            if (!SettingBase.TryGetSetting<DropdownSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[Methods.Features.TeleportRoomsList], out DropdownSetting dropDown))
+            if (!SettingBase.TryGetSetting<DropdownSetting>(scp106.Owner, Plugin.Instance.Config.AbilitySettingIds[SettingsMenu.Features.TeleportRoomsList], out DropdownSetting dropDown))
             {
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.TeleportCant, shouldClearPrevious: true);
                 return;
@@ -86,21 +86,21 @@ namespace BetterScp106.Features
         /// <returns>An enumerator for the teleportation coroutine.</returns>
         public static IEnumerator<float> TeleportRoom(Scp106Role scp106, Vector3 targetRoomPos)
         {
-            if (Plugin.EventHandlers.SpecialFeatureUsing)
+            if (EventHandlers.SpecialFeatureUsing)
             {
                 yield break;
             }
 
-            Plugin.EventHandlers.SpecialFeatureUsing = true;
-            Plugin.EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.TeleportCooldown;
+            EventHandlers.SpecialFeatureUsing = true;
+            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.TeleportCooldown;
 
             scp106.UsePortal(targetRoomPos, Mathf.Clamp01(Plugin.Instance.Config.TeleportCostVigor / 100f));
             scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.TeleportCostHealt, null));
 
-            yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
-            yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
+            yield return Timing.WaitUntilTrue(() => scp106.IsSinkholeHidden);
+            yield return Timing.WaitUntilFalse(() => scp106.IsSinkholeHidden);
 
-            Plugin.EventHandlers.SpecialFeatureUsing = false;
+            EventHandlers.SpecialFeatureUsing = false;
         }
     }
 }

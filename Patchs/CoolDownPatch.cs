@@ -31,13 +31,13 @@ namespace BetterScp106.Patchs
         {
             List<CodeInstruction> newCodes = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label skip = generator.DefineLabel();
-            Label @continue = generator.DefineLabel();
+            Label skipOriginalTrigger = generator.DefineLabel();
+            Label jumpToOriginalLogic = generator.DefineLabel();
 
             int index = newCodes.FindIndex(code => code.opcode == OpCodes.Callvirt && (object)code.operand == AccessTools.Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)));
 
-            newCodes[index].labels.Add(skip);
-            newCodes[index - 1].labels.Add(@continue);
+            newCodes[index].labels.Add(skipOriginalTrigger);
+            newCodes[index - 1].labels.Add(jumpToOriginalLogic);
 
             newCodes.InsertRange(
             index - 1,
@@ -45,10 +45,11 @@ namespace BetterScp106.Patchs
             {
                 // if (EventHandlers.SpecialFeatureUsing)
                 // _submergeCooldown = EventHandlers.SpecialFeatureCooldown;
-                new (OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureUsing))),
-                new (OpCodes.Brfalse_S, @continue),
-                new (OpCodes.Ldsfld, AccessTools.Field(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureCooldown))),
-                new (OpCodes.Br, skip),
+                new (OpCodes.Call, AccessTools.PropertyGetter(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureUsing))),
+                new (OpCodes.Brfalse_S, jumpToOriginalLogic),
+
+                new (OpCodes.Call, AccessTools.PropertyGetter(typeof(EventHandlers), nameof(EventHandlers.SpecialFeatureCooldown))),
+                new (OpCodes.Br_S, skipOriginalTrigger),
             });
 
             for (int i = 0; i < newCodes.Count; i++)

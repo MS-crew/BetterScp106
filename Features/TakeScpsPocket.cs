@@ -69,34 +69,34 @@ namespace BetterScp106.Features
         /// <returns>An enumerator for the coroutine.</returns>
         private static IEnumerator<float> GotoPocketIn(Scp106Role scp106, Player friend)
         {
-            if (EventHandlers.SpecialFeatureUsing)
+            if (Plugin.EventHandlers.SpecialFeatureUsing)
             {
                 yield break;
             }
 
-            EventHandlers.SpecialFeatureUsing = true;
-            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketingScpCooldown;
+            Plugin.EventHandlers.SpecialFeatureUsing = true;
+            Plugin.EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketingScpCooldown;
 
             friend.Broadcast(Plugin.Instance.Translation.Scp106ReqFriendinpocket, shouldClearPrevious: true);
             friend.EnableEffects([EffectType.Flashed, EffectType.Ensnared]);
             scp106.Owner.EnableEffect<Ensnared>();
 
-            EventHandlers.ScpPullingToPocket = friend;
+            Plugin.EventHandlers.ScpPullingToPocket = friend;
 
             scp106.IsSubmerged = true;
 
             yield return Timing.WaitUntilTrue(() => scp106.SinkholeController.IsHidden);
 
-            if (EventHandlers.GetScpPerm == true)
+            if (Plugin.EventHandlers.GetScpPerm == true)
             {
-                EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.CanceledPocketingScpCooldown;
+                Plugin.EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.CanceledPocketingScpCooldown;
                 scp106.IsSubmerged = false;
 
                 friend.DisableEffects([EffectType.Flashed, EffectType.Ensnared]);
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106friendrefusedlpocketin, true);
 
-                EventHandlers.GetScpPerm = false;
-                EventHandlers.ScpPullingToPocket = null;
+                Plugin.EventHandlers.GetScpPerm = false;
+                Plugin.EventHandlers.ScpPullingToPocket = null;
 
                 scp106.Owner.DisableEffect<Ensnared>();
                 scp106.Vigor -= Mathf.Clamp01(Plugin.Instance.Config.PocketinCostVigor / 200f);
@@ -118,7 +118,7 @@ namespace BetterScp106.Features
             }
 
             yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-            EventHandlers.SpecialFeatureUsing = false;
+            Plugin.EventHandlers.SpecialFeatureUsing = false;
         }
     }
 }

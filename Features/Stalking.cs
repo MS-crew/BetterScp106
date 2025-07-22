@@ -34,7 +34,7 @@ namespace BetterScp106.Features
                 return;
             }
 
-            if (EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.StalkCostHealt)
+            if (Plugin.EventHandlers.SpecialFeatureUsing || scp106.Vigor < Mathf.Clamp01(Plugin.Instance.Config.StalkCostVigor / 100f) || scp106.Owner.Health <= Plugin.Instance.Config.StalkCostHealt)
             {
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkCant, true);
                 return;
@@ -61,13 +61,13 @@ namespace BetterScp106.Features
         /// <returns>An enumerator for the coroutine.</returns>
         public static IEnumerator<float> Stalk(Scp106Role scp106, Player target)
         {
-            if (EventHandlers.SpecialFeatureUsing)
+            if (Plugin.EventHandlers.SpecialFeatureUsing)
             {
                 yield break;
             }
 
-            EventHandlers.SpecialFeatureUsing = true;
-            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterStalkCooldown;
+            Plugin.EventHandlers.SpecialFeatureUsing = true;
+            Plugin.EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterStalkCooldown;
 
             if (Plugin.Instance.Config.StalkWarning)
             {
@@ -78,7 +78,7 @@ namespace BetterScp106.Features
             if (!target.IsAlive)
             {
                 scp106.Owner.Broadcast(Plugin.Instance.Translation.StalkFailed, shouldClearPrevious: true);
-                EventHandlers.SpecialFeatureUsing = false;
+                Plugin.EventHandlers.SpecialFeatureUsing = false;
                 Log.Debug("Stalk victim die before stalk");
             }
             else
@@ -113,7 +113,7 @@ namespace BetterScp106.Features
                 scp106.Owner.Hurt(new CustomReasonDamageHandler("Using Shadow Realm Forces", Plugin.Instance.Config.StalkCostHealt, null));
 
                 yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-                EventHandlers.SpecialFeatureUsing = false;
+                Plugin.EventHandlers.SpecialFeatureUsing = false;
             }
         }
     }

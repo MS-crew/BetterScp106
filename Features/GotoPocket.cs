@@ -60,13 +60,13 @@ namespace BetterScp106.Features
         /// <returns>An enumerator for the coroutine.</returns>
         private static IEnumerator<float> GoPocket(Scp106Role scp106)
         {
-            if (EventHandlers.SpecialFeatureUsing)
+            if (Plugin.EventHandlers.SpecialFeatureUsing)
             {
                 yield break;
             }
 
-            EventHandlers.SpecialFeatureUsing = true;
-            EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketdimensionCooldown;
+            Plugin.EventHandlers.SpecialFeatureUsing = true;
+            Plugin.EventHandlers.SpecialFeatureCooldown = Plugin.Instance.Config.AfterPocketdimensionCooldown;
 
             scp106.IsSubmerged = true;
 
@@ -85,7 +85,7 @@ namespace BetterScp106.Features
             scp106.Owner.Broadcast(Plugin.Instance.Translation.Scp106inpocket, shouldClearPrevious: true);
 
             yield return Timing.WaitUntilFalse(() => scp106.SinkholeController.IsHidden);
-            EventHandlers.SpecialFeatureUsing = false;
+            Plugin.EventHandlers.SpecialFeatureUsing = false;
         }
     }
 }

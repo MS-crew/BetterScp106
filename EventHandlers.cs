@@ -24,22 +24,22 @@ namespace BetterScp106
         /// <summary>
         /// Gets or sets a value indicating whether indicates whether the special feature is currently being used.
         /// </summary>
-        public static bool SpecialFeatureUsing { get; set; } = false;
+        public bool SpecialFeatureUsing { get; set; } = false;
 
         /// <summary>
         /// Gets or sets represents the cooldown duration for the special feature.
         /// </summary>
-        public static double SpecialFeatureCooldown { get; set; }
+        public double SpecialFeatureCooldown { get; set; }
 
         /// <summary>
         /// Gets or sets stores the ID of the player being pulled into the pocket dimension.
         /// </summary>
-        public static Player ScpPullingToPocket { get; set; }
+        public Player ScpPullingToPocket { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether indicates whether SCP permission has been granted.
         /// </summary>
-        public static bool GetScpPerm { get; set; } = false;
+        public bool GetScpPerm { get; set; } = false;
 
         /// <summary>
         /// Handles the stalking event for SCP-106.
@@ -47,7 +47,7 @@ namespace BetterScp106
         /// <param name="ev">The event arguments for stalking.</param>
         public void OnStalk(StalkingEventArgs ev)
         {
-            if (SpecialFeatureUsing)
+            if (this.SpecialFeatureUsing)
             {
                 ev.IsAllowed = false;
             }
@@ -64,12 +64,12 @@ namespace BetterScp106
                 return;
             }
 
-            if (ev.Player != ScpPullingToPocket)
+            if (ev.Player != this.ScpPullingToPocket)
             {
                 return;
             }
 
-            GetScpPerm = true;
+            this.GetScpPerm = true;
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace BetterScp106
 
             if (ev.Player.Role.Type == RoleTypeId.Scp106)
             {
-                SpecialFeatureUsing = false;
+                this.SpecialFeatureUsing = false;
                 Menu.ReloadPlayer(ev.Player.ReferenceHub);
                 ev.Player.ShowHint(new Hint(Plugin.Instance.Translation.Scp106StartMessage, 10, true));
             }

@@ -22,24 +22,24 @@ namespace BetterScp106
     public class EventHandlers
     {
         /// <summary>
-        /// Indicates whether the special feature is currently being used.
+        /// Gets or sets a value indicating whether indicates whether the special feature is currently being used.
         /// </summary>
-        public static bool SpecialFeatureUsing = false;
+        public static bool SpecialFeatureUsing { get; set; } = false;
 
         /// <summary>
-        /// Represents the cooldown duration for the special feature.
+        /// Gets or sets represents the cooldown duration for the special feature.
         /// </summary>
-        public static double SpecialFeatureCooldown = 0;
+        public static double SpecialFeatureCooldown { get; set; }
 
         /// <summary>
-        /// Stores the ID of the player being pulled into the pocket dimension.
+        /// Gets or sets stores the ID of the player being pulled into the pocket dimension.
         /// </summary>
-        public static int ScpPullingToPocket;
+        public static Player ScpPullingToPocket { get; set; }
 
         /// <summary>
-        /// Indicates whether SCP permission has been granted.
+        /// Gets or sets a value indicating whether indicates whether SCP permission has been granted.
         /// </summary>
-        public static bool GetScpPerm = false;
+        public static bool GetScpPerm { get; set; } = false;
 
         /// <summary>
         /// Handles the stalking event for SCP-106.
@@ -64,7 +64,7 @@ namespace BetterScp106
                 return;
             }
 
-            if (ev.Player.Id != ScpPullingToPocket)
+            if (ev.Player != ScpPullingToPocket)
             {
                 return;
             }

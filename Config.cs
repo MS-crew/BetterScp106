@@ -63,6 +63,7 @@ namespace BetterScp106
         [Description("Button setting ids of features")]
         public Dictionary<SettingsMenu.Features, int> AbilitySettingIds { get; set; } = new Dictionary<SettingsMenu.Features, int>
         {
+            { SettingsMenu.Features.Header, 105 },
             { SettingsMenu.Features.PocketKey, 106 },
             { SettingsMenu.Features.PocketinKey, 107 },
             { SettingsMenu.Features.StalkKey, 108 },

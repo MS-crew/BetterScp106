@@ -25,6 +25,7 @@ namespace BetterScp106
         /// </summary>
         public enum Features
         {
+            Header,
             PocketKey,
             PocketinKey,
             StalkKey,
@@ -49,7 +50,7 @@ namespace BetterScp106
             List<SettingBase> settings = new ();
             StringBuilder descriptionBuilder = StringBuilderPool.Shared.Rent();
 
-            settings.Add(new HeaderSetting(name: "Better Scp-106"));
+            settings.Add(new HeaderSetting(Plugin.Instance.Config.AbilitySettingIds[Features.Header] ,"Better Scp-106"));
 
             if (Plugin.Instance.Config.PocketFeature)
             {

@@ -19,8 +19,12 @@ namespace BetterScp106
     public static class CapturePositionPatch
     {
         /// <summary>
-        /// Modifies the return value of the <see cref="PocketCorroding.CapturePosition"/> getter.
-        /// Custom logic is injected to check SCP roles and configuration settings before returning a random zone.
+        /// Postfix method that overrides the exit position returned by <see cref="PocketCorroding.CapturePosition"/>.
+        /// If the <c>PocketexitRandomZonemode</c> config is enabled or the affected player is an SCP,
+        /// the result is replaced with a random zone.
+        /// </summary>
+        /// <param name="__instance">The <see cref="PocketCorroding"/> instance being patched.</param>
+        /// <param name="__result">The exit position, modified to be a random zone if conditions are met.</param>
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
         private static void Postfix(PocketCorroding __instance, ref RelativePosition __result)
         {

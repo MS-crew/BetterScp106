@@ -6,67 +6,40 @@
 
 namespace BetterScp106.Patchs
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
     using HarmonyLib;
     using UnityEngine;
 
     /// <summary>
     /// A patch for modifying the behavior of the <see cref="AlphaWarheadController.CanBeDetonated"/> method.
-    /// This patch is used to prevent the realistic pocket feature that comes with the add-on from harming players in pockket.
+    /// This patch prevents the warhead from being detonated when the position is inside the Pocket Dimension,
+    /// if the RealisticPocket feature is enabled in the plugin's config.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CanBeDetonated))]
     public static class RealisticPocketPatch
     {
         /// <summary>
-        /// Transpiler method to inject custom logic into the Alpha Warhead detonation process.
+        /// Prefix method that checks if the given position is inside the Pocket Dimension.
+        /// If so, it forces the result to <see langword="false"/> and skips the original method.
         /// </summary>
-        /// <param name="instructions">The original IL instructions.</param>
-        /// <param name="generator">The IL generator for creating new instructions.</param>
-        /// <returns>The modified IL instructions.</returns>
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        /// <param name="pos">The world position being checked.</param>
+        /// <param name="__result">The return value of the original method, modified if in Pocket.</param>
+        /// <param name="includeOnlyLifts">Indicates whether only lift positions should be considered.</param>
+        /// <returns>
+        /// <see langword="false"/> to skip the original method if in Pocket, 
+        /// otherwise <see langword="true"/> to let the original method run.
+        /// </returns>
+        #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+        private static bool Prefix(Vector3 pos, ref bool __result, bool includeOnlyLifts = false)
         {
-            List<CodeInstruction> newCodes = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-            Label @continue = generator.DefineLabel();
-
-            newCodes[0].labels.Add(@continue);
-
-            newCodes.InsertRange(
-            0,
-            new List<CodeInstruction>
+            if (Plugin.Instance.Config.RealisticPocket && Room.Get(pos).Type == RoomType.Pocket)
             {
-                // if (!Plugin.Instance.Config.RealisticPocket)
-                // continue base method
-                new (OpCodes.Call, AccessTools.PropertyGetter(typeof(Plugin), nameof(Plugin.Instance))),
-                new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin), nameof(Config))),
-                new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.RealisticPocket))),
-                new (OpCodes.Brfalse_S, @continue),
-
-                // if (Room.Get(this.pos).Type == RoomType.Pocket)
-                // return false;
-                // else
-                // continue base method
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Call, AccessTools.Method(typeof(Room), nameof(Room.Get), new[] { typeof(Vector3) })),
-                new (OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Room), nameof(Room.Type))),
-                new (OpCodes.Ldc_I4_S, (int)RoomType.Pocket),
-                new (OpCodes.Ceq),
-                new (OpCodes.Brfalse_S, @continue),
-
-                new (OpCodes.Ldc_I4_0),
-                new (OpCodes.Ret),
-            });
-
-            for (int i = 0; i < newCodes.Count; i++)
-            {
-                yield return newCodes[i];
+                __result = false;
+                return false;
             }
 
-            ListPool<CodeInstruction>.Pool.Return(newCodes);
+            return true;
         }
     }
 }
